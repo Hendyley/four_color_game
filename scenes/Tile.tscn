@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://cwa251fvo0n6p"]
+
+[ext_resource type="Script" path="res://scenes/Tile.cs" id="1_76l64"]
+[ext_resource type="Texture2D" uid="uid://b7u2yuinfa4dg" path="res://art/4_Color_Game/Chess/Removed_BG/C1_Red.png" id="2_i15yr"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_76l64")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(50, 200)
+layout_mode = 0
+offset_right = 51.0
+offset_bottom = 200.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_i15yr")
+
+[connection signal="gui_input" from="." to="." method="_on_gui_input"]

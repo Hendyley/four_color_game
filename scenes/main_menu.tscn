@@ -1,0 +1,131 @@
+[gd_scene load_steps=14 format=3 uid="uid://blewkvksqkipr"]
+
+[ext_resource type="Script" path="res://scenes/MainMenu.cs" id="1_ppnmh"]
+[ext_resource type="Texture2D" uid="uid://bojt53ffw6lwv" path="res://art/4_Color_Game/green_BG.png" id="2_cv4nh"]
+[ext_resource type="Texture2D" uid="uid://cenph8gpfxtyh" path="res://art/4_Color_Game/Buttons/Removed_BG/Start Game.png" id="4_6aatj"]
+[ext_resource type="Texture2D" uid="uid://bsyiihos33p14" path="res://art/4_Color_Game/Buttons/Removed_BG/Multiplayer.png" id="5_78ona"]
+[ext_resource type="Texture2D" uid="uid://dk6sl1q3olfja" path="res://art/4_Color_Game/Buttons/Removed_BG/Store.png" id="6_dnbwb"]
+[ext_resource type="Texture2D" uid="uid://bwvo103v3e310" path="res://art/4_Color_Game/GameRules.png" id="7_eu6x0"]
+[ext_resource type="Texture2D" uid="uid://dhdaqam1q0plq" path="res://art/4_Color_Game/Buttons/Removed_BG/Quit Game.png" id="7_wghpr"]
+[ext_resource type="Texture2D" uid="uid://dccs0227mtuch" path="res://art/4_Color_Game/Animation/RemoveBG/A5.png" id="8_74eii"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hpxs7"]
+texture = ExtResource("2_cv4nh")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vi6vx"]
+bg_color = Color(0.212, 0.239, 0.29, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_56f71"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_okf7p"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6nnjd"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchor_right = 1.058
+anchor_bottom = 1.037
+offset_right = -62.6401
+offset_bottom = -26.64
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ppnmh")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_hpxs7")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+offset_right = 1630.0
+offset_bottom = 1010.0
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 80
+theme_override_constants/margin_right = 80
+theme_override_constants/margin_bottom = 30
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(900, 700)
+layout_mode = 2
+tooltip_text = "Four Color Game"
+texture = ExtResource("7_eu6x0")
+expand_mode = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 8
+alignment = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="MarginContainer/HBoxContainer2/VBoxContainer2"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer2/VBoxContainer2/CenterContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="StartButton" type="Button" parent="MarginContainer/HBoxContainer2/VBoxContainer2/CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+size_flags_stretch_ratio = 0.5
+theme_override_styles/normal = SubResource("StyleBoxFlat_vi6vx")
+icon = ExtResource("4_6aatj")
+
+[node name="MultiButton" type="Button" parent="MarginContainer/HBoxContainer2/VBoxContainer2/CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+size_flags_stretch_ratio = 0.5
+theme_override_styles/normal = SubResource("StyleBoxFlat_56f71")
+icon = ExtResource("5_78ona")
+
+[node name="StoreButton" type="Button" parent="MarginContainer/HBoxContainer2/VBoxContainer2/CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+size_flags_stretch_ratio = 0.5
+theme_override_styles/normal = SubResource("StyleBoxFlat_okf7p")
+icon = ExtResource("6_dnbwb")
+
+[node name="QuitButton" type="Button" parent="MarginContainer/HBoxContainer2/VBoxContainer2/CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+size_flags_stretch_ratio = 0.5
+theme_override_styles/normal = SubResource("StyleBoxFlat_6nnjd")
+icon = ExtResource("7_wghpr")
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(0, 350)
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -350.0
+offset_right = 454.0
+grow_vertical = 0
+texture = ExtResource("8_74eii")
+
+[connection signal="pressed" from="MarginContainer/HBoxContainer2/VBoxContainer2/CenterContainer/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer2/VBoxContainer2/CenterContainer/VBoxContainer/MultiButton" to="." method="_on_multi_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer2/VBoxContainer2/CenterContainer/VBoxContainer/StoreButton" to="." method="_on_store_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer2/VBoxContainer2/CenterContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
