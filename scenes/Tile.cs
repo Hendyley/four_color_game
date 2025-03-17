@@ -94,7 +94,6 @@ public partial class Tile : Control
 		// Check if it's a mouse event or a touch event
 		if (inputEvent is InputEventMouseButton mouseEvent)
 		{
-			// Detect press
 			if (mouseEvent.Pressed)
 			{
 				_startPosition = mouseEvent.Position;

@@ -15,6 +15,9 @@ public partial class Gameplay : Node
 
 	private Dictionary<int, HBoxContainer> playersContainers = new Dictionary<int, HBoxContainer>();
 
+	private Dictionary<int, string> playersnames = new Dictionary<int, string>();
+
+
 	public Container tabletiles;
 	private Label deckcounterLabel;
 	private Button pickButton;
@@ -27,11 +30,12 @@ public partial class Gameplay : Node
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		// Load UI elements
-		// playerHandContainer = (HBoxContainer) FindChild("HBOX_P1");
-		// player2HandContainer = (HBoxContainer) FindChild("HBOX_P2");
 
-		numberOfplayers = 2;
+		numberOfplayers = (int)GetMeta("numberofplayers",2);
+		GD.Print("NOP "+numberOfplayers.ToString());
+
+		tileScene = (PackedScene)ResourceLoader.Load("res://scenes/Tile.tscn");
+
 		for (int i = 1; i <= numberOfplayers; i++)
 		{
 			string containerName = $"HBOX_P{i}";
@@ -51,18 +55,27 @@ public partial class Gameplay : Node
 
 		tabletiles = (Container) FindChild("TableTiles");
 		deckcounterLabel = (Label) FindChild("DeckCounter");
-		pickButton = (Button) FindChild("pickupbutton");
-		castleButton = (Button) FindChild("castlebutton");
-		backButton = (Button) FindChild("backbutton");
+		pickButton = (Button) GetNode("pickupbutton");
+		castleButton = (Button) GetNode("castlebutton");
+		backButton = (Button) GetNode("backbutton");
 		
 		StartGame();
+
+		for (int i=1; i<=numberOfplayers; i++){
+			for(int j=1; j <= 15; j++){
+				DrawTile(i);
+			}
+		}
 		
-		
+		int first = new Random().Next(1, numberOfplayers);
+		DrawTile(first);
+
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
+		deckcounterLabel.Text = deck.Count.ToString();
 	}
 
 	private void StartGame()

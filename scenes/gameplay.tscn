@@ -1,11 +1,11 @@
-[gd_scene load_steps=18 format=3 uid="uid://cm1bc46c0qr4l"]
+[gd_scene load_steps=20 format=3 uid="uid://cm1bc46c0qr4l"]
 
 [ext_resource type="Texture2D" uid="uid://bojt53ffw6lwv" path="res://art/4_Color_Game/green_BG.png" id="1_n5011"]
 [ext_resource type="Script" path="res://scenes/Gameplay.cs" id="1_s8yka"]
 [ext_resource type="Texture2D" uid="uid://du3akvbf2wq3n" path="res://art/4_Color_Game/Buttons/Removed_BG/Pick_Up.png" id="2_0u1nr"]
 [ext_resource type="PackedScene" uid="uid://cwa251fvo0n6p" path="res://scenes/Tile.tscn" id="2_gevuu"]
 [ext_resource type="Texture2D" uid="uid://3s82nmpcrqub" path="res://art/4_Color_Game/Buttons/Removed_BG/Castle.png" id="3_3csrh"]
-[ext_resource type="Texture2D" uid="uid://cdeu8eyuqcjfp" path="res://art/4_Color_Game/DeckDispenser.png" id="4_n2xni"]
+[ext_resource type="Script" path="res://scenes/TableTiles.cs" id="4_gw1eg"]
 [ext_resource type="Texture2D" uid="uid://bek515n3g5nm3" path="res://art/4_Color_Game/Buttons/Removed_BG/BackButton.png" id="5_dmi23"]
 [ext_resource type="Script" path="res://scenes/ScrollCont.cs" id="8_5oogl"]
 
@@ -40,6 +40,22 @@ HScrollBar/styles/scroll_focus = SubResource("StyleBoxEmpty_rpj16")
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_flr2c"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
+[sub_resource type="FontFile" id="FontFile_cloha"]
+cache/0/30/0/ascent = 0.0
+cache/0/30/0/descent = 0.0
+cache/0/30/0/underline_position = 0.0
+cache/0/30/0/underline_thickness = 0.0
+cache/0/30/0/scale = 1.0
+cache/0/16/0/ascent = 0.0
+cache/0/16/0/descent = 0.0
+cache/0/16/0/underline_position = 0.0
+cache/0/16/0/underline_thickness = 0.0
+cache/0/16/0/scale = 1.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_bsdb8"]
+font = SubResource("FontFile_cloha")
+font_size = 30
+
 [node name="Gameplay" type="Node"]
 script = ExtResource("1_s8yka")
 tileScene = ExtResource("2_gevuu")
@@ -68,34 +84,13 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -489.0
-offset_top = -253.0
-offset_right = 524.0
-offset_bottom = 243.0
+offset_left = -299.0
+offset_top = -192.0
+offset_right = 288.0
+offset_bottom = 166.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="Deck" type="TextureRect" parent="Control"]
-layout_mode = 0
-offset_left = 675.0
-offset_top = 307.0
-offset_right = 911.0
-offset_bottom = 568.0
-texture = ExtResource("4_n2xni")
-
-[node name="DeckDisplay" type="TextureRect" parent="Control/Deck"]
-layout_mode = 0
-offset_left = 13.0
-offset_top = -9.0
-offset_right = 232.0
-offset_bottom = 99.0
-
-[node name="DeckCounter" type="Label" parent="Control/Deck"]
-layout_mode = 0
-offset_left = 36.0
-offset_top = 6.0
-offset_right = 210.0
-offset_bottom = 89.0
+script = ExtResource("4_gw1eg")
 
 [node name="Scroll_P1" type="ScrollContainer" parent="Control"]
 layout_mode = 0
@@ -203,6 +198,39 @@ offset_right = 508.0
 offset_bottom = 508.0
 scale = Vector2(0.2, 0.2)
 icon = ExtResource("5_dmi23")
+
+[node name="Deck" type="Panel" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -40.0
+offset_right = 50.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/Deck"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DeckLabel" type="Label" parent="Control/Deck/VBoxContainer"]
+layout_mode = 2
+text = "Deck Cards"
+horizontal_alignment = 1
+
+[node name="DeckCounter" type="Label" parent="Control/Deck/VBoxContainer"]
+layout_mode = 2
+text = "00"
+label_settings = SubResource("LabelSettings_bsdb8")
+horizontal_alignment = 1
 
 [connection signal="gui_input" from="Control" to="." method="_on_control_gui_input"]
 [connection signal="pressed" from="Control/pickupbutton" to="." method="_on_pickupbutton_pressed"]

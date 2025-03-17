@@ -3,7 +3,10 @@ using System;
 
 public partial class MainMenu : Control
 {
-	// Called when the node enters the scene tree for the first time.
+	
+	[Export] public PackedScene startpopScene;
+
+
 	public override void _Ready()
 	{
 		Button startButton = (Button) FindChild("StartButton");
@@ -12,7 +15,8 @@ public partial class MainMenu : Control
 		Button storeButton = (Button) FindChild("StoreButton");
 		Button quitButton = (Button) FindChild("StoreButton");
 
-		
+		startpopScene = (PackedScene)ResourceLoader.Load("res://scenes/Menu.tscn");
+
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -23,7 +27,9 @@ public partial class MainMenu : Control
 	private void _on_start_button_pressed()
 	{
 		GD.Print("Start button pressed"); // Use GD.Print for Godot console
-		GetTree().ChangeSceneToFile("res://scenes/gameplay.tscn");
+		// GetTree().ChangeSceneToFile("res://scenes/gameplay.tscn");
+		Menu startmenu = (Menu)startpopScene.Instantiate();
+		AddChild(startmenu);
 	}
 
 	private void _on_multi_button_pressed()
@@ -40,7 +46,6 @@ public partial class MainMenu : Control
 	private void _on_quit_button_pressed()
 	{
 		GD.Print("Quit button pressed");
-		//GD.get_tree().quit();
 		GetTree().Quit(); 
 	}
 }

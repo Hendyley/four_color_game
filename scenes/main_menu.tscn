@@ -1,7 +1,8 @@
-[gd_scene load_steps=14 format=3 uid="uid://blewkvksqkipr"]
+[gd_scene load_steps=15 format=3 uid="uid://blewkvksqkipr"]
 
 [ext_resource type="Script" path="res://scenes/MainMenu.cs" id="1_ppnmh"]
 [ext_resource type="Texture2D" uid="uid://bojt53ffw6lwv" path="res://art/4_Color_Game/green_BG.png" id="2_cv4nh"]
+[ext_resource type="PackedScene" uid="uid://1uc4okqjc05u" path="res://scenes/Menu.tscn" id="2_uyw1c"]
 [ext_resource type="Texture2D" uid="uid://cenph8gpfxtyh" path="res://art/4_Color_Game/Buttons/Removed_BG/Start Game.png" id="4_6aatj"]
 [ext_resource type="Texture2D" uid="uid://bsyiihos33p14" path="res://art/4_Color_Game/Buttons/Removed_BG/Multiplayer.png" id="5_78ona"]
 [ext_resource type="Texture2D" uid="uid://dk6sl1q3olfja" path="res://art/4_Color_Game/Buttons/Removed_BG/Store.png" id="6_dnbwb"]
@@ -33,6 +34,7 @@ offset_bottom = -26.64
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ppnmh")
+startpopScene = ExtResource("2_uyw1c")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1

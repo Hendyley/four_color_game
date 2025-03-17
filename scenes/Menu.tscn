@@ -1,0 +1,117 @@
+[gd_scene load_steps=5 format=3 uid="uid://1uc4okqjc05u"]
+
+[ext_resource type="Script" path="res://scenes/Menu.cs" id="1_kw055"]
+[ext_resource type="Shader" path="res://scenes/PoupMenu.gdshader" id="1_ob0jq"]
+[ext_resource type="PackedScene" uid="uid://cm1bc46c0qr4l" path="res://scenes/gameplay.tscn" id="2_k1h6l"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pr7u7"]
+shader = ExtResource("1_ob0jq")
+shader_parameter/lod = 0.0
+
+[node name="Menu" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_kw055")
+gameplayScene = ExtResource("2_k1h6l")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_pr7u7")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -286.5
+offset_top = -147.0
+offset_right = 286.5
+offset_bottom = 147.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="Box1" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="B1LineEdit" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/Box1"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+text = "2"
+placeholder_text = "Number of user"
+
+[node name="B1MenuBar" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Box1"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="B1button" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Box1"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Set Player"
+
+[node name="Box2" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="B2LineEdit" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/Box2"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+placeholder_text = "Timing"
+
+[node name="B2MenuBar" type="MenuBar" parent="PanelContainer/MarginContainer/VBoxContainer/Box2"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="B2Button" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Box2"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Set Time"
+
+[node name="Box3" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="B3LineEdit" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/Box3"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+placeholder_text = "Mode"
+
+[node name="B3MenuBar" type="MenuBar" parent="PanelContainer/MarginContainer/VBoxContainer/Box3"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="B3Button" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Box3"]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Set Mode"
+
+[node name="ConfirmButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+text = "Confirm
+"
+
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/Box1/B1button" to="." method="_on_b_1_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/Box2/B2Button" to="." method="_on_b_2_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/Box3/B3Button" to="." method="_on_b_3_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/ConfirmButton" to="." method="_on_confirm_button_pressed"]
