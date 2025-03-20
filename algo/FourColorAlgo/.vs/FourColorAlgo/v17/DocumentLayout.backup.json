@@ -1,10 +1,10 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "E:\\Project\\Git\\Games\\four_color_game\\",
+  "WorkspaceRootPath": "E:\\Project\\Git\\Games\\four_color_game\\algo\\FourColorAlgo\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\Project\\Git\\Games\\four_color_game\\algo\\FourColorAlgo\\FourColorAlgo\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:algo\\FourColorAlgo\\FourColorAlgo\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B2FC7A88-8E52-4BFB-9B44-1823FA4A5F47}|FourColorAlgo\\FourColorAlgo.csproj|e:\\project\\git\\games\\four_color_game\\algo\\fourcoloralgo\\fourcoloralgo\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B2FC7A88-8E52-4BFB-9B44-1823FA4A5F47}|FourColorAlgo\\FourColorAlgo.csproj|solutionrelative:fourcoloralgo\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -21,12 +21,12 @@
               "DocumentIndex": 0,
               "Title": "Program.cs",
               "DocumentMoniker": "E:\\Project\\Git\\Games\\four_color_game\\algo\\FourColorAlgo\\FourColorAlgo\\Program.cs",
-              "RelativeDocumentMoniker": "algo\\FourColorAlgo\\FourColorAlgo\\Program.cs",
+              "RelativeDocumentMoniker": "FourColorAlgo\\Program.cs",
               "ToolTip": "E:\\Project\\Git\\Games\\four_color_game\\algo\\FourColorAlgo\\FourColorAlgo\\Program.cs",
-              "RelativeToolTip": "algo\\FourColorAlgo\\FourColorAlgo\\Program.cs",
-              "ViewState": "AgIAAEAAAAAAAAAAAAAmwFQAAAAKAAAAAAAAAA==",
+              "RelativeToolTip": "FourColorAlgo\\Program.cs",
+              "ViewState": "AgIAAEUAAAAAAAAAAAAYwEwAAABDAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-17T10:03:57.377Z",
+              "WhenOpened": "2025-03-17T10:02:55.709Z",
               "EditorCaption": ""
             }
           ]
