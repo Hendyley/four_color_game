@@ -19,6 +19,7 @@ public partial class Gameplay : Node
 	private Dictionary<int, string> playersnames = new Dictionary<int, string>();
 
 
+	public bool castlestatus;
 	public Container tabletiles;
 	private Label deckcounterLabel;
 	private Button pickButton;
@@ -26,6 +27,11 @@ public partial class Gameplay : Node
 	private Button backButton;
 
 	// public PackedScene tile = (PackedScene)GD.Load("res://scenes/Tile.tscn");
+	public int current_turn;
+	private TextureRect currentturn;
+	private Tile lastTableTile;
+
+
 
 
 	// Called when the node enters the scene tree for the first time.
@@ -36,6 +42,12 @@ public partial class Gameplay : Node
 		GD.Print("NOP "+numberOfplayers.ToString());
 
 		tileScene = (PackedScene)ResourceLoader.Load("res://scenes/Tile.tscn");
+
+		current_turn = 1;
+		currentturn = (TextureRect) FindChild($"Turn{current_turn}");
+		currentturn.Show();
+
+		castlestatus = false;
 
 		for (int i = 1; i <= numberOfplayers; i++)
 		{
@@ -66,9 +78,10 @@ public partial class Gameplay : Node
 			for(int j=1; j <= 15; j++){
 				DrawTile(i);
 			}
+			SortTiles(i);
 		}
-		
-		int first = new Random().Next(1, numberOfplayers);
+
+		int first = new Random().Next(current_turn, numberOfplayers);
 		DrawTile(first);
 
 	}
@@ -92,7 +105,6 @@ public partial class Gameplay : Node
 			foreach (Node child in playersContainers[i].GetChildren())
 				child.QueueFree();
 		}
-
 
 	}
 
@@ -131,12 +143,6 @@ public partial class Gameplay : Node
 		}
 	}
 
-	private void CheckDeck()
-	{
-		GD.Print("Amount in the Deck: "+ deck.Count);
-
-	}
-
 	private void DrawTile(int playerid)
 	{
 		// PackedScene packedScene = GD.Load<PackedScene>("res://scenes/Tile.tscn");
@@ -156,10 +162,20 @@ public partial class Gameplay : Node
 			
 			Tile newTile = (Tile)tileScene.Instantiate();
 			playersContainers[playerid].AddChild(newTile);
+			newTile.Tileid = tilevalue;
 
 			// Call SetCard deferred to ensure TileImage is initialized first
 			newTile.CallDeferred("SetTile", playerid ,tilevalue);
 			newTile.Connect("TileClicked", new Callable(this,"OnTileClicked"));
+
+			if(castlestatus == true){
+				GD.Print($"Castle detected!!!!    Drawn value is {tilevalue}");
+				for(int i=1;i<=numberOfplayers;i++){
+					GD.Print($"Player {i} win is {WinCondition(i,tilevalue)}");;
+				}
+			}
+
+			SortTiles(current_turn);
 			
 		}
 		else
@@ -172,26 +188,26 @@ public partial class Gameplay : Node
 	{
 		playersHands[playerid].Add(tilevalue);
 		Tile newTile = (Tile)tileScene.Instantiate();
+		newTile.Tileid = tilevalue;
 		playersContainers[playerid].AddChild(newTile);
 		
-		GD.Print($"Player {playerid} Drawn Card Value: " + tilevalue);
+		GD.Print($"Player {playerid} take tile: " + tilevalue);
 		newTile.CallDeferred("SetTile", playerid ,tilevalue);
 		newTile.Connect("TileClicked", new Callable(this,"OnTileClicked"));
+		lastTableTile = null;
+		SortTiles(current_turn);
 
 	}
 
 
 	public void DiscardTile(int playerid, string tilevalue){
+
 		
 		foreach (Node child in playersContainers[playerid].GetChildren())
 		{
-			// GD.Print("Checking child: " + child.Name);
-
-			// Check if the child is a Tile node
 			if (child is Tile tile)
 			{
-				// GD.Print("Tile ID: " + tile.Tileid);  // Debugging output
-
+		
 				if (tile.Tileid == tilevalue)  
 				{
 					playersContainers[playerid].RemoveChild(tile);
@@ -199,7 +215,7 @@ public partial class Gameplay : Node
 					playersHands[playerid].Remove(tilevalue);
 					// GD.Print("Removed card: " + tileValue);
 					AddtoTables(tilevalue);
-					return;
+					break;
 				}
 			}
 			else
@@ -207,14 +223,25 @@ public partial class Gameplay : Node
 				GD.Print("Warning: Child is not a Tile node!");
 			}
 		}
+		
+		return;
 	}
 
-	private void AddtoTables(string tilevalue){
+	private void AddtoTables(string tilevalue)
+	{
 		GD.Print($"Add {tilevalue} to the table ");
+
+		if (lastTableTile != null)
+		{
+			lastTableTile.Disconnect("TableTileClicked", new Callable(this, "OnTableTileClicked"));
+		}
+
 		Tile newTile = (Tile)tileScene.Instantiate();
 		tabletiles.AddChild(newTile);
 		newTile.CallDeferred("SetTableTile", tilevalue);
 		newTile.Connect("TableTileClicked", new Callable(this,"OnTableTileClicked"));
+		lastTableTile = newTile;
+
 
 		Random rand = new Random();
 
@@ -235,12 +262,20 @@ public partial class Gameplay : Node
 		float randomRotation = (float)(rand.NextDouble() * 360); // Rotation in degrees
 		newTile.RotationDegrees = randomRotation;
 
+
 	}
 
 	private void OnTileClicked(Tile clickedTile)
 	{
+		if(clickedTile.Tileid.Contains("C5"))
+		{
+			GD.Print("Cannot discard King tile !!!");
+			return;
+		}
 		GD.Print($"Player {clickedTile.Playerid} Discarding Tile: " + clickedTile.Tileid);
 		DiscardTile(clickedTile.Playerid, clickedTile.Tileid);
+		AddTurn(); ////////////////////////////////////////////////////////////////////////////// Turn Change here
+		GD.Print($"Player {current_turn} win is {WinCondition(current_turn,clickedTile.Tileid)}");
 	}
 
 	private void OnTableTileClicked(Tile clickedTile)
@@ -266,7 +301,7 @@ public partial class Gameplay : Node
 			}
 		}
 		GD.Print($"Player {clickedTile.Playerid} Taking Tile: " + clickedTile.Tileid);
-		TakeTile(1, clickedTile.Tileid);
+		TakeTile(current_turn, clickedTile.Tileid);
 	}
 
 
@@ -277,13 +312,14 @@ public partial class Gameplay : Node
 	private void _on_pickupbutton_pressed()
 	{
 		GD.Print("pickup button pressed");
-		DrawTile(1);
+		DrawTile(current_turn);
 	}
 
 	private void _on_castlebutton_pressed()
 	{
 		GD.Print("castle button pressed");
-		DrawTile(2);
+		castlestatus = !castlestatus;
+		DrawTile(current_turn);
 	}
 
 	private void _on_back_button_pressed()
@@ -303,8 +339,12 @@ public partial class Gameplay : Node
 	}
 
 	////////////////// Game Winning Conditions
-	public string WinCondition(int x)
+	public string WinCondition(int x, string thistile="")
 	{
+		if(thistile!=""){
+			playersHands[x].Add(thistile);
+		}
+
 		List<string> focustile = new List<string>(playersHands[x]);
 		List<List<string>> H = GetHonourSets(focustile);
 		List<List<string>> CH = GetCombinations(H);
@@ -317,13 +357,13 @@ public partial class Gameplay : Node
 		foreach (var h in CH)
 		{
 			focustile = new List<string>(playersHands[x]);
-			Console.WriteLine("Combi : " + String.Join(",", h));
+			Console.WriteLine("Combination : " + String.Join(",", h));
 			foreach (var item in h)
 			{
 				focustile.Remove(item);
 			}
 			
-			Console.WriteLine("REMAINER : "+String.Join(",",focustile));
+			Console.WriteLine("Remainers : "+String.Join(",",focustile));
 			
 			if (CheckColorSets(focustile)) { return "WIN"; }
 		}
@@ -479,8 +519,45 @@ public partial class Gameplay : Node
 
 		return result;
 	}
-///////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////
 
+	public void AddTurn(){
+
+		currentturn = (TextureRect) FindChild($"Turn{current_turn}");
+		currentturn.Hide();
+		if(current_turn < numberOfplayers){
+			current_turn++;
+		} else {
+			current_turn = 1;
+		}
+		currentturn = (TextureRect) FindChild($"Turn{current_turn}");
+		currentturn.Show();
+	}
+
+	private void SortTiles(int playerid)
+	{
+		var container = playersContainers[playerid];
+
+		// Get and sort all Tile nodes inside the container by their Tileid
+		var tiles = container.GetChildren().OfType<Tile>()
+							.OrderBy(tile => tile.Tileid)
+							.ToList();
+
+		// Print the sorted Tileids to debug
+		// GD.Print("Sorted Tile IDs:");
+		// foreach (var tile in tiles)
+		// {
+		// 	GD.Print(tile.Tileid);
+		// }
+
+		// Move each sorted tile to its correct position
+		for (int i = 0; i < tiles.Count; i++)
+		{
+			container.MoveChild(tiles[i], i);
+		}
+
+		container.QueueSort(); // Ensure UI update
+	}
 	
 
 }

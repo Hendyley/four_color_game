@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://cm1bc46c0qr4l"]
+[gd_scene load_steps=21 format=3 uid="uid://cm1bc46c0qr4l"]
 
 [ext_resource type="Texture2D" uid="uid://bojt53ffw6lwv" path="res://art/4_Color_Game/green_BG.png" id="1_n5011"]
 [ext_resource type="Script" path="res://scenes/Gameplay.cs" id="1_s8yka"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://scenes/TableTiles.cs" id="4_gw1eg"]
 [ext_resource type="Texture2D" uid="uid://bek515n3g5nm3" path="res://art/4_Color_Game/Buttons/Removed_BG/BackButton.png" id="5_dmi23"]
 [ext_resource type="Script" path="res://scenes/ScrollCont.cs" id="8_5oogl"]
+[ext_resource type="Texture2D" uid="uid://b2e7oi06vfkti" path="res://art/4_Color_Game/GoldenArrow500x500.png" id="9_jbx5t"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_a8r7m"]
 texture = ExtResource("1_n5011")
@@ -95,6 +96,77 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("4_gw1eg")
 
+[node name="Turn1" type="TextureRect" parent="Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -46.0
+offset_top = 58.0
+offset_right = 454.0
+offset_bottom = 558.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("9_jbx5t")
+
+[node name="Turn2" type="TextureRect" parent="Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 49.0
+offset_top = -60.9999
+offset_right = 549.0
+offset_bottom = 439.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 3.14159
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("9_jbx5t")
+
+[node name="Turn3" type="TextureRect" parent="Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -90.0
+offset_top = -54.9999
+offset_right = 410.0
+offset_bottom = 445.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 1.5708
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("9_jbx5t")
+
+[node name="Turn4" type="TextureRect" parent="Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 89.0
+offset_top = 41.0
+offset_right = 589.0
+offset_bottom = 541.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -1.5708
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("9_jbx5t")
+
 [node name="Scroll_P1" type="ScrollContainer" parent="Control"]
 layout_mode = 0
 offset_left = 258.0
@@ -102,7 +174,6 @@ offset_top = 813.0
 offset_right = 1322.0
 offset_bottom = 999.0
 theme = SubResource("Theme_kv1b3")
-vertical_scroll_mode = 0
 script = ExtResource("8_5oogl")
 
 [node name="HBOX_P1" type="HBoxContainer" parent="Control/Scroll_P1"]
@@ -118,7 +189,6 @@ offset_top = 8.0
 offset_right = 1302.0
 offset_bottom = 201.0
 theme = SubResource("Theme_kv1b3")
-vertical_scroll_mode = 0
 script = ExtResource("8_5oogl")
 
 [node name="HBOX_P2" type="HBoxContainer" parent="Control/Scroll_P2"]
@@ -135,7 +205,6 @@ offset_right = 796.0
 offset_bottom = 422.0
 rotation = 1.57079
 theme = SubResource("Theme_kv1b3")
-vertical_scroll_mode = 0
 script = ExtResource("8_5oogl")
 
 [node name="HBOX_P3" type="HBoxContainer" parent="Control/Scroll_P3"]
@@ -152,7 +221,6 @@ offset_right = 2000.0
 offset_bottom = 976.0
 rotation = 4.71239
 theme = SubResource("Theme_kv1b3")
-vertical_scroll_mode = 0
 script = ExtResource("8_5oogl")
 
 [node name="HBOX_P4" type="HBoxContainer" parent="Control/Scroll_P4"]
