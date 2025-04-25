@@ -1,64 +1,129 @@
-[gd_scene load_steps=21 format=3 uid="uid://cm1bc46c0qr4l"]
+[gd_scene load_steps=23 format=3 uid="uid://cm1bc46c0qr4l"]
 
 [ext_resource type="Texture2D" uid="uid://bojt53ffw6lwv" path="res://art/4_Color_Game/green_BG.png" id="1_n5011"]
-[ext_resource type="Script" path="res://scenes/Gameplay.cs" id="1_s8yka"]
+[ext_resource type="Script" path="res://scripts/Gameplay.cs" id="1_s8yka"]
 [ext_resource type="Texture2D" uid="uid://du3akvbf2wq3n" path="res://art/4_Color_Game/Buttons/Removed_BG/Pick_Up.png" id="2_0u1nr"]
 [ext_resource type="PackedScene" uid="uid://cwa251fvo0n6p" path="res://scenes/Tile.tscn" id="2_gevuu"]
 [ext_resource type="Texture2D" uid="uid://3s82nmpcrqub" path="res://art/4_Color_Game/Buttons/Removed_BG/Castle.png" id="3_3csrh"]
-[ext_resource type="Script" path="res://scenes/TableTiles.cs" id="4_gw1eg"]
+[ext_resource type="Script" path="res://scripts/TableTiles.cs" id="4_gw1eg"]
 [ext_resource type="Texture2D" uid="uid://bek515n3g5nm3" path="res://art/4_Color_Game/Buttons/Removed_BG/BackButton.png" id="5_dmi23"]
-[ext_resource type="Script" path="res://scenes/ScrollCont.cs" id="8_5oogl"]
+[ext_resource type="Script" path="res://scripts/ScrollCont.cs" id="8_5oogl"]
 [ext_resource type="Texture2D" uid="uid://b2e7oi06vfkti" path="res://art/4_Color_Game/GoldenArrow500x500.png" id="9_jbx5t"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_a8r7m"]
 texture = ExtResource("1_n5011")
 
-[sub_resource type="ImageTexture" id="ImageTexture_f6g13"]
+[sub_resource type="ImageTexture" id="ImageTexture_t5eo6"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_682ta"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dusa1"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ro4uo"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d3ak4"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3h4ss"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tddjc"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tcn25"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_plaov"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rpj16"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4fllh"]
 
 [sub_resource type="Theme" id="Theme_kv1b3"]
-HScrollBar/icons/decrement = SubResource("ImageTexture_f6g13")
-HScrollBar/icons/decrement_highlight = SubResource("ImageTexture_f6g13")
-HScrollBar/icons/decrement_pressed = SubResource("ImageTexture_f6g13")
-HScrollBar/icons/increment = SubResource("ImageTexture_f6g13")
-HScrollBar/icons/increment_highlight = SubResource("ImageTexture_f6g13")
-HScrollBar/icons/increment_pressed = SubResource("ImageTexture_f6g13")
-HScrollBar/styles/grabber = SubResource("StyleBoxEmpty_682ta")
-HScrollBar/styles/grabber_highlight = SubResource("StyleBoxEmpty_ro4uo")
-HScrollBar/styles/grabber_pressed = SubResource("StyleBoxEmpty_3h4ss")
-HScrollBar/styles/scroll = SubResource("StyleBoxEmpty_tcn25")
-HScrollBar/styles/scroll_focus = SubResource("StyleBoxEmpty_rpj16")
+HScrollBar/icons/decrement = SubResource("ImageTexture_t5eo6")
+HScrollBar/icons/decrement_highlight = SubResource("ImageTexture_t5eo6")
+HScrollBar/icons/decrement_pressed = SubResource("ImageTexture_t5eo6")
+HScrollBar/icons/increment = SubResource("ImageTexture_t5eo6")
+HScrollBar/icons/increment_highlight = SubResource("ImageTexture_t5eo6")
+HScrollBar/icons/increment_pressed = SubResource("ImageTexture_t5eo6")
+HScrollBar/styles/grabber = SubResource("StyleBoxEmpty_dusa1")
+HScrollBar/styles/grabber_highlight = SubResource("StyleBoxEmpty_d3ak4")
+HScrollBar/styles/grabber_pressed = SubResource("StyleBoxEmpty_tddjc")
+HScrollBar/styles/scroll = SubResource("StyleBoxEmpty_plaov")
+HScrollBar/styles/scroll_focus = SubResource("StyleBoxEmpty_4fllh")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nnafu"]
+bg_color = Color(0.172833, 0.172833, 0.172833, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_flr2c"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
-[sub_resource type="FontFile" id="FontFile_cloha"]
+[sub_resource type="FontFile" id="FontFile_4di04"]
 subpixel_positioning = 0
 msdf_pixel_range = 14
 msdf_size = 128
-cache/0/30/0/ascent = 0.0
-cache/0/30/0/descent = 0.0
-cache/0/30/0/underline_position = 0.0
-cache/0/30/0/underline_thickness = 0.0
-cache/0/30/0/scale = 1.0
 cache/0/16/0/ascent = 0.0
 cache/0/16/0/descent = 0.0
 cache/0/16/0/underline_position = 0.0
 cache/0/16/0/underline_thickness = 0.0
 cache/0/16/0/scale = 1.0
+cache/0/30/0/ascent = 0.0
+cache/0/30/0/descent = 0.0
+cache/0/30/0/underline_position = 0.0
+cache/0/30/0/underline_thickness = 0.0
+cache/0/30/0/scale = 1.0
+cache/0/29/0/ascent = 0.0
+cache/0/29/0/descent = 0.0
+cache/0/29/0/underline_position = 0.0
+cache/0/29/0/underline_thickness = 0.0
+cache/0/29/0/scale = 1.0
+cache/0/28/0/ascent = 0.0
+cache/0/28/0/descent = 0.0
+cache/0/28/0/underline_position = 0.0
+cache/0/28/0/underline_thickness = 0.0
+cache/0/28/0/scale = 1.0
+cache/0/27/0/ascent = 0.0
+cache/0/27/0/descent = 0.0
+cache/0/27/0/underline_position = 0.0
+cache/0/27/0/underline_thickness = 0.0
+cache/0/27/0/scale = 1.0
+cache/0/26/0/ascent = 0.0
+cache/0/26/0/descent = 0.0
+cache/0/26/0/underline_position = 0.0
+cache/0/26/0/underline_thickness = 0.0
+cache/0/26/0/scale = 1.0
+cache/0/25/0/ascent = 0.0
+cache/0/25/0/descent = 0.0
+cache/0/25/0/underline_position = 0.0
+cache/0/25/0/underline_thickness = 0.0
+cache/0/25/0/scale = 1.0
+cache/0/24/0/ascent = 0.0
+cache/0/24/0/descent = 0.0
+cache/0/24/0/underline_position = 0.0
+cache/0/24/0/underline_thickness = 0.0
+cache/0/24/0/scale = 1.0
+cache/0/23/0/ascent = 0.0
+cache/0/23/0/descent = 0.0
+cache/0/23/0/underline_position = 0.0
+cache/0/23/0/underline_thickness = 0.0
+cache/0/23/0/scale = 1.0
+cache/0/22/0/ascent = 0.0
+cache/0/22/0/descent = 0.0
+cache/0/22/0/underline_position = 0.0
+cache/0/22/0/underline_thickness = 0.0
+cache/0/22/0/scale = 1.0
+cache/0/21/0/ascent = 0.0
+cache/0/21/0/descent = 0.0
+cache/0/21/0/underline_position = 0.0
+cache/0/21/0/underline_thickness = 0.0
+cache/0/21/0/scale = 1.0
+cache/0/20/0/ascent = 0.0
+cache/0/20/0/descent = 0.0
+cache/0/20/0/underline_position = 0.0
+cache/0/20/0/underline_thickness = 0.0
+cache/0/20/0/scale = 1.0
+cache/0/19/0/ascent = 0.0
+cache/0/19/0/descent = 0.0
+cache/0/19/0/underline_position = 0.0
+cache/0/19/0/underline_thickness = 0.0
+cache/0/19/0/scale = 1.0
+cache/0/18/0/ascent = 0.0
+cache/0/18/0/descent = 0.0
+cache/0/18/0/underline_position = 0.0
+cache/0/18/0/underline_thickness = 0.0
+cache/0/18/0/scale = 1.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_bsdb8"]
-font = SubResource("FontFile_cloha")
-font_size = 30
+font = SubResource("FontFile_4di04")
+font_size = 18
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fl5nc"]
 
 [node name="Gameplay" type="Node"]
 script = ExtResource("1_s8yka")
@@ -170,10 +235,12 @@ texture = ExtResource("9_jbx5t")
 [node name="Scroll_P1" type="ScrollContainer" parent="Control"]
 layout_mode = 0
 offset_left = 258.0
-offset_top = 813.0
+offset_top = 794.0
 offset_right = 1322.0
 offset_bottom = 999.0
 theme = SubResource("Theme_kv1b3")
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 0
 script = ExtResource("8_5oogl")
 
 [node name="HBOX_P1" type="HBoxContainer" parent="Control/Scroll_P1"]
@@ -189,6 +256,8 @@ offset_top = 8.0
 offset_right = 1302.0
 offset_bottom = 201.0
 theme = SubResource("Theme_kv1b3")
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 0
 script = ExtResource("8_5oogl")
 
 [node name="HBOX_P2" type="HBoxContainer" parent="Control/Scroll_P2"]
@@ -200,11 +269,13 @@ alignment = 1
 [node name="Scroll_P3" type="ScrollContainer" parent="Control"]
 layout_mode = 0
 offset_left = 221.0
-offset_top = 202.0
-offset_right = 796.0
-offset_bottom = 422.0
+offset_top = 128.0
+offset_right = 949.0
+offset_bottom = 348.0
 rotation = 1.57079
 theme = SubResource("Theme_kv1b3")
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 0
 script = ExtResource("8_5oogl")
 
 [node name="HBOX_P3" type="HBoxContainer" parent="Control/Scroll_P3"]
@@ -216,11 +287,13 @@ alignment = 1
 [node name="Scroll_P4" type="ScrollContainer" parent="Control"]
 layout_mode = 0
 offset_left = 1412.0
-offset_top = 784.0
-offset_right = 2000.0
-offset_bottom = 976.0
+offset_top = 900.0
+offset_right = 2200.0
+offset_bottom = 1092.0
 rotation = 4.71239
 theme = SubResource("Theme_kv1b3")
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 0
 script = ExtResource("8_5oogl")
 
 [node name="HBOX_P4" type="HBoxContainer" parent="Control/Scroll_P4"]
@@ -243,6 +316,8 @@ offset_bottom = -166.0
 grow_horizontal = 0
 grow_vertical = 0
 scale = Vector2(0.25, 0.25)
+theme_override_colors/icon_disabled_color = Color(0.290196, 0.290196, 0.290196, 0.733333)
+theme_override_styles/disabled = SubResource("StyleBoxFlat_nnafu")
 theme_override_styles/normal = SubResource("StyleBoxFlat_flr2c")
 icon = ExtResource("2_0u1nr")
 
@@ -302,6 +377,36 @@ layout_mode = 2
 text = "00"
 label_settings = SubResource("LabelSettings_bsdb8")
 horizontal_alignment = 1
+
+[node name="Debug" type="Label" parent="."]
+visible = false
+offset_left = 2.0
+offset_top = 220.0
+offset_right = 312.0
+offset_bottom = 686.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0.241156, 0.241156, 0.241156, 1)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 4
+theme_override_constants/outline_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_fl5nc")
+text = "00"
+label_settings = SubResource("LabelSettings_bsdb8")
+
+[node name="Debug2" type="Label" parent="."]
+visible = false
+offset_left = 1317.0
+offset_top = 224.0
+offset_right = 1602.0
+offset_bottom = 690.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0.241156, 0.241156, 0.241156, 1)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 4
+theme_override_constants/outline_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_fl5nc")
+text = "00"
+label_settings = SubResource("LabelSettings_bsdb8")
 
 [connection signal="gui_input" from="Control" to="." method="_on_control_gui_input"]
 [connection signal="pressed" from="Control/pickupbutton" to="." method="_on_pickupbutton_pressed"]

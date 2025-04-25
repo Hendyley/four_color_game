@@ -3,8 +3,32 @@
   "WorkspaceRootPath": "E:\\Project\\Git\\Games\\four_color_game\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\Project\\Git\\Games\\four_color_game\\algo\\FourColorAlgo\\FourColorAlgo\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:algo\\FourColorAlgo\\FourColorAlgo\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A008C980-B72C-4F2C-9C15-72FB3FC70112}|four_color_game.csproj|e:\\project\\git\\games\\four_color_game\\scripts\\nakamaclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A008C980-B72C-4F2C-9C15-72FB3FC70112}|four_color_game.csproj|solutionrelative:scripts\\nakamaclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A008C980-B72C-4F2C-9C15-72FB3FC70112}|four_color_game.csproj|e:\\project\\git\\games\\four_color_game\\scripts\\multiplayerpage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A008C980-B72C-4F2C-9C15-72FB3FC70112}|four_color_game.csproj|solutionrelative:scripts\\multiplayerpage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A008C980-B72C-4F2C-9C15-72FB3FC70112}|four_color_game.csproj|e:\\project\\git\\games\\four_color_game\\scripts\\fourcolors\\playerinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A008C980-B72C-4F2C-9C15-72FB3FC70112}|four_color_game.csproj|solutionrelative:scripts\\fourcolors\\playerinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A008C980-B72C-4F2C-9C15-72FB3FC70112}|four_color_game.csproj|e:\\project\\git\\games\\four_color_game\\scripts\\fourcolors\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A008C980-B72C-4F2C-9C15-72FB3FC70112}|four_color_game.csproj|solutionrelative:scripts\\fourcolors\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A008C980-B72C-4F2C-9C15-72FB3FC70112}|four_color_game.csproj|e:\\project\\git\\games\\four_color_game\\scripts\\fourcolors\\nakamadbclass.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A008C980-B72C-4F2C-9C15-72FB3FC70112}|four_color_game.csproj|solutionrelative:scripts\\fourcolors\\nakamadbclass.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A008C980-B72C-4F2C-9C15-72FB3FC70112}|four_color_game.csproj|e:\\project\\git\\games\\four_color_game\\scripts\\gameplay.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A008C980-B72C-4F2C-9C15-72FB3FC70112}|four_color_game.csproj|solutionrelative:scripts\\gameplay.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A008C980-B72C-4F2C-9C15-72FB3FC70112}|four_color_game.csproj|e:\\project\\git\\games\\four_color_game\\scripts\\fourcolors\\matchroom.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A008C980-B72C-4F2C-9C15-72FB3FC70112}|four_color_game.csproj|solutionrelative:scripts\\fourcolors\\matchroom.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,19 +38,98 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Program.cs",
-              "DocumentMoniker": "E:\\Project\\Git\\Games\\four_color_game\\algo\\FourColorAlgo\\FourColorAlgo\\Program.cs",
-              "RelativeDocumentMoniker": "algo\\FourColorAlgo\\FourColorAlgo\\Program.cs",
-              "ToolTip": "E:\\Project\\Git\\Games\\four_color_game\\algo\\FourColorAlgo\\FourColorAlgo\\Program.cs",
-              "RelativeToolTip": "algo\\FourColorAlgo\\FourColorAlgo\\Program.cs",
-              "ViewState": "AgIAAEkAAAAAAAAAAAAmwGEAAAAzAAAAAAAAAA==",
+              "DocumentIndex": 4,
+              "Title": "NakamaDBClass.cs",
+              "DocumentMoniker": "E:\\Project\\Git\\Games\\four_color_game\\scripts\\FourColors\\NakamaDBClass.cs",
+              "RelativeDocumentMoniker": "scripts\\FourColors\\NakamaDBClass.cs",
+              "ToolTip": "E:\\Project\\Git\\Games\\four_color_game\\scripts\\FourColors\\NakamaDBClass.cs",
+              "RelativeToolTip": "scripts\\FourColors\\NakamaDBClass.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-17T10:03:57.377Z",
+              "WhenOpened": "2025-04-24T16:30:18.036Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "MatchRoom.cs",
+              "DocumentMoniker": "E:\\Project\\Git\\Games\\four_color_game\\scripts\\FourColors\\MatchRoom.cs",
+              "RelativeDocumentMoniker": "scripts\\FourColors\\MatchRoom.cs",
+              "ToolTip": "E:\\Project\\Git\\Games\\four_color_game\\scripts\\FourColors\\MatchRoom.cs",
+              "RelativeToolTip": "scripts\\FourColors\\MatchRoom.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-23T17:17:08.921Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Player.cs",
+              "DocumentMoniker": "E:\\Project\\Git\\Games\\four_color_game\\scripts\\FourColors\\Player.cs",
+              "RelativeDocumentMoniker": "scripts\\FourColors\\Player.cs",
+              "ToolTip": "E:\\Project\\Git\\Games\\four_color_game\\scripts\\FourColors\\Player.cs",
+              "RelativeToolTip": "scripts\\FourColors\\Player.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAAABkAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-13T16:47:21.28Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "PlayerInfo.cs",
+              "DocumentMoniker": "E:\\Project\\Git\\Games\\four_color_game\\scripts\\FourColors\\PlayerInfo.cs",
+              "RelativeDocumentMoniker": "scripts\\FourColors\\PlayerInfo.cs",
+              "ToolTip": "E:\\Project\\Git\\Games\\four_color_game\\scripts\\FourColors\\PlayerInfo.cs",
+              "RelativeToolTip": "scripts\\FourColors\\PlayerInfo.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-13T16:47:18.461Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MultiplayerPage.cs",
+              "DocumentMoniker": "E:\\Project\\Git\\Games\\four_color_game\\scripts\\MultiplayerPage.cs",
+              "RelativeDocumentMoniker": "scripts\\MultiplayerPage.cs",
+              "ToolTip": "E:\\Project\\Git\\Games\\four_color_game\\scripts\\MultiplayerPage.cs",
+              "RelativeToolTip": "scripts\\MultiplayerPage.cs",
+              "ViewState": "AgIAALcAAAAAAAAAAAAIwMsAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-19T16:38:11.206Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Gameplay.cs",
+              "DocumentMoniker": "E:\\Project\\Git\\Games\\four_color_game\\scripts\\Gameplay.cs",
+              "RelativeDocumentMoniker": "scripts\\Gameplay.cs",
+              "ToolTip": "E:\\Project\\Git\\Games\\four_color_game\\scripts\\Gameplay.cs",
+              "RelativeToolTip": "scripts\\Gameplay.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-12T09:14:27.403Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "NakamaClient.cs",
+              "DocumentMoniker": "E:\\Project\\Git\\Games\\four_color_game\\scripts\\NakamaClient.cs",
+              "RelativeDocumentMoniker": "scripts\\NakamaClient.cs",
+              "ToolTip": "E:\\Project\\Git\\Games\\four_color_game\\scripts\\NakamaClient.cs",
+              "RelativeToolTip": "scripts\\NakamaClient.cs",
+              "ViewState": "AgIAAJ4AAAAAAAAAAAAmwLgAAAA5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-12T10:03:08.154Z",
               "EditorCaption": ""
             }
           ]
