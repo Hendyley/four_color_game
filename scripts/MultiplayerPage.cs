@@ -9,6 +9,9 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
+//using System.Text.Json;
+using Newtonsoft.Json;
 
 public partial class MultiplayerPage : Node
 {
@@ -18,13 +21,18 @@ public partial class MultiplayerPage : Node
 	public int currentplayers = 0;
 	const string SERVER_ADDRESS = "127.0.0.1";
 	private string roomId;
+	private string Hostname;
 	private int playerId = -1;
+	private List<Player> playerList = new List<Player>();
+	private Player mainplayer;
+	//public static Dictionary<string, PlayerHand> PlayerHands = new();
 
 	public ENetMultiplayerPeer peer = new ENetMultiplayerPeer();
 	
 	private Button HostButton, JoinButton, WatchButton, CopyRoomID;
-	private LineEdit HostnameInput, RoomSizeInput, JoinNameInput, JoinRoomIdInput, WatchRoomIdInput;
+	private LineEdit PlayernameInput, JoinRoomIdInput;
 	private Label RoomLabel, GeneratedRoomID;
+	private OptionButton RoomSizeInput;
 	private Node MainTable;
 
 
@@ -37,12 +45,20 @@ public partial class MultiplayerPage : Node
 	private static IMatch match;
 	private static MultiplayerPage Client;
 
+	private IApiGroup currentSelectedGroup;
+	private IGroupUserListGroupUser currentlySelectedUser;
+	private IChannel currentChat;
+	//private List<ChatChannel> chatChannels = new List<ChatChannel>();
+
 	[Signal]
-	public delegate void PlayerDataSyncEventHandler(string data);
+	public delegate void PlayerDataSyncEventHandler(Json data);
 	[Signal]
 	public delegate void PlayerJoinGameEventHandler(string data);
 
-	
+	[Signal]
+	public delegate void PlayerReadyGameEventHandler(string data);
+
+
 	public override void _Ready()
 	{
 		// UI setup
@@ -51,11 +67,9 @@ public partial class MultiplayerPage : Node
 		WatchButton = (Button)FindChild("WatchButton");
 		CopyRoomID = (Button)FindChild("CopyRoomID");
 
-		HostnameInput = (LineEdit)FindChild("Hostname");
-		RoomSizeInput = (LineEdit)FindChild("Roomsize");
-		JoinNameInput = (LineEdit)FindChild("Playername");
+		PlayernameInput = (LineEdit)FindChild("Playername");
+		RoomSizeInput = (OptionButton)FindChild("Roomsize");
 		JoinRoomIdInput = (LineEdit)FindChild("Joinroomid");
-		WatchRoomIdInput = (LineEdit)FindChild("Watchroomid");
 
 		RoomLabel = (Label)FindChild("RoomLabel");
 		GeneratedRoomID = (Label)FindChild("GeneratedRoomID");
@@ -65,20 +79,30 @@ public partial class MultiplayerPage : Node
 		HostButton.Pressed += OnHostButtonPressed;
 		JoinButton.Pressed += OnJoinButtonPressed;
 
+		RoomSizeInput.AddItem("1");
+		RoomSizeInput.AddItem("2");
+		RoomSizeInput.AddItem("3");
+		RoomSizeInput.AddItem("4");
+		RoomSizeInput.ItemSelected += onOptionSelected;
 
 
-
-		if (Client == null)
+		if (Client != null)
 		{
-			Client = this;
+			GD.Print("removing second instance");
+			QueueFree();
 		}
 		else
 		{
-			QueueFree();
-			return;
+
+			Client = this;
 		}
 		readyAsync();
-		
+
+	}
+
+	private void onOptionSelected(long index)
+	{
+		MAX_PLAYERS = int.Parse(RoomSizeInput.GetItemText((int)index));
 	}
 
 	public override void _Process(double delta)
@@ -104,25 +128,23 @@ public partial class MultiplayerPage : Node
 	private async void OnHostButtonPressed()
 	{
 		//DisableButtons();
+		IsHost = true;
 
-		Player player = new Player(HostnameInput.Text,true);
+		mainplayer = new Player(PlayernameInput.Text,true);
+		playerList.Add(mainplayer);
+		Hostname = mainplayer.player_name;
+		currentplayers++;
 		
-		
-		session = await client.AuthenticateCustomAsync(player.player_id,player.player_name);
-
-
-
+		session = await client.AuthenticateCustomAsync(mainplayer.player_id, mainplayer.player_name);
 		//// Store playerinfo if not available
 		//NakamaStore(player.GetCollectionName(), player.Key, player);
 		
-
-
 		var room = new MatchRoom(MAX_PLAYERS);
 		
-		await client.UpdateAccountAsync(session, player.player_name,player.player_name);
-		GD.Print($"{player.player_name} Hosting with Room ID: {room.RoomID}");
+		await client.UpdateAccountAsync(session, mainplayer.player_name, mainplayer.player_name);
+		GD.Print($"{mainplayer.player_name} Hosting with Room ID: {room.RoomID}");
 
-		CreateNJoinMatch(room.RoomID);
+		await CreateNJoinMatch(room.RoomID);
 
 		RoomLabel.Text = "Created Room with ID:              ";
 		GeneratedRoomID.Text = room.RoomID;
@@ -135,18 +157,23 @@ public partial class MultiplayerPage : Node
 	private async void OnJoinButtonPressed()
 	{
 		//DisableButtons();
-		var player = new Player(JoinNameInput.Text, false);
-		session = await client.AuthenticateCustomAsync(player.player_id, player.player_name);
+		IsHost = false;
+
+		mainplayer = new Player(PlayernameInput.Text, false);
+		session = await client.AuthenticateCustomAsync(mainplayer.player_id, mainplayer.player_name);
 
 		string inputRoomId = JoinRoomIdInput.Text.Trim();
+		await client.UpdateAccountAsync(session, mainplayer.player_name, mainplayer.player_name);
 
-		await client.UpdateAccountAsync(session, player.player_name, player.player_name);
+		await CreateNJoinMatch(inputRoomId);
 
-		CreateNJoinMatch(inputRoomId);
+		var data = Encoding.UTF8.GetBytes(mainplayer.player_name);
+		await socket.SendMatchStateAsync(match.Id, 0, data);
+
 
 	}
 
-	public async void CreateNJoinMatch(string roomId)
+	public async Task CreateNJoinMatch(string roomId)
 	{
 		socket = Socket.From(client);
 		await socket.ConnectAsync(session);
@@ -163,26 +190,48 @@ public partial class MultiplayerPage : Node
 
 	private void onMatchPresence(IMatchPresenceEvent @event)
 	{
-		GD.Print(@event.ToString());
+		//GD.Print(@event.ToString());
 	}
 
 	private void onMatchState(IMatchState state)
 	{
 		string data = Encoding.UTF8.GetString(state.State);
-		GD.Print($"Received data from user : {data} ");
 		switch (state.OpCode) //content of the data sent
 		{
-			case 0:
+			case 0: // Players Join
 				CallDeferred(nameof(EmitPlayerJoinGameSignal), data);
+				PlayerJoiningInfo(data);
 				break;
-			case 1:
+			case 1: // Chats
+                var content = JsonConvert.DeserializeObject<string[]>(data);
+                GD.Print($"Received data from user {content[0]} : {content[1]} ");
+                break;
+			case 2: // 
+				CallDeferred(nameof(EmitReadytostart), data);
 				break;
-		}
-	}
+			case 3:
+                CallDeferred(nameof(EmitSyncTiles), data);
+				break;
+        }
+    }
 
+
+	public void EmitSyncTiles(Json data)
+	{
+		EmitSignal(SignalName.PlayerDataSync, data);
+	}
+	
 	public void EmitPlayerJoinGameSignal(string data)
 	{
-		EmitSignal(SignalName.PlayerJoinGame, data); //Must Build first
+		if (!IsHost)
+			return;
+
+		EmitSignal(SignalName.PlayerJoinGame, data); 
+	}
+
+	public void EmitReadytostart(string data)
+	{
+		EmitSignal(SignalName.PlayerReadyGame, data);
 	}
 
 	public static async void SyncData(string data, int opcode)
@@ -190,12 +239,30 @@ public partial class MultiplayerPage : Node
 		await socket.SendMatchStateAsync(match.Id, opcode, data);
 	}
 
-
-	public async void _on_ping_button_down()
+	/// <summary>
+	/// ////////////////////////////////////////////////////////////
+	/// </summary>
+	/// 
+	private void PlayerJoiningInfo(string data)
 	{
-		var data = Encoding.UTF8.GetBytes("Hell !!!");
+		var player = new Player(data, false);
+		playerList.Add(player);
+		currentplayers++;
+		GD.Print($" Host {mainplayer.player_name} says {player.player_name} Joined. Current Player count {currentplayers}");
+		//NakamaStore("PlayerList", Hostname, playerList);
+	}
 
+
+
+	public async void _on_button_pressed()
+	{
+
+		var tes = (LineEdit)FindChild("testfield");
+		var array = new string[] { mainplayer.player_name, tes.Text };
+		string arrayjson = JsonConvert.SerializeObject(array);
+		var data = Encoding.UTF8.GetBytes(arrayjson);
 		await socket.SendMatchStateAsync(match.Id, 1, data);
+
 
 	}
 
@@ -220,12 +287,13 @@ public partial class MultiplayerPage : Node
 		{
 			Collection = collection,
 			Key = key,
-			Value = JsonWriter.ToJson(classtype),
+			Value = Nakama.TinyJson.JsonWriter.ToJson(classtype),
 			PermissionRead = permissionread,  //0 is everyone can , 1 is owner and serveronly
 			PermissionWrite = permissionwrite
 		};
 
 		await client.WriteStorageObjectsAsync(session, new[] { writeStorageObject });
+		GD.Print("NakamaStore Completed!!");
 
 	}
 

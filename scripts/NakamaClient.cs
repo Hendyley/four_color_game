@@ -96,7 +96,11 @@ public partial class NakamaClient : Node2D
 
 	private void onMatchPresence(IMatchPresenceEvent @event)
 	{
-		GD.Print(@event.ToString());
+		//GD.Print(@event.ToString());
+		foreach (var item in @event.Joins)
+		{
+			
+		}
 	}
 
 	private void onMatchState(IMatchState state)

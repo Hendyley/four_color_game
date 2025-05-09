@@ -34,16 +34,16 @@ theme_override_constants/separation = 30
 [node name="Host_Fill" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Hostname" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/Host_Fill"]
+[node name="Playername" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/Host_Fill"]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
-placeholder_text = "Host Name"
+size_flags_horizontal = 3
+placeholder_text = "Player Name"
 
-[node name="Roomsize" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/Host_Fill"]
-custom_minimum_size = Vector2(100, 0)
+[node name="Roomsize" type="OptionButton" parent="PanelContainer/MarginContainer/VBoxContainer/Host_Fill"]
 layout_mode = 2
-text = "2"
-placeholder_text = "Number of user"
+size_flags_horizontal = 3
+allow_reselect = true
 
 [node name="Hostbutton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Host_Fill"]
 layout_direction = 2
@@ -54,14 +54,10 @@ text = "Host Game"
 [node name="Join_Fill" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Playername" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/Join_Fill"]
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-placeholder_text = "Player Name"
-
 [node name="Joinroomid" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/Join_Fill"]
 custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
+size_flags_horizontal = 3
 placeholder_text = "Room ID"
 
 [node name="JoinButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Join_Fill"]
@@ -70,23 +66,22 @@ layout_mode = 2
 size_flags_horizontal = 8
 text = "Join Game"
 
-[node name="Watch_Fill" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Watchroomid" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/Watch_Fill"]
-custom_minimum_size = Vector2(300, 0)
-layout_mode = 2
-placeholder_text = "Room ID"
-
-[node name="B3MenuBar" type="MenuBar" parent="PanelContainer/MarginContainer/VBoxContainer/Watch_Fill"]
-custom_minimum_size = Vector2(140, 0)
-layout_mode = 2
-
-[node name="WatchButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Watch_Fill"]
+[node name="WatchButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Join_Fill"]
 layout_direction = 2
 layout_mode = 2
 size_flags_horizontal = 8
-text = "Watch"
+text = "Watch Game"
+
+[node name="Test" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="testfield" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/Test"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Test"]
+layout_mode = 2
+text = "Test"
 
 [node name="RoomDisplay" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -104,4 +99,5 @@ text = "Copy RoomID"
 
 [connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/Host_Fill/Hostbutton" to="." method="_on_hostbutton_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/Join_Fill/JoinButton" to="." method="_on_join_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/Test/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/RoomDisplay/CopyRoomID" to="." method="_on_copy_room_id_pressed"]
