@@ -1,11 +1,11 @@
 [gd_scene load_steps=3 format=3 uid="uid://c3m7752aheoyu"]
 
 [ext_resource type="Script" path="res://scripts/MultiplayerPage.cs" id="1_jywe8"]
-[ext_resource type="PackedScene" uid="uid://c4573qgmkrhy5" path="res://scenes/multiplaygameplay.tscn" id="2_mr1ec"]
+[ext_resource type="PackedScene" uid="uid://cm1bc46c0qr4l" path="res://scenes/gameplay.tscn" id="2_8fw1m"]
 
 [node name="MultiplayerPage" type="Node"]
 script = ExtResource("1_jywe8")
-PlayerScene = ExtResource("2_mr1ec")
+startgamescene = ExtResource("2_8fw1m")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 anchors_preset = 8
@@ -78,6 +78,12 @@ layout_mode = 2
 [node name="testfield" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/Test"]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="TestingLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Test"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Test
+"
 
 [node name="Button" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Test"]
 layout_mode = 2

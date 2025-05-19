@@ -31,12 +31,13 @@ public partial class MultiplayerPage : Node
 	
 	private Button HostButton, JoinButton, WatchButton, CopyRoomID;
 	private LineEdit PlayernameInput, JoinRoomIdInput;
-	private Label RoomLabel, GeneratedRoomID;
+	private Label RoomLabel, GeneratedRoomID, TLabel;
 	private OptionButton RoomSizeInput;
 	private Node MainTable;
 
 
-	[Export] public PackedScene PlayerScene;
+	[Export] public PackedScene startgamescene;
+	
 	public bool IsHost { get; private set; } = false;
 
 	private static Client client;
@@ -73,7 +74,7 @@ public partial class MultiplayerPage : Node
 
 		RoomLabel = (Label)FindChild("RoomLabel");
 		GeneratedRoomID = (Label)FindChild("GeneratedRoomID");
-
+		TLabel = (Label)FindChild("TestingLabel");
 
 		// Signals
 		HostButton.Pressed += OnHostButtonPressed;
@@ -203,18 +204,24 @@ public partial class MultiplayerPage : Node
 				PlayerJoiningInfo(data);
 				break;
 			case 1: // Chats
-                var content = JsonConvert.DeserializeObject<string[]>(data);
-                GD.Print($"Received data from user {content[0]} : {content[1]} ");
-                break;
-			case 2: // 
+				string[] content = JsonConvert.DeserializeObject<string[]>(data);
+				GD.Print($"Received data from user {content[0]} : {content[1]} ");
+				CallDeferred(nameof(Dothis), content); 
+				break;
+			case 2: // Start Game?
 				CallDeferred(nameof(EmitReadytostart), data);
 				break;
 			case 3:
-                CallDeferred(nameof(EmitSyncTiles), data);
+				CallDeferred(nameof(EmitSyncTiles), data);
 				break;
-        }
-    }
+		}
+	}
 
+	private void Dothis(string[] content)
+	{
+		TLabel.Text = content[1];
+		GD.Print($"I {mainplayer.player_name} received from {content[0]}");
+	}
 
 	public void EmitSyncTiles(Json data)
 	{
@@ -250,6 +257,11 @@ public partial class MultiplayerPage : Node
 		currentplayers++;
 		GD.Print($" Host {mainplayer.player_name} says {player.player_name} Joined. Current Player count {currentplayers}");
 		//NakamaStore("PlayerList", Hostname, playerList);
+
+		if (currentplayers == MAX_PLAYERS)
+		{
+			GameStart();
+		}
 	}
 
 
@@ -315,20 +327,12 @@ public partial class MultiplayerPage : Node
 
 	}
 
-
-
 	private void GameStart()
 	{
-		MainTable = (Node)PlayerScene.Instantiate();
-		GetTree().Root.AddChild(MainTable); 
-		GetTree().CurrentScene = MainTable;
+		GD.Print("Start button pressed");    
+		StartGamePage startmenu = (StartGamePage)startgamescene.Instantiate();
+		AddChild(startmenu);
 	}
 
-
-
 /////////////////////////// RPC Calling Funtions
-
-
-
-
 }
