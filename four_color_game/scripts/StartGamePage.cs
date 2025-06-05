@@ -1,18 +1,22 @@
 using Godot;
 using System;
+using FourColors;
 
 public partial class StartGamePage : Control
 {
 	[Export] public PackedScene gameplayScene;
 	private HBoxContainer B1,B2,B3;
-	private LineEdit B1le, B2le, B3le;
+	private LineEdit Username, PlayerNum, TimeSet, ModeSet;
 
 	public override void _Ready()
 	{
-		B1le = (LineEdit) FindChild("B1LineEdit");
-		//gameplayScene = (PackedScene)ResourceLoader.Load("res://scenes/gameplay.tscn");
-		// Hide();
-	}
+		Username = (LineEdit)FindChild("Username");
+        PlayerNum = (LineEdit) FindChild("PlayerNum");
+		TimeSet = (LineEdit)FindChild("TimeSet");
+		ModeSet = (LineEdit)FindChild("ModeSet");
+        //gameplayScene = (PackedScene)ResourceLoader.Load("res://scenes/gameplay.tscn");
+        // Hide();
+    }
 
 	public override void _Process(double delta)
 	{
@@ -57,14 +61,17 @@ public partial class StartGamePage : Control
 
 	private void _on_confirm_button_pressed()
 	{
-		string numberOfplayers = B1le.Text;
+		var player = new Player(Username.Text,true);
+		NakamaSingleton.Instance.MainPlayer = player;
 		Node gameplayInstance = (Node)gameplayScene.Instantiate();
-		gameplayInstance.SetMeta("numberofplayers", int.Parse(numberOfplayers));  
-		// gameplayInstance.SetMeta("player_name", "Hendy");
-		GetTree().Root.AddChild(gameplayInstance);  // Add the scene to the root
-		// GetTree().CurrentScene.Free();  // Remove the previous scene
-		GetTree().CurrentScene = gameplayInstance; // Set the new scene as active
-		// GetTree().ChangeSceneToFile("res://scenes/gameplay.tscn");
+		NakamaSingleton.Instance.NumberOfPlayers = int.Parse(PlayerNum.Text);
+		NakamaSingleton.Instance.MainPlayerTurn = 1;
+		NakamaSingleton.Instance.Gamemode = "SinglePlayer";
+
+
+        GetTree().Root.AddChild(gameplayInstance);
+		//GetTree().CurrentScene.Free();  // Remove the previous scene
+		GetTree().CurrentScene = gameplayInstance;
 	}
 
 

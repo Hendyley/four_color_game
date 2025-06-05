@@ -8,30 +8,27 @@ using FourColors;
 public partial class Gameplay : Node
 {
 	[Export] public PackedScene tileScene;
-
-	public int numberOfplayers; 
+	
 
 	public List<string> deck = new List<string>();  
 
 	private Dictionary<int, List<string>> playersHands = new Dictionary<int, List<string> >();
 	private Dictionary<int, HBoxContainer> playersContainers = new Dictionary<int, HBoxContainer>();
-	private Dictionary<int, string> playersnames = new Dictionary<int, string>();
+	private Dictionary<int, Player> PlayerSeats = new Dictionary<int, Player>(); // S -> W -> N -> E
 
 
 	private bool castlestatus;
 	private bool throwhand;
 	public Container tabletiles;
-	private Label deckcounterLabel;
 	private Button pickButton;
 	private Button castleButton;
 	private Button backButton;
 
-	// public PackedScene tile = (PackedScene)GD.Load("res://scenes/Tile.tscn");
-	public int current_turn;
-	private TextureRect currentturn;
+	//public PackedScene tile = (PackedScene)GD.Load("res://scenes/Tile.tscn");
+	//private TextureRect currentturn;
 	private Tile lastTableTile;
 
-	private Label debuglb, debuglb2;
+	private Label deckcounterLabel, currentturnLabel, debuglb, debuglb2;
 
 
 
@@ -39,54 +36,86 @@ public partial class Gameplay : Node
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+	    tileScene = (PackedScene)ResourceLoader.Load("res://scenes/Tile.tscn");
+        tabletiles = (Container)FindChild("TableTiles");
+        pickButton = (Button)FindChild("pickupbutton");
+        castleButton = (Button)FindChild("castlebutton");
+        backButton = (Button)FindChild("backbutton");
 
-		numberOfplayers = (int)GetMeta("numberofplayers",2);
-		GD.Print("NOP "+numberOfplayers.ToString());
+        deckcounterLabel = (Label)FindChild("DeckCounter");
+        currentturnLabel = (Label)FindChild("CurrentTurn");
+        debuglb = (Label)GetNode("Debug");
+        debuglb2 = (Label)GetNode("Debug2");
 
-		tileScene = (PackedScene)ResourceLoader.Load("res://scenes/Tile.tscn");
+        NakamaSingleton.Instance.CurrentTurn = 1;
+        //currentturn = (TextureRect)FindChild($"Turn{NakamaSingleton.Instance.CurrentTurn}");
+        //currentturn.Show();
 
-		current_turn = 1;
-		currentturn = (TextureRect) FindChild($"Turn{current_turn}");
-		currentturn.Show();
+        castlestatus = false;
 
-		castlestatus = false;
+		List<string> seatsvar;
+		if(NakamaSingleton.Instance.NumberOfPlayers==2)
+			seatsvar = new List<string>() { "S", "N" };
+		else if(NakamaSingleton.Instance.NumberOfPlayers == 3)
+			seatsvar = new List<string>() { "S", "W", "N" };
+		else if (NakamaSingleton.Instance.NumberOfPlayers == 4)
+			seatsvar = new List<string>() { "S", "W", "N", "E" };
+		else
+			seatsvar = new List<string>() { "S", "W", "N", "E" };
 
-		for (int i = 1; i <= numberOfplayers; i++)
-		{
-			string containerName = $"HBOX_P{i}";
-			HBoxContainer handContainer = (HBoxContainer) FindChild(containerName);
-			playersHands[i] = new List<string>();
+        List<int> turnsequence = NakamaSingleton.Instance.GetTurnOrder(NakamaSingleton.Instance.MainPlayer.player_turn, NakamaSingleton.Instance.NumberOfPlayers);
 
-			if (handContainer != null)
-			{
-				playersContainers[i] = handContainer;
-				GD.Print($"Player {i} hand assigned to {containerName}");
-			}
-			else
-			{
-				GD.PrintErr($"Could not find container: {containerName}");
-			}
-		}
+        PlayerSeats[NakamaSingleton.Instance.MainPlayerTurn] = NakamaSingleton.Instance.MainPlayer;
 
-		tabletiles = (Container) FindChild("TableTiles");
-		deckcounterLabel = (Label) FindChild("DeckCounter");
-		pickButton = (Button) GetNode("pickupbutton");
-		castleButton = (Button) GetNode("castlebutton");
-		backButton = (Button) GetNode("backbutton");
-		debuglb = (Label) GetNode("Debug");
-		debuglb2 = (Label) GetNode("Debug2");
-		
+
+        for (int i = 0; i < seatsvar.Count; i++)
+        {
+            string containerName = $"HBOX_P_{seatsvar[i]}";
+            HBoxContainer handContainer = (HBoxContainer)FindChild(containerName);
+
+            playersHands[turnsequence[i]] = new List<string>();
+
+            if (handContainer != null)
+            {
+                playersContainers[turnsequence[i]] = handContainer;
+                GD.Print($"Player {turnsequence[i]} hand assigned to {containerName}");
+            }
+            else
+            {
+                GD.PrintErr($"Could not find container: {containerName}");
+            }
+        }
+
 		StartGame();
 
-		for (int i=1; i<=numberOfplayers; i++){
-			for(int j=1; j <= 15; j++){
-				DrawTile(i);
-			}
-			SortTiles(i);
-		}
+        if (NakamaSingleton.Instance.Gamemode == "SinglePlayer")
+        {
+            for (int i = 1; i <= NakamaSingleton.Instance.NumberOfPlayers; i++)
+            {
+                for (int j = 1; j <= 15; j++)
+                {
+                    DrawTile(i);
+                }
+                SortTiles(i);
+            }
+        }
+        else if (NakamaSingleton.Instance.Gamemode == "MultiPlayer")
+        {
+            for (int i = 1; i <= NakamaSingleton.Instance.NumberOfPlayers; i++)
+            {
+                for (int j = 1; j <= 15; j++)
+                {
+                    DrawTile(i);
+                }
+                SortTiles(i);
+            }
 
-		int first = new Random().Next(current_turn, numberOfplayers);
-		DrawTile(first);
+        }
+
+        
+
+        //int first = new Random().Next(NakamaSingleton.Instance.CurrentTurn, NakamaSingleton.Instance.NumberOfPlayers);
+		DrawTile(NakamaSingleton.Instance.CurrentTurn);
 		throwhand = true;
 
 	}
@@ -95,9 +124,10 @@ public partial class Gameplay : Node
 	public override void _Process(double delta)
 	{
 		deckcounterLabel.Text = deck.Count.ToString();
-		// GD.Print($"Player 1 win is {WinCondition(1)}");
+        currentturnLabel.Text = NakamaSingleton.Instance.CurrentTurn.ToString();
+        // GD.Print($"Player 1 win is {WinCondition(1)}");
 
-		debuglb.Text = "";
+        debuglb.Text = "";
 		debuglb.Text = $"Tile P!: {playersHands[1].Count}\n";
 		playersHands[1].Sort();
 		foreach (var v in playersHands[1]){
@@ -110,6 +140,16 @@ public partial class Gameplay : Node
 		foreach (var v in playersHands[2]){
 			debuglb2.Text = debuglb2.Text + v + " \n";
 		}
+
+
+		for (int i = 1; i <= NakamaSingleton.Instance.NumberOfPlayers; i++)
+		{
+            if( GameLogic.WinCondition(i, "", playersHands) == "WIN")
+			{
+				Label x = (Label)FindChild("TurnLabel");
+				x.Text = $"Player {i} WIN!!";
+			}
+		}
 		
 	}
 
@@ -119,7 +159,7 @@ public partial class Gameplay : Node
 		
 		deck = CreateDeck();
 		ShuffleDeck();
-		for(int i = 1; i <= numberOfplayers; i++){
+		for(int i = 1; i <= NakamaSingleton.Instance.NumberOfPlayers; i++){
 			playersHands[i].Clear();
 			foreach (Node child in playersContainers[i].GetChildren())
 				child.QueueFree();
@@ -190,7 +230,7 @@ public partial class Gameplay : Node
 			if(castlestatus == true)
 			{
 				GD.Print($"Castle detected!!!!    Drawn value is {tilevalue}");
-				for(int i=1;i<=numberOfplayers;i++){
+				for(int i=1;i<= NakamaSingleton.Instance.NumberOfPlayers; i++){
 					GD.Print($"Player {i} win is { GameLogic.WinCondition(i,"",playersHands)}");;
 				}
 			}
@@ -207,7 +247,7 @@ public partial class Gameplay : Node
 	private void TakeTile(int playerid=1, string tilevalue="C1")
 	{	
 			
-		SortTiles(current_turn);
+		SortTiles(NakamaSingleton.Instance.CurrentTurn);
 		
 		playersHands[playerid].Add(tilevalue);
 		Tile newTile = (Tile)tileScene.Instantiate();
@@ -221,11 +261,10 @@ public partial class Gameplay : Node
 
 		if (castlestatus==true){
 			GD.Print($"Castle detected!!!!    Drawn value is {tilevalue}");
-			GD.Print($"Player {current_turn} win is {GameLogic.WinCondition(current_turn,"",playersHands)}");
+			GD.Print($"Player {NakamaSingleton.Instance.CurrentTurn} win is {GameLogic.WinCondition(NakamaSingleton.Instance.CurrentTurn,"",playersHands)}");
 		}
 		
 		throwhand = true;
-		
 
 	}
 
@@ -331,7 +370,7 @@ public partial class Gameplay : Node
 			}
 		}
 		GD.Print($"Player {clickedTile.Playerid} Taking Tile: " + clickedTile.Tileid);
-		TakeTile(current_turn, clickedTile.Tileid);
+		TakeTile(NakamaSingleton.Instance.CurrentTurn, clickedTile.Tileid);
 	}
 
 
@@ -345,7 +384,7 @@ public partial class Gameplay : Node
 	private void _on_pickupbutton_pressed()
 	{
 		GD.Print("pickup button pressed");
-		DrawTile(current_turn);
+		DrawTile(NakamaSingleton.Instance.CurrentTurn);
 		pickButton.Disabled = true;
 	}
 
@@ -353,7 +392,7 @@ public partial class Gameplay : Node
 	{
 		GD.Print("castle button pressed");
 		castlestatus = !castlestatus;
-		// DrawTile(current_turn);
+		// DrawTile(NakamaSingleton.Instance.CurrentTurn);
 	}
 
 	private void _on_back_button_pressed()
@@ -376,17 +415,20 @@ public partial class Gameplay : Node
 
 	public void AddTurn(){
 
-		currentturn = (TextureRect) FindChild($"Turn{current_turn}");
-		currentturn.Hide();
-		if(current_turn < numberOfplayers){
-			current_turn++;
+        //currentturn = (TextureRect) FindChild($"Turn{NakamaSingleton.Instance.CurrentTurn}");
+        //currentturn.Hide();
+        //currentturnLabel.Text = NakamaSingleton.Instance.CurrentTurn.ToString();
+        if (NakamaSingleton.Instance.CurrentTurn < NakamaSingleton.Instance.NumberOfPlayers)
+        {
+			NakamaSingleton.Instance.CurrentTurn++;
 		} else {
-			current_turn = 1;
+            NakamaSingleton.Instance.CurrentTurn = 1;
 		}
-		currentturn = (TextureRect) FindChild($"Turn{current_turn}");
-		currentturn.Show();
+        //currentturnLabel.Text = NakamaSingleton.Instance.CurrentTurn.ToString();
+        //currentturn = (TextureRect) FindChild($"Turn{NakamaSingleton.Instance.CurrentTurn}");
+        //currentturn.Show();
 
-		castleButton.Disabled = false;
+        castleButton.Disabled = false;
 		pickButton.Disabled = false;
 	}
 

@@ -53,10 +53,19 @@ theme_override_constants/margin_bottom = 40
 layout_mode = 2
 theme_override_constants/separation = 30
 
+[node name="Header" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Username" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Player1"
+placeholder_text = "User Name"
+
 [node name="Box1" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="B1LineEdit" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/Box1"]
+[node name="PlayerNum" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/Box1"]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 text = "2"
@@ -66,7 +75,7 @@ placeholder_text = "Number of user"
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 
-[node name="B1button" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Box1"]
+[node name="SetPlayerbutton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Box1"]
 layout_mode = 2
 size_flags_horizontal = 8
 text = "Set Player"
@@ -74,7 +83,7 @@ text = "Set Player"
 [node name="Box2" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="B2LineEdit" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/Box2"]
+[node name="TimeSet" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/Box2"]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 placeholder_text = "Timing"
@@ -83,7 +92,7 @@ placeholder_text = "Timing"
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 
-[node name="B2Button" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Box2"]
+[node name="SetTimeButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Box2"]
 layout_mode = 2
 size_flags_horizontal = 8
 text = "Set Time"
@@ -91,7 +100,7 @@ text = "Set Time"
 [node name="Box3" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="B3LineEdit" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/Box3"]
+[node name="ModeSet" type="LineEdit" parent="PanelContainer/MarginContainer/VBoxContainer/Box3"]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 placeholder_text = "Mode"
@@ -100,7 +109,7 @@ placeholder_text = "Mode"
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 
-[node name="B3Button" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Box3"]
+[node name="SetModeButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Box3"]
 layout_mode = 2
 size_flags_horizontal = 8
 text = "Set Mode"
@@ -111,7 +120,7 @@ size_flags_vertical = 8
 text = "Confirm
 "
 
-[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/Box1/B1button" to="." method="_on_b_1_button_pressed"]
-[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/Box2/B2Button" to="." method="_on_b_2_button_pressed"]
-[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/Box3/B3Button" to="." method="_on_b_3_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/Box1/SetPlayerbutton" to="." method="_on_b_1_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/Box2/SetTimeButton" to="." method="_on_b_2_button_pressed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/Box3/SetModeButton" to="." method="_on_b_3_button_pressed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/ConfirmButton" to="." method="_on_confirm_button_pressed"]

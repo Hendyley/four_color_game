@@ -6,15 +6,13 @@ using System.Reflection.Metadata;
 
 namespace FourColors
 {
-	internal class Player
+	public class Player
 	{
 		public string player_name { get; set; }
 		private int player_age { get; set; }
 		public string player_id {get; set;} //Set for nakama Device ID
-
+		public int player_turn { get; set; }
 		public bool ishost { get; set; }
-
-		public const string Collection = "PlayerInfo";
 		public string Key { get; set; } = "PlayerKey";
 
 
@@ -27,7 +25,7 @@ namespace FourColors
 			this.ishost = ishost;
 
 			this.Key = player_name;
-			GD.Print($"Player name {player_name} / {player_id} Joined");
+			//GD.Print($"Player name {player_name} / {player_id} Joined");
 		}
 
 		private static string GenerateRandomString(int length)
@@ -51,10 +49,7 @@ namespace FourColors
 			return result.ToString();
 		}
 
-		public string GetCollectionName()
-		{
-			return Collection;
-		}
+
 
 	}
 }

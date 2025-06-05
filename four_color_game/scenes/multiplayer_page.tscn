@@ -1,11 +1,11 @@
 [gd_scene load_steps=3 format=3 uid="uid://c3m7752aheoyu"]
 
 [ext_resource type="Script" path="res://scripts/MultiplayerPage.cs" id="1_jywe8"]
-[ext_resource type="PackedScene" uid="uid://cm1bc46c0qr4l" path="res://scenes/gameplay.tscn" id="2_8fw1m"]
+[ext_resource type="PackedScene" uid="uid://cm1bc46c0qr4l" path="res://scenes/gameplay.tscn" id="2_dimco"]
 
 [node name="MultiplayerPage" type="Node"]
 script = ExtResource("1_jywe8")
-startgamescene = ExtResource("2_8fw1m")
+gameplayScene = ExtResource("2_dimco")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 anchors_preset = 8
