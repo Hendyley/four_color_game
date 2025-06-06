@@ -25,14 +25,21 @@ namespace Program
 
     class FourColorAlgo
     {
-        public List<string> Deck = new List<string>();
-        public Dictionary<int, List<string>> playersHands = new Dictionary<int, List<string>>();
-        public int sets = 5;
-        public string AItile;
-        public int combipairs = 0;
-        public List<List<string>> Hands; // index 0, 1, ..., N-1
-        public int AITurn;               // index of AI in Hands
-        public int CurrentTurn;
+        private List<string> Deck = new List<string>();
+        private Dictionary<int, List<string>> playersHands = new Dictionary<int, List<string>>();
+        private int sets = 5;
+        private string AItile;
+        private int combipairs = 0;
+        private List<List<string>> Hands; // index 0, 1, ..., N-1
+        private int AITurn;               // index of AI in Hands
+        private int CurrentTurn;
+        private List<string> alltile = new List<string>()
+        {// Horse,Queen,Rook,Cannon,King,Pawn,Bishop
+            "C1", "C2", "C3", "C4", "C7", "C6", "C5",
+            "C1_Green", "C2_Green", "C3_Green", "C4_Green", "C7_Green", "C6_Green", "C5_Green",
+            "C1_Red", "C2_Red", "C3_Red", "C4_Red", "C7_Red", "C6_Red", "C5_Red",
+            "C1_Yellow", "C2_Yellow", "C3_Yellow", "C4_Yellow", "C7_Yellow", "C6_Yellow", "C5_Yellow"
+        };
 
         static void Main(string[] args)
         {
@@ -157,7 +164,10 @@ namespace Program
                 Hand = new List<string> {
                     "C1", "C3", "C4",
                     "C1_Green", "C3_Green", "C4_Green",
-                    "C1_Red", "C3_Red", "C4_Red", "C4"
+                    "C1_Red", "C3_Red", "C4_Red",
+                    "C1_Red", "C3_Red", "C4_Red",
+                    "C2_Red", "C2_Green", "C2_Yellow",
+
                 },
                 Deck = new List<string> {
                     "C2", "C2_Red", "C2_Green", "C2_Yellow", "C7", "C5"
@@ -168,6 +178,14 @@ namespace Program
             string bestMove = game.MAX_AI_DISCARD(GS1); // Adjust depth if needed
             Console.WriteLine($"Best move decided by AI: {bestMove}");
 
+
+            table.Add("C2");
+            table.Add("C2");
+            table.Add("C2");
+            table.Add("C2");
+            table.Add("C1");
+            table.Add("C5");
+            Console.WriteLine(game.CheckCastle(GS1.Hand,table));
 
 
         }
@@ -505,6 +523,36 @@ namespace Program
             }
 
             return honourSets;
+        }
+
+        public bool CheckCastle(List<string> lists, List<string> tables)
+        {
+            var g = tables.GroupBy(i => i);
+            foreach (var tt in g)
+            {
+                //Console.WriteLine("{0} {1}", tt.Key, tt.Count());
+                if(tt.Count() >= 4)
+                {
+                    alltile.Remove(tt.Key);
+                }
+               
+            }
+            if(lists.Count < 16)
+            {
+                foreach(var ct in alltile)
+                {
+                    var t = lists.ToList();
+                    t.Add(ct);
+                    if (WinCondition(t) == "WIN")
+                        return true;
+                }
+            } else
+            {
+                if (WinCondition(lists) == "WIN")
+                    return true;
+            }
+            
+            return false;
         }
 
         public static List<List<string>> GetCombinations(List<List<string>> lists)
