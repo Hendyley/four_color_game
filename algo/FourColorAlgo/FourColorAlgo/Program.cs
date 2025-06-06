@@ -26,6 +26,7 @@ namespace Program
     class FourColorAlgo
     {
         private List<string> Deck = new List<string>();
+        private List<string> Table = new List<string>();
         private Dictionary<int, List<string>> playersHands = new Dictionary<int, List<string>>();
         private int sets = 5;
         private string AItile;
@@ -45,11 +46,10 @@ namespace Program
         {
             FourColorAlgo game = new FourColorAlgo();  // Create an instance of the class
 
-            List<string> Deck = game.CreateDeck();
+            game.Deck = game.CreateDeck();
             game.ShuffleDeck();
             List<string> hand1 = new List<string>();
             List<string> hand2 = new List<string>();
-            List<string> table = new List<string>();
             List<string> Ifhand = new List<string>();
             bool over = false;
             string tile,des;
@@ -166,26 +166,30 @@ namespace Program
                     "C1_Green", "C3_Green", "C4_Green",
                     "C1_Red", "C3_Red", "C4_Red",
                     "C1_Red", "C3_Red", "C4_Red",
-                    "C2_Red", "C2_Green", "C2_Yellow",
+                    "C2_Red", "C2_Green", "C7",
 
-                },
-                Deck = new List<string> {
-                    "C2", "C2_Red", "C2_Green", "C2_Yellow", "C7", "C5"
-                },
-                Table = new List<string>(),
+                }
             };
 
             string bestMove = game.MAX_AI_DISCARD(GS1); // Adjust depth if needed
             Console.WriteLine($"Best move decided by AI: {bestMove}");
+            
+            
+            game.Deck = new List<string> {
+                    "C2", "C2_Red", "C2_Green", "C2_Yellow", "C7", "C5"
+            };
 
+            game.Table.Add("C2");
+            game.Table.Add("C2");
+            game.Table.Add("C2");
+            game.Table.Add("C2_Yellow");
+            game.Table.Add("C2_Yellow");
+            game.Table.Add("C2_Yellow");
+            game.Table.Add("C2_Yellow");
+            game.Table.Add("C1");
+            game.Table.Add("C5");
 
-            table.Add("C2");
-            table.Add("C2");
-            table.Add("C2");
-            table.Add("C2");
-            table.Add("C1");
-            table.Add("C5");
-            Console.WriteLine(game.CheckCastle(GS1.Hand,table));
+            Console.WriteLine(game.CheckCastle(GS1.Hand));
 
 
         }
@@ -253,8 +257,6 @@ namespace Program
         public class GameState
         {
             public List<string> Hand;
-            public List<string> Deck;
-            public List<string> Table;
             public int Score;
         }
 
@@ -525,9 +527,10 @@ namespace Program
             return honourSets;
         }
 
-        public bool CheckCastle(List<string> lists, List<string> tables)
+        public bool CheckCastle(List<string> lists)
         {
-            var g = tables.GroupBy(i => i);
+            var tablendeck = Table.Concat(Deck);
+            var g = tablendeck.GroupBy(i => i);
             foreach (var tt in g)
             {
                 //Console.WriteLine("{0} {1}", tt.Key, tt.Count());
@@ -537,16 +540,20 @@ namespace Program
                 }
                
             }
-            if(lists.Count < 16)
+            if(lists.Count == 15)
             {
                 foreach(var ct in alltile)
                 {
                     var t = lists.ToList();
                     t.Add(ct);
                     if (WinCondition(t) == "WIN")
+                    {
+                        Console.WriteLine($"Win with {ct}");
                         return true;
+                    }
+                        
                 }
-            } else
+            } else if(lists.Count == 16)
             {
                 if (WinCondition(lists) == "WIN")
                     return true;
