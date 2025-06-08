@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://cm1bc46c0qr4l"]
+[gd_scene load_steps=25 format=3 uid="uid://cm1bc46c0qr4l"]
 
 [ext_resource type="Texture2D" uid="uid://bojt53ffw6lwv" path="res://art/4_Color_Game/green_BG.png" id="1_n5011"]
 [ext_resource type="Script" path="res://scripts/Gameplay.cs" id="1_s8yka"]
@@ -9,40 +9,10 @@
 [ext_resource type="Texture2D" uid="uid://bek515n3g5nm3" path="res://art/4_Color_Game/Buttons/Removed_BG/BackButton.png" id="5_dmi23"]
 [ext_resource type="Script" path="res://scripts/ScrollCont.cs" id="8_5oogl"]
 [ext_resource type="Texture2D" uid="uid://b2e7oi06vfkti" path="res://art/4_Color_Game/GoldenArrow500x500.png" id="9_jbx5t"]
+[ext_resource type="Texture2D" uid="uid://bstoofnujwo3x" path="res://art/4_Color_Game/Buttons/SortButton.png" id="9_ycwdk"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_a8r7m"]
 texture = ExtResource("1_n5011")
-
-[sub_resource type="ImageTexture" id="ImageTexture_t5eo6"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dusa1"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d3ak4"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tddjc"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_plaov"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4fllh"]
-
-[sub_resource type="Theme" id="Theme_kv1b3"]
-HScrollBar/icons/decrement = SubResource("ImageTexture_t5eo6")
-HScrollBar/icons/decrement_highlight = SubResource("ImageTexture_t5eo6")
-HScrollBar/icons/decrement_pressed = SubResource("ImageTexture_t5eo6")
-HScrollBar/icons/increment = SubResource("ImageTexture_t5eo6")
-HScrollBar/icons/increment_highlight = SubResource("ImageTexture_t5eo6")
-HScrollBar/icons/increment_pressed = SubResource("ImageTexture_t5eo6")
-HScrollBar/styles/grabber = SubResource("StyleBoxEmpty_dusa1")
-HScrollBar/styles/grabber_highlight = SubResource("StyleBoxEmpty_d3ak4")
-HScrollBar/styles/grabber_pressed = SubResource("StyleBoxEmpty_tddjc")
-HScrollBar/styles/scroll = SubResource("StyleBoxEmpty_plaov")
-HScrollBar/styles/scroll_focus = SubResource("StyleBoxEmpty_4fllh")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nnafu"]
-bg_color = Color(0.172833, 0.172833, 0.172833, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_flr2c"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="FontFile" id="FontFile_4di04"]
 subpixel_positioning = 0
@@ -123,7 +93,40 @@ cache/0/18/0/scale = 1.0
 font = SubResource("FontFile_4di04")
 font_size = 18
 
+[sub_resource type="ImageTexture" id="ImageTexture_t5eo6"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dusa1"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d3ak4"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tddjc"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_plaov"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4fllh"]
+
+[sub_resource type="Theme" id="Theme_kv1b3"]
+HScrollBar/icons/decrement = SubResource("ImageTexture_t5eo6")
+HScrollBar/icons/decrement_highlight = SubResource("ImageTexture_t5eo6")
+HScrollBar/icons/decrement_pressed = SubResource("ImageTexture_t5eo6")
+HScrollBar/icons/increment = SubResource("ImageTexture_t5eo6")
+HScrollBar/icons/increment_highlight = SubResource("ImageTexture_t5eo6")
+HScrollBar/icons/increment_pressed = SubResource("ImageTexture_t5eo6")
+HScrollBar/styles/grabber = SubResource("StyleBoxEmpty_dusa1")
+HScrollBar/styles/grabber_highlight = SubResource("StyleBoxEmpty_d3ak4")
+HScrollBar/styles/grabber_pressed = SubResource("StyleBoxEmpty_tddjc")
+HScrollBar/styles/scroll = SubResource("StyleBoxEmpty_plaov")
+HScrollBar/styles/scroll_focus = SubResource("StyleBoxEmpty_4fllh")
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fl5nc"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nnafu"]
+bg_color = Color(0.172833, 0.172833, 0.172833, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_flr2c"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hya2i"]
 
 [node name="Gameplay" type="Node"]
 script = ExtResource("1_s8yka")
@@ -232,119 +235,6 @@ rotation = -1.5708
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("9_jbx5t")
 
-[node name="Scroll_P_S" type="ScrollContainer" parent="Control"]
-layout_mode = 0
-offset_left = 258.0
-offset_top = 794.0
-offset_right = 1322.0
-offset_bottom = 999.0
-theme = SubResource("Theme_kv1b3")
-horizontal_scroll_mode = 0
-vertical_scroll_mode = 0
-script = ExtResource("8_5oogl")
-
-[node name="HBOX_P_S" type="HBoxContainer" parent="Control/Scroll_P_S"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 50
-alignment = 1
-
-[node name="Scroll_P_N" type="ScrollContainer" parent="Control"]
-layout_mode = 0
-offset_left = 253.0
-offset_top = 8.0
-offset_right = 1302.0
-offset_bottom = 201.0
-theme = SubResource("Theme_kv1b3")
-horizontal_scroll_mode = 0
-vertical_scroll_mode = 0
-script = ExtResource("8_5oogl")
-
-[node name="HBOX_P_N" type="HBoxContainer" parent="Control/Scroll_P_N"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 50
-alignment = 1
-
-[node name="Scroll_P_W" type="ScrollContainer" parent="Control"]
-layout_mode = 0
-offset_left = 221.0
-offset_top = 128.0
-offset_right = 949.0
-offset_bottom = 348.0
-rotation = 1.57079
-theme = SubResource("Theme_kv1b3")
-horizontal_scroll_mode = 0
-vertical_scroll_mode = 0
-script = ExtResource("8_5oogl")
-
-[node name="HBOX_P_W" type="HBoxContainer" parent="Control/Scroll_P_W"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 50
-alignment = 1
-
-[node name="Scroll_P_E" type="ScrollContainer" parent="Control"]
-layout_mode = 0
-offset_left = 1412.0
-offset_top = 900.0
-offset_right = 2200.0
-offset_bottom = 1092.0
-rotation = 4.71239
-theme = SubResource("Theme_kv1b3")
-horizontal_scroll_mode = 0
-vertical_scroll_mode = 0
-script = ExtResource("8_5oogl")
-
-[node name="HBOX_P_E" type="HBoxContainer" parent="Control/Scroll_P_E"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 50
-alignment = 1
-
-[node name="pickupbutton" type="Button" parent="Control"]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -435.0
-offset_top = -423.0
-offset_right = 537.0
-offset_bottom = -166.0
-grow_horizontal = 0
-grow_vertical = 0
-scale = Vector2(0.25, 0.25)
-theme_override_colors/icon_disabled_color = Color(0.290196, 0.290196, 0.290196, 0.733333)
-theme_override_styles/disabled = SubResource("StyleBoxFlat_nnafu")
-theme_override_styles/normal = SubResource("StyleBoxFlat_flr2c")
-icon = ExtResource("2_0u1nr")
-
-[node name="castlebutton" type="Button" parent="Control"]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -440.0
-offset_top = -338.0
-offset_right = 548.0
-offset_bottom = -81.0
-grow_horizontal = 0
-grow_vertical = 0
-scale = Vector2(0.25, 0.25)
-theme_override_styles/normal = SubResource("StyleBoxFlat_flr2c")
-icon = ExtResource("3_3csrh")
-
-[node name="backbutton" type="Button" parent="Control"]
-layout_mode = 1
-offset_right = 508.0
-offset_bottom = 508.0
-scale = Vector2(0.2, 0.2)
-icon = ExtResource("5_dmi23")
-
 [node name="Deck" type="Panel" parent="Control"]
 layout_mode = 1
 anchors_preset = 8
@@ -412,6 +302,72 @@ text = "1"
 label_settings = SubResource("LabelSettings_bsdb8")
 horizontal_alignment = 1
 
+[node name="Scroll_P_S" type="ScrollContainer" parent="."]
+offset_left = 258.0
+offset_top = 794.0
+offset_right = 1322.0
+offset_bottom = 999.0
+theme = SubResource("Theme_kv1b3")
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 0
+script = ExtResource("8_5oogl")
+
+[node name="HBOX_P_S" type="HBoxContainer" parent="Scroll_P_S"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="Scroll_P_N" type="ScrollContainer" parent="."]
+offset_left = 253.0
+offset_top = 8.0
+offset_right = 1302.0
+offset_bottom = 201.0
+theme = SubResource("Theme_kv1b3")
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 0
+script = ExtResource("8_5oogl")
+
+[node name="HBOX_P_N" type="HBoxContainer" parent="Scroll_P_N"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="Scroll_P_W" type="ScrollContainer" parent="."]
+offset_left = 221.0
+offset_top = 128.0
+offset_right = 949.0
+offset_bottom = 348.0
+rotation = 1.57079
+theme = SubResource("Theme_kv1b3")
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 0
+script = ExtResource("8_5oogl")
+
+[node name="HBOX_P_W" type="HBoxContainer" parent="Scroll_P_W"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="Scroll_P_E" type="ScrollContainer" parent="."]
+offset_left = 1412.0
+offset_top = 900.0
+offset_right = 2200.0
+offset_bottom = 1092.0
+rotation = 4.71239
+theme = SubResource("Theme_kv1b3")
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 0
+script = ExtResource("8_5oogl")
+
+[node name="HBOX_P_E" type="HBoxContainer" parent="Scroll_P_E"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 50
+alignment = 1
+
 [node name="Debug" type="Label" parent="."]
 offset_left = 2.0
 offset_top = 220.0
@@ -440,7 +396,65 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_fl5nc")
 text = "00"
 label_settings = SubResource("LabelSettings_bsdb8")
 
+[node name="pickupbutton" type="Button" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -435.0
+offset_top = -423.0
+offset_right = 537.0
+offset_bottom = -166.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.25, 0.25)
+theme_override_colors/icon_disabled_color = Color(0.290196, 0.290196, 0.290196, 0.733333)
+theme_override_styles/disabled = SubResource("StyleBoxFlat_nnafu")
+theme_override_styles/normal = SubResource("StyleBoxFlat_flr2c")
+icon = ExtResource("2_0u1nr")
+
+[node name="castlebutton" type="Button" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -440.0
+offset_top = -338.0
+offset_right = 548.0
+offset_bottom = -81.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.25, 0.25)
+theme_override_styles/normal = SubResource("StyleBoxFlat_flr2c")
+icon = ExtResource("3_3csrh")
+
+[node name="sortbutton" type="Button" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -242.0
+offset_top = -118.0
+offset_right = -162.0
+offset_bottom = -38.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleBoxEmpty_hya2i")
+icon = ExtResource("9_ycwdk")
+
+[node name="backbutton" type="Button" parent="."]
+offset_right = 508.0
+offset_bottom = 508.0
+scale = Vector2(0.2, 0.2)
+icon = ExtResource("5_dmi23")
+
 [connection signal="gui_input" from="Control" to="." method="_on_control_gui_input"]
-[connection signal="pressed" from="Control/pickupbutton" to="." method="_on_pickupbutton_pressed"]
-[connection signal="pressed" from="Control/castlebutton" to="." method="_on_castlebutton_pressed"]
-[connection signal="pressed" from="Control/backbutton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="pickupbutton" to="." method="_on_pickupbutton_pressed"]
+[connection signal="pressed" from="castlebutton" to="." method="_on_castlebutton_pressed"]
+[connection signal="pressed" from="sortbutton" to="." method="_on_sortbutton_pressed"]
+[connection signal="pressed" from="backbutton" to="." method="_on_back_button_pressed"]

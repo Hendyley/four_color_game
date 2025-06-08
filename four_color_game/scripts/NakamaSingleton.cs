@@ -45,6 +45,7 @@ public partial class NakamaSingleton : Node
     private int PlayerId = -1;
     public bool IsHost { get; private set; } = false;
     public int NumberOfPlayers { get; set; } = 4;
+    private string[] content;
 
 
     private IApiGroup currentSelectedGroup;
@@ -57,6 +58,7 @@ public partial class NakamaSingleton : Node
     [Signal] public delegate void PlayerDataSyncEventHandler(Json data);
     [Signal] public delegate void PlayerJoinGameEventHandler(string data);
     [Signal] public delegate void PlayerReadyGameEventHandler(string data);
+    [Signal] public delegate void PlayerTileUpdateEventHandler(string data);
 
     public override void _Ready()
     {
@@ -152,7 +154,7 @@ public partial class NakamaSingleton : Node
                 PlayerJoiningInfo(data); // Host add new player
                 break;
             case 1: // Chats
-                string[] content = JsonConvert.DeserializeObject<string[]>(data);
+                content = JsonConvert.DeserializeObject<string[]>(data);
                 GD.Print($"Received data from user {content[0]} : {content[1]} ");
                 CallDeferred(nameof(ChatMessages), content);
                 break;
@@ -168,8 +170,10 @@ public partial class NakamaSingleton : Node
                     GD.Print($"{MainPlayer.player_name} assigned {MainPlayer.player_turn}");
                 }
                 break;
-            case 4: 
-                CallDeferred(nameof(EmitSyncTiles), data);
+            case 4: // Update tile
+                content = JsonConvert.DeserializeObject<string[]>(data);
+                GD.Print($"Received data from user {content[0]} : {content[1]} ");
+                CallDeferred(nameof(EmitSyncTiles), content);
                 break;
         }
     }
@@ -192,9 +196,9 @@ public partial class NakamaSingleton : Node
     }
 
 
-    public void EmitSyncTiles(Json data)
+    public void EmitSyncTiles(string[] content)
     {
-        EmitSignal(SignalName.PlayerDataSync, data);
+        EmitSignal(nameof(PlayerTileUpdate), content);
     }
 
     public async void SyncData(string data, int opcode)

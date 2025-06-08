@@ -4,6 +4,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using FourColors;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+using Newtonsoft.Json;
+using System.Text;
 
 public partial class Gameplay : Node
 {
@@ -19,7 +25,7 @@ public partial class Gameplay : Node
 
 	private bool castlestatus;
 	private bool throwhand;
-	public Container tabletiles;
+	public Godot.Container tabletiles;
 	private Button pickButton;
 	private Button castleButton;
 	private Button backButton;
@@ -37,7 +43,7 @@ public partial class Gameplay : Node
 	public override void _Ready()
 	{
 	    tileScene = (PackedScene)ResourceLoader.Load("res://scenes/Tile.tscn");
-        tabletiles = (Container)FindChild("TableTiles");
+        tabletiles = (Godot.Container)FindChild("TableTiles");
         pickButton = (Button)FindChild("pickupbutton");
         castleButton = (Button)FindChild("castlebutton");
         backButton = (Button)FindChild("backbutton");
@@ -46,6 +52,8 @@ public partial class Gameplay : Node
         currentturnLabel = (Label)FindChild("CurrentTurn");
         debuglb = (Label)GetNode("Debug");
         debuglb2 = (Label)GetNode("Debug2");
+
+		NakamaSingleton.Instance.Connect(nameof(NakamaSingleton.PlayerTileUpdate), new Callable(this, nameof(TileUpdate)));
 
         NakamaSingleton.Instance.CurrentTurn = 1;
         //currentturn = (TextureRect)FindChild($"Turn{NakamaSingleton.Instance.CurrentTurn}");
@@ -64,9 +72,7 @@ public partial class Gameplay : Node
 			seatsvar = new List<string>() { "S", "W", "N", "E" };
 
         List<int> turnsequence = NakamaSingleton.Instance.GetTurnOrder(NakamaSingleton.Instance.MainPlayer.player_turn, NakamaSingleton.Instance.NumberOfPlayers);
-
         PlayerSeats[NakamaSingleton.Instance.MainPlayerTurn] = NakamaSingleton.Instance.MainPlayer;
-
 
         for (int i = 0; i < seatsvar.Count; i++)
         {
@@ -120,8 +126,10 @@ public partial class Gameplay : Node
 
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
+   
+
+    // Called every frame. 'delta' is the elapsed time since the previous frame.
+    public override void _Process(double delta)
 	{
 		deckcounterLabel.Text = deck.Count.ToString();
         currentturnLabel.Text = NakamaSingleton.Instance.CurrentTurn.ToString();
@@ -152,6 +160,14 @@ public partial class Gameplay : Node
 		}
 		
 	}
+
+	private async void TileUpdate(string tile)
+	{
+        var array = new string[] { NakamaSingleton.Instance.MainPlayer.player_turn.ToString(), tile };
+        string arrayjson = JsonConvert.SerializeObject(array);
+        var data = Encoding.UTF8.GetBytes(arrayjson);
+        await NakamaSingleton.Instance.Socket.SendMatchStateAsync(NakamaSingleton.Instance.Match.Id, 4, data);
+    }
 
 	private void StartGame()
 	{
@@ -290,7 +306,7 @@ public partial class Gameplay : Node
 				}
 			}
 		}
-		SortTiles(playerid);
+		//SortTiles(playerid);
 		AddTurn(); ////////////////////////////////////////////////////////////////////////////// Turn Change here
 		return;
 	}
@@ -401,7 +417,13 @@ public partial class Gameplay : Node
 		GetTree().ChangeSceneToFile("res://scenes/main_menu.tscn");
 	}
 
-	private void EndGame()
+	private void _on_sortbutton_pressed()
+	{
+		SortTiles(NakamaSingleton.Instance.MainPlayerTurn);
+	}
+
+
+    private void EndGame()
 	{
 		pickButton.Disabled = true;
 		castleButton.Disabled = true;
