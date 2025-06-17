@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "31OuxEHKzMA=",
+  "dgSpecHash": "ZsRQA/AaZ+4=",
   "success": true,
-  "projectFilePath": "E:\\Project\\Git\\Games\\algo\\FourColorAlgo\\FourColorAlgo\\FourColorAlgo.csproj",
+  "projectFilePath": "E:\\Project\\Git\\Games\\four_color_game\\algo\\FourColorAlgo\\FourColorAlgo\\FourColorAlgo.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Hendy\\.nuget\\packages\\microsoft.net.sdk.compilers.toolset\\9.0.200\\microsoft.net.sdk.compilers.toolset.9.0.200.nupkg.sha512",
     "C:\\Users\\Hendy\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.13\\microsoft.windowsdesktop.app.ref.8.0.13.nupkg.sha512",

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Project\\Git\\Games\\algo\\FourColorAlgo\\FourColorAlgo\\FourColorAlgo.csproj": {}
+    "E:\\Project\\Git\\Games\\four_color_game\\algo\\FourColorAlgo\\FourColorAlgo\\FourColorAlgo.csproj": {}
   },
   "projects": {
-    "E:\\Project\\Git\\Games\\algo\\FourColorAlgo\\FourColorAlgo\\FourColorAlgo.csproj": {
+    "E:\\Project\\Git\\Games\\four_color_game\\algo\\FourColorAlgo\\FourColorAlgo\\FourColorAlgo.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Project\\Git\\Games\\algo\\FourColorAlgo\\FourColorAlgo\\FourColorAlgo.csproj",
+        "projectUniqueName": "E:\\Project\\Git\\Games\\four_color_game\\algo\\FourColorAlgo\\FourColorAlgo\\FourColorAlgo.csproj",
         "projectName": "FourColorAlgo",
-        "projectPath": "E:\\Project\\Git\\Games\\algo\\FourColorAlgo\\FourColorAlgo\\FourColorAlgo.csproj",
+        "projectPath": "E:\\Project\\Git\\Games\\four_color_game\\algo\\FourColorAlgo\\FourColorAlgo\\FourColorAlgo.csproj",
         "packagesPath": "C:\\Users\\Hendy\\.nuget\\packages\\",
-        "outputPath": "E:\\Project\\Git\\Games\\algo\\FourColorAlgo\\FourColorAlgo\\obj\\",
+        "outputPath": "E:\\Project\\Git\\Games\\four_color_game\\algo\\FourColorAlgo\\FourColorAlgo\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

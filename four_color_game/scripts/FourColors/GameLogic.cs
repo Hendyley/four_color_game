@@ -6,19 +6,46 @@ using System.Threading.Tasks;
 
 namespace FourColors
 {
-    internal class GameLogic
+    public class GameLogic
     {
-        ////////////////// Game Winning Conditions
-        public static string WinCondition(int x, string thistile = "", Dictionary<int, List<string>> playersHands = null )
-        {
-            if (thistile != "")
-            {
-                playersHands[x].Add(thistile);
-            }
+        enum Tile
+        {// Horse,Queen,Rook,Cannon,King,Pawn,Bishop
+            C1, C2, C3, C4, C7, C6, C5,
+            C1_Green, C2_Green, C3_Green, C4_Green, C7_Green, C6_Green, C5_Green,
+            C1_Red, C2_Red, C3_Red, C4_Red, C7_Red, C6_Red, C5_Red,
+            C1_Yellow, C2_Yellow, C3_Yellow, C4_Yellow, C7_Yellow, C6_Yellow, C5_Yellow
+        }
+        // Honors
+        /*
+        C6, C6.Green, C6.Yellow, C6_Red  (Any 3)     P
+        C1, C3, C4 (Same Color of this sets)         HRC
+        C2, C7, C5 (Same Color of this sets)         KQB
+        */
+        // Sets
+        /*
+        Same Colors and same sets (except C7 (kings)
+        */
+        public static List<string> Deck { get; set; }
+        public static List<string> Table { get; set; }
+        public Dictionary<int, List<string>> playersHands { get; set; }
+        public List<List<string>> Hands { get; set; }
+        public int AITurn { get; set; }
+        public string AItile { get; set; }
+        private static List<string> alltile = new List<string>()
+        {// Horse,Queen,Rook,Cannon,King,Pawn,Bishop
+            "C1", "C2", "C3", "C4", "C7", "C6", "C5",
+            "C1_Green", "C2_Green", "C3_Green", "C4_Green", "C7_Green", "C6_Green", "C5_Green",
+            "C1_Red", "C2_Red", "C3_Red", "C4_Red", "C7_Red", "C6_Red", "C5_Red",
+            "C1_Yellow", "C2_Yellow", "C3_Yellow", "C4_Yellow", "C7_Yellow", "C6_Yellow", "C5_Yellow"
+        };
 
-            List<string> focustile = new List<string>(playersHands[x]);
-            List<List<string>> H = GetHonourSets(focustile);
-            List<List<string>> CH = GetCombinations(H);
+
+        ////////////////// Game Winning Conditions
+        public static string WinCondition(List<string> v)
+        {
+            var focustile = v.ToList();
+            List<List<string>> H = GetHonourSets(focustile); // Default Honours
+            List<List<string>> CH = GetCombinations(H); // All Possible Honours Sets
 
             if (CH.Count == 0)
             {
@@ -27,61 +54,52 @@ namespace FourColors
 
             foreach (var h in CH)
             {
-                focustile = new List<string>(playersHands[x]);
-                Console.WriteLine("Combination : " + String.Join(",", h));
+                focustile = v.ToList();
+                //Console.WriteLine("Combi : " + String.Join(",", h));
                 foreach (var item in h)
                 {
                     focustile.Remove(item);
                 }
 
-                if (CheC5ColorSets(focustile)) { return "WIN"; }
+                if (CheckColorSets(focustile) == 0)
+                {
+                    return "WIN";
+                }
             }
 
-            return "x";
+            return "X";
         }
 
-        private static bool CheC5ColorSets(List<string> remainer)
+        public static int CheckColorSets(List<string> remainer)
         {
-            if (remainer.Count == 0)
-            {
-                return true;
-            }
-
             //Remove Kings
             remainer.RemoveAll(item => item.Contains("C7"));
 
-            // GD.Print("Remainers : "+String.Join(",",remainer));
-            // debuglb.Text = "";
-            // debuglb.Text = "Remainers : \n";
-            // foreach (var v in remainer){
-            // 	debuglb.Text = debuglb.Text + v + " \n";
-            // }
-
-
-            //CheC5 C1
+            //Console.WriteLine("REMAINER : " + String.Join(",", remainer));
+            //Check C1
             List<string> C1List = new List<string> { "C1", "C1_Green", "C1_Red", "C1_Yellow" };
-            if (RemovesetsItems(ref remainer, C1List)) { return CheC5ColorSets(remainer); }
-            //CheC5 C2
+            if (RemovesetsItems(ref remainer, C1List)) { return CheckColorSets(remainer); }
+            //Check C2
             List<string> C2List = new List<string> { "C2", "C2_Green", "C2_Red", "C2_Yellow" };
-            if (RemovesetsItems(ref remainer, C2List)) { return CheC5ColorSets(remainer); }
-            //CheC5 C3
+            if (RemovesetsItems(ref remainer, C2List)) { return CheckColorSets(remainer); }
+            //Check C3
             List<string> C3List = new List<string> { "C3", "C3_Green", "C3_Red", "C3_Yellow" };
-            if (RemovesetsItems(ref remainer, C3List)) { return CheC5ColorSets(remainer); }
-            //CheC5 C4
+            if (RemovesetsItems(ref remainer, C3List)) { return CheckColorSets(remainer); }
+            //Check C4
             List<string> C4List = new List<string> { "C4", "C4_Green", "C4_Red", "C4_Yellow" };
-            if (RemovesetsItems(ref remainer, C4List)) { return CheC5ColorSets(remainer); }
-            //CheC5 C6
+            if (RemovesetsItems(ref remainer, C4List)) { return CheckColorSets(remainer); }
+            //Check C6
             List<string> C6List = new List<string> { "C6", "C6_Green", "C6_Red", "C6_Yellow" };
-            if (RemovesetsItems(ref remainer, C6List)) { return CheC5ColorSets(remainer); }
-            //CheC5 C5
+            if (RemovesetsItems(ref remainer, C6List)) { return CheckColorSets(remainer); }
+            //Check C5
             List<string> C5List = new List<string> { "C5", "C5_Green", "C5_Red", "C5_Yellow" };
-            if (RemovesetsItems(ref remainer, C5List)) { return CheC5ColorSets(remainer); }
+            if (RemovesetsItems(ref remainer, C5List)) { return CheckColorSets(remainer); }
 
 
-            return false;
+            return remainer.Count;
         }
 
-        private static bool RemovesetsItems(ref List<string> v, List<string> presetList)
+        static bool RemovesetsItems(ref List<string> v, List<string> presetList)
         {
             // Count occurrences of each matching item in v
             var matchCounts = v.GroupBy(x => x)
@@ -102,8 +120,6 @@ namespace FourColors
             }
 
         }
-
-
         // Honor sets
         private static List<List<string>> GetHonourSets(List<string> tile)
         {
@@ -143,6 +159,42 @@ namespace FourColors
             }
 
             return honourSets;
+        }
+
+        public static bool CheckCastle(List<string> lists)
+        {
+            var tablendeck = Table.Concat(Deck);
+            var g = tablendeck.GroupBy(i => i);
+            foreach (var tt in g)
+            {
+                //Console.WriteLine("{0} {1}", tt.Key, tt.Count());
+                if (tt.Count() >= 4)
+                {
+                    alltile.Remove(tt.Key);
+                }
+
+            }
+            if (lists.Count == 15)
+            {
+                foreach (var ct in alltile)
+                {
+                    var t = lists.ToList();
+                    t.Add(ct);
+                    if (WinCondition(t) == "WIN")
+                    {
+                        Console.WriteLine($"Win with {ct}");
+                        return true;
+                    }
+
+                }
+            }
+            else if (lists.Count == 16)
+            {
+                if (WinCondition(lists) == "WIN")
+                    return true;
+            }
+
+            return false;
         }
 
         private static List<List<string>> GetCombinations(List<List<string>> lists)
@@ -199,5 +251,68 @@ namespace FourColors
             return result;
         }
         ///////////////////////////////////////////////////////////////////////////////////
+
+        /////// Max logic 
+        public class GameState
+        {
+            public List<string> Hand;
+            public int Score = 0;
+        }
+
+        public static double EvaluateState(GameState state)
+        {
+            if (WinCondition(state.Hand) == "WIN")
+                return 10000;
+
+            double bestscore = 0;
+            double score = 0;
+            double remainers = 0;
+
+            var focustile = state.Hand.ToList();
+            List<List<string>> H = GetHonourSets(focustile);
+            List<List<string>> CH = GetCombinations(H);
+
+            foreach (var h in CH)
+            {
+                focustile = state.Hand.ToList();
+                foreach (var item in h)
+                {
+                    focustile.Remove(item);
+                }
+
+                remainers = focustile.Count();
+                double colorPenalty = CheckColorSets(focustile);
+                score = h.Count * 10 - remainers - colorPenalty;  // Adjust weights to emphasize better set formations
+                bestscore = Math.Max(bestscore, score);
+
+                //remainers = focustile.Count();
+                //score = h.Count + remainers - CheckColorSets(focustile);
+                //bestscore = Math.Max(bestscore, score);
+                //Console.WriteLine($"Combi of {h.Count} + {remainers - CheckColorSets(focustile)} = {score} : {String.Join(",", h)}  Best Score = {bestscore}");
+            }
+
+            return bestscore;
+        }
+
+        public static string MAX_AI_DISCARD(GameState state)
+        {
+            if (WinCondition(state.Hand) == "WIN")
+                return "";
+
+            double handscore = double.NegativeInfinity;
+            string tiletodiscard = "";
+            foreach (var tile in state.Hand)
+            {
+                var focustile = state.Hand.ToList();
+                focustile.Remove(tile);
+                double score = EvaluateState(new GameState() { Hand = focustile });
+                if (score > handscore)
+                {
+                    tiletodiscard = tile;
+                    handscore = score;
+                }
+            }
+            return tiletodiscard;
+        }
     }
 }

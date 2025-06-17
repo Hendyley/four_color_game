@@ -1,4 +1,5 @@
 using Godot;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Threading;
 
@@ -6,12 +7,15 @@ public partial class Tile : Control
 {
 	private TextureRect TileImage;
 	private Vector2 _startPosition;
-	private bool _isDragging = false;
+    private bool _isHighlighted = false;
+    private ColorRect highlightOverlay;
+    private bool _isDragging = false;
     private bool _isDraggingTile = false;
     private const float DragThreshold = 20f; // Minimum movement to count as a drag
 	private bool _isPressed = false; // To track if it's been pressed and released
 	private bool _hasTriggered = false;
 	private Vector2 _dragOffset;
+    private bool cover = false;
 
 	[Signal] // Declare the signal
 	public delegate void TileClickedEventHandler(Tile tile);
@@ -23,33 +27,51 @@ public partial class Tile : Control
  	public int Playerid{ get; set;}
 	public String Tiletype{ get; set;}
 
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
-		// GD.Print("Tile _Ready called!");
-		TileImage = (TextureRect) FindChild("TextureRect");
-		TileImage = GetChild<TextureRect>(0);
-        MouseFilter = MouseFilterEnum.Stop; // Ensure mouse events are captured
+    // Called when the node enters the scene tree for the first time.
+    public override void _Ready()
+    {
+        TileImage = GetNode<TextureRect>("TextureRect");
+        highlightOverlay = GetNode<ColorRect>("HighlightOverlay");
+        highlightOverlay.Visible = false;
+
+        MouseFilter = MouseFilterEnum.Stop;
     }
 
+    public void UpdateHighlightVisual(bool _isHighlighted)
+    {
+        if (highlightOverlay != null)
+        {
+            this.highlightOverlay.Visible = _isHighlighted;
+        }
+    }
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-		
-	}
+    public void SetCover(bool cover)
+    {
+        this.cover = cover;
+        if (!cover)
+        {
+            string imagePath = $"res://art/4_Color_Game/Chess/Removed_BG/{this.Tileid}.png";
+            Texture2D loadedTexture = (Texture2D)GD.Load(imagePath);
+            TileImage.Texture = loadedTexture;
+        }
+        else
+        {
+            string imagePath = $"res://art/4_Color_Game/Chess/Removed_BG/Covers.png";
+            Texture2D loadedTexture = (Texture2D)GD.Load(imagePath);
+            TileImage.Texture = loadedTexture;
+        }
 
-	public void SetTile(int playerid, string value)
+    }
+
+    public void SetTile(int playerid, string value)
 	{
 		string imagePath = $"res://art/4_Color_Game/Chess/Removed_BG/{value}.png";
 		Texture2D loadedTexture = (Texture2D) GD.Load(imagePath);
 		TileImage.Texture = loadedTexture;
-		//TileImage.Position = new Vector2(831,767);
 		TileImage.Size = new Vector2(50, 200);
 		Tileid = value;
 		Playerid = playerid;
 		Tiletype = "player";
-		// GD.Print("Set = " + Tileid);
 	}
 
 	public void SetTableTile(string value)

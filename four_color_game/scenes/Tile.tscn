@@ -8,6 +8,14 @@ layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_76l64")
 
+[node name="HighlightOverlay" type="ColorRect" parent="."]
+modulate = Color(1, 1, 0.333333, 0.4)
+self_modulate = Color(1, 1, 0.0470588, 1)
+clip_contents = true
+layout_mode = 1
+offset_right = 50.0
+offset_bottom = 180.0
+
 [node name="TextureRect" type="TextureRect" parent="."]
 custom_minimum_size = Vector2(50, 200)
 layout_mode = 0
