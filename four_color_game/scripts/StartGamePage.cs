@@ -62,6 +62,7 @@ public partial class StartGamePage : Control
 	private void _on_confirm_button_pressed()
 	{
 		var player = new Player(Username.Text,true);
+		player.player_turn = 1;
 		NakamaSingleton.Instance.MainPlayer = player;
 		Node gameplayInstance = (Node)gameplayScene.Instantiate();
 		NakamaSingleton.Instance.NumberOfPlayers = int.Parse(PlayerNum.Text);

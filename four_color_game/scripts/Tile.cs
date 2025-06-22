@@ -121,7 +121,6 @@ public partial class Tile : Control
                 if (_isPressed && !_isDragging)
                     TileSelect(Tileid);
 
-                // Reordering logic after dragging
                 if (_isDraggingTile)
                 {
                     Control container = GetParent<Control>();
@@ -130,22 +129,26 @@ public partial class Tile : Control
 
                     for (int i = 0; i < container.GetChildCount(); i++)
                     {
-                        Node child = container.GetChild(i);
-                        if (child == this) continue;
-
-                        Control tile = child as Control;
-                        if (tile != null && dropX > tile.GlobalPosition.X)
+                        if (container.GetChild(i) is Control tile && tile != this && dropX > tile.GlobalPosition.X)
                             newIndex++;
                     }
 
-                    container.MoveChild(this, newIndex);
+                    // Ensure the tile is still inside the container
+                    if (IsInsideTree() && container.HasNode(this.GetPath()))
+                    {
+                        container.MoveChild(this, newIndex);
+                    }
+
+                    // Reset back to layout mode
+                    TopLevel = false;
+                    SetPosition(Vector2.Zero); // Reset local position; layout will override it
+                    QueueRedraw(); // Optional: forces a redraw just in case
                 }
 
                 _isDragging = false;
                 _isPressed = false;
                 _isDraggingTile = false;
             }
-
         }
         else if (inputEvent is InputEventScreenTouch touchEvent)
         {
@@ -160,7 +163,6 @@ public partial class Tile : Control
                 if (_isPressed && !_isDragging)
                     TileSelect(Tileid);
 
-                // Reordering logic after dragging
                 if (_isDraggingTile)
                 {
                     Control container = GetParent<Control>();
@@ -169,23 +171,24 @@ public partial class Tile : Control
 
                     for (int i = 0; i < container.GetChildCount(); i++)
                     {
-                        Node child = container.GetChild(i);
-                        if (child == this) continue;
-
-                        Control tile = child as Control;
-                        if (tile != null && dropX > tile.GlobalPosition.X)
+                        if (container.GetChild(i) is Control tile && tile != this && dropX > tile.GlobalPosition.X)
                             newIndex++;
                     }
 
-                    container.MoveChild(this, newIndex);
-                    this.TopLevel = false;
+                    if (IsInsideTree() && container.HasNode(this.GetPath()))
+                    {
+                        container.MoveChild(this, newIndex);
+                    }
+
+                    TopLevel = false;
+                    SetPosition(Vector2.Zero); // Reset local position; layout will override it
+                    QueueRedraw(); // Optional: forces a redraw just in case
                 }
 
                 _isDragging = false;
                 _isPressed = false;
                 _isDraggingTile = false;
             }
-
         }
         else if (_isPressed && inputEvent is InputEventMouseMotion mouseMotion)
         {
@@ -200,20 +203,17 @@ public partial class Tile : Control
                 Vector2 globalMousePos = GetViewport().GetMousePosition();
                 Vector2 newGlobalPos = globalMousePos - _dragOffset;
 
-
-                this.TopLevel = true;
-                // Get the container rect boundaries in global space
                 Control container = GetParent<Control>();
                 Vector2 containerGlobalPos = container.GetGlobalPosition();
                 Vector2 containerSize = container.Size;
 
-                // Clamp the tile position within the container's global rect
                 float clampedX = Mathf.Clamp(newGlobalPos.X, containerGlobalPos.X, containerGlobalPos.X + containerSize.X - Size.X);
                 float clampedY = Mathf.Clamp(newGlobalPos.Y, containerGlobalPos.Y, containerGlobalPos.Y + containerSize.Y - Size.Y);
 
+                TopLevel = true;
                 GlobalPosition = new Vector2(clampedX, clampedY);
             }
-
         }
     }
+
 }
