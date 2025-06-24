@@ -29,8 +29,9 @@ public partial class Gameplay : Node
 	private Button pickButton, castleButton, backButton;
 	//public PackedScene tile = (PackedScene)GD.Load("res://scenes/Tile.tscn");
 	//private TextureRect currentturn;
-	private Tile lastTableTile;
-	private Label deckcounterLabel, currentturnLabel, debuglb, debuglb2;
+	private Tile lastTableTile, lastDrawnTile, showstile;
+	private Panel windec;
+	private Label deckcounterLabel, currentturnLabel, turnlabel, debuglb, debuglb2;
 	private ItemList l2;
 
 	StyleBoxFlat highlightStyle = new StyleBoxFlat();
@@ -46,8 +47,13 @@ public partial class Gameplay : Node
 
         deckcounterLabel = (Label)FindChild("DeckCounter");
         currentturnLabel = (Label)FindChild("CurrentTurn");
+        turnlabel = (Label)FindChild("TurnLabel");
         debuglb = (Label)GetNode("Debug");
         debuglb2 = (Label)GetNode("Debug2");
+
+		windec = (Panel)FindChild("windec");
+		showstile = (Tile)FindChild("ShowsTile");
+		windec.Visible = false;
 
 		l2 = (ItemList)FindChild("l2");
 
@@ -58,7 +64,7 @@ public partial class Gameplay : Node
         //currentturn.Show();
 
         castlestatus = false;
-		castleButton.Disabled = true;
+		castleButton.Disabled = false;
 		pickButton.Disabled = true;
 
 		List<string> seatsvar;
@@ -150,6 +156,12 @@ public partial class Gameplay : Node
         //	debuglb2.Text = debuglb2.Text + v + " \n";
         //}
 
+        if (l2.ItemCount > 0)
+        {
+            l2.EnsureCurrentIsVisible(); // ensure selected is visible
+            l2.Select(l2.ItemCount - 1); // select last item to trigger scroll
+        }
+
         if (NakamaSingleton.Instance.Gamemode == "SinglePlayer")
 		{
 
@@ -157,22 +169,17 @@ public partial class Gameplay : Node
             GameLogic.Table = tabletiles;
             if (GameLogic.CheckCastle(playersHands[1]))
             {
-                castleButton.Disabled = false;
-				if(!castlestatus)
-					castleButton.GrabFocus();
-				else
+                if (!castlestatus)
+                    castleButton.GrabFocus();
+                else
                     castleButton.ReleaseFocus();
-            }
-            else
-            {
-                castleButton.ReleaseFocus();
             }
 
             if (NakamaSingleton.Instance.CurrentTurn != 1)
 			{ 
                 if (GameLogic.WinCondition(playersHands[NakamaSingleton.Instance.CurrentTurn]) == "WIN")
 				{
-					currentturnLabel.Text = $"Player {NakamaSingleton.Instance.CurrentTurn} WIN";
+					turnlabel.Text = $"Player {NakamaSingleton.Instance.CurrentTurn} WIN";
 					EndGame();
 				}
 			}
@@ -182,7 +189,7 @@ public partial class Gameplay : Node
 				{
 					if (GameLogic.WinCondition(playersHands[NakamaSingleton.Instance.MainPlayer.player_turn]) == "WIN")
 					{
-						currentturnLabel.Text = $"Player {NakamaSingleton.Instance.MainPlayer.player_turn} WIN";
+						turnlabel.Text = $"Player {NakamaSingleton.Instance.MainPlayer.player_turn} WIN";
 						EndGame();
 					}
 				}
@@ -270,6 +277,10 @@ public partial class Gameplay : Node
 
 			if (playersContainers[playerid].Name != "HBOX_P_S")
 				newTile.CallDeferred("SetCover", true);
+			else
+				newTile.Mainuser = true;
+
+			lastDrawnTile = newTile;
 
 			throwhand = true;
 		}
@@ -295,11 +306,13 @@ public partial class Gameplay : Node
 
         if (playersContainers[playerid].Name != "HBOX_P_S")
             newTile.CallDeferred("SetCover", true);
+        else
+            newTile.Mainuser = true;
 
         lastTableTile = null;
 
 		tabletiles.Remove(tilevalue);
-		
+		pickButton.Disabled = true;
 		throwhand = true;
 
 	}
@@ -424,7 +437,14 @@ public partial class Gameplay : Node
 	private void _on_castlebutton_pressed()
 	{
 		GD.Print("castle button pressed");
-		castlestatus = true;
+        if (!GameLogic.CheckCastle(playersHands[1]))
+        {
+			turnlabel.Text = "False Castle";
+            castleButton.ReleaseFocus();
+            return;
+        }
+        castleButton.ReleaseFocus();
+        castlestatus = true;
 		l2.AddItem("CASTLE!!!");
 	}
 
@@ -440,6 +460,32 @@ public partial class Gameplay : Node
         
     }
 
+    private Task<bool> ShowsWindec()
+    {
+        windec.Visible = true;
+        var tcs = new TaskCompletionSource<bool>();
+		showstile.Tileid = lastDrawnTile.Tileid;
+		showstile.CallDeferred("SetCover", false);
+
+        void _on_takebtn_pressed()
+        {
+            tcs.TrySetResult(true); // User chose Take
+        }
+
+        void _on_passbtn_pressed()
+        {
+            tcs.TrySetResult(false); // User chose Pass
+        }
+
+        windec.Visible = false;
+
+        return tcs.Task.ContinueWith(task =>
+        {
+            windec.Visible = false;
+            return task.Result;
+        });
+    }
+
     private void EndGame()
 	{
 		pickButton.Disabled = true;
@@ -450,7 +496,7 @@ public partial class Gameplay : Node
 	{
 	}	
 
-	public void AddTurn(){
+	public async void AddTurn(){
 
         if (NakamaSingleton.Instance.CurrentTurn < NakamaSingleton.Instance.NumberOfPlayers)
         {
@@ -464,23 +510,53 @@ public partial class Gameplay : Node
 		if (NakamaSingleton.Instance.CurrentTurn == NakamaSingleton.Instance.MainPlayerTurn)
 		{
             pickButton.Disabled = false;
+			lastTableTile.Mainuser = true;
         }
+
+		if(castlestatus)
+		{
+			lastTableTile.Mainuser = true;
+		}
 
 		if(NakamaSingleton.Instance.Gamemode == "SinglePlayer")
 		{
             if (NakamaSingleton.Instance.CurrentTurn != 1)
             {
                 var gs = new GameLogic.GameState();
-                gs.Hand = playersHands[NakamaSingleton.Instance.CurrentTurn].ToList();
+                gs.Hand = playersHands[NakamaSingleton.Instance.CurrentTurn].ToList(); //Current Hand
 
                 var gs1 = new GameLogic.GameState();
-                gs1.Hand = playersHands[NakamaSingleton.Instance.CurrentTurn].ToList();
+                gs1.Hand = playersHands[NakamaSingleton.Instance.CurrentTurn].ToList(); //Current hand + take tile from table
                 gs1.Hand.Add(lastTableTile.Name);
 
                 if (GameLogic.EvaluateState(gs) >= GameLogic.EvaluateState(gs1))
                 {
                     l2.AddItem($"player {NakamaSingleton.Instance.CurrentTurn} Previous Higher {GameLogic.EvaluateState(gs)} vs {GameLogic.EvaluateState(gs1)}");
                     DrawTile(NakamaSingleton.Instance.CurrentTurn);
+					
+                    if (castlestatus)
+					{
+                        var x = playersHands[1].ToList();
+                        x.Add(lastDrawnTile.Tileid);
+
+						if( GameLogic.WinCondition(x) == "WIN" )
+						{
+                            bool take = await ShowsWindec();
+
+                            if (take)
+                            {
+                                l2.AddItem("User clicked Take");
+								TakeTile(1, lastDrawnTile.Tileid);
+                            }
+                            else
+                            {
+                                l2.AddItem("User clicked Pass");
+                                // Do logic for passing
+                            }
+                        }
+
+                        
+                    }
                     gs.Hand = playersHands[NakamaSingleton.Instance.CurrentTurn].ToList();
                     l2.AddItem($"player {NakamaSingleton.Instance.CurrentTurn} Discard {GameLogic.MAX_AI_DISCARD(gs1)}");
                     DiscardTile(NakamaSingleton.Instance.CurrentTurn, GameLogic.MAX_AI_DISCARD(gs));
@@ -493,7 +569,30 @@ public partial class Gameplay : Node
                     DiscardTile(NakamaSingleton.Instance.CurrentTurn, GameLogic.MAX_AI_DISCARD(gs1));
                 }
 
-            }
+				if (castlestatus)
+				{
+                    await ToSignal(GetTree(), "idle_frame");
+                    var x = playersHands[1].ToList();
+					x.Add(lastTableTile.Tileid);
+
+					if (GameLogic.WinCondition(x) == "WIN")
+					{
+						bool take = await ShowsWindec();
+
+						if (take)
+						{
+							l2.AddItem("User clicked Take");
+							TakeTile(1, lastTableTile.Tileid);
+						}
+						else
+						{
+							l2.AddItem("User clicked Pass");
+							// Do logic for passing
+						}
+					}
+				}
+
+			}
         }
 	}
 

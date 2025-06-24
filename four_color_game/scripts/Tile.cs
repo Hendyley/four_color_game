@@ -23,9 +23,10 @@ public partial class Tile : Control
 	[Signal] // Declare the signal for table tile clicked
 	public delegate void TableTileClickedEventHandler(Tile tile);
 
-	public String Tileid{ get; set;}
- 	public int Playerid{ get; set;}
-	public String Tiletype{ get; set;}
+	public String Tileid { get; set;}
+ 	public int Playerid { get; set;}
+	public String Tiletype { get; set;}
+    public bool Mainuser { get; set; } = false;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -103,6 +104,9 @@ public partial class Tile : Control
 
     private void _on_gui_input(InputEvent inputEvent)
     {
+        if(!Mainuser)
+            return;
+
         if (inputEvent is InputEventMouseButton scrollEvent &&
             (scrollEvent.ButtonIndex == MouseButton.WheelUp || scrollEvent.ButtonIndex == MouseButton.WheelDown))
             return;

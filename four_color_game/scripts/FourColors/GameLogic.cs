@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,18 +32,23 @@ namespace FourColors
         public List<List<string>> Hands { get; set; }
         public int AITurn { get; set; }
         public string AItile { get; set; }
+
+
         private static List<string> alltile = new List<string>()
         {// Horse,Queen,Rook,Cannon,King,Pawn,Bishop
-            "C1", "C2", "C3", "C4", "C7", "C6", "C5",
-            "C1_Green", "C2_Green", "C3_Green", "C4_Green", "C7_Green", "C6_Green", "C5_Green",
-            "C1_Red", "C2_Red", "C3_Red", "C4_Red", "C7_Red", "C6_Red", "C5_Red",
-            "C1_Yellow", "C2_Yellow", "C3_Yellow", "C4_Yellow", "C7_Yellow", "C6_Yellow", "C5_Yellow"
+            "C1", "C2", "C3", "C4", "C6", "C5", "C7",
+            "C1_Green", "C2_Green", "C3_Green", "C4_Green", "C6_Green", "C5_Green", "C7_Green",
+            "C1_Red", "C2_Red", "C3_Red", "C4_Red", "C6_Red", "C5_Red", "C7_Red",
+            "C1_Yellow", "C2_Yellow", "C3_Yellow", "C4_Yellow", "C6_Yellow", "C5_Yellow", "C7_Yellow"
         };
 
 
         ////////////////// Game Winning Conditions
         public static string WinCondition(List<string> v)
         {
+            if (v.Count != 16)
+                return "X";
+
             var focustile = v.ToList();
             List<List<string>> H = GetHonourSets(focustile); // Default Honours
             List<List<string>> CH = GetCombinations(H); // All Possible Honours Sets
@@ -61,7 +67,7 @@ namespace FourColors
                     focustile.Remove(item);
                 }
 
-                if (CheckColorSets(focustile) == 0)
+                if (CheckColorSets(focustile).remainer == 0)
                 {
                     return "WIN";
                 }
@@ -70,7 +76,7 @@ namespace FourColors
             return "X";
         }
 
-        public static int CheckColorSets(List<string> remainer)
+        public static (List<string> remainerlist, int remainer) CheckColorSets(List<string> remainer)
         {
             //Remove Kings
             remainer.RemoveAll(item => item.Contains("C7"));
@@ -96,7 +102,7 @@ namespace FourColors
             if (RemovesetsItems(ref remainer, C5List)) { return CheckColorSets(remainer); }
 
 
-            return remainer.Count;
+            return (remainer, remainer.Count);
         }
 
         static bool RemovesetsItems(ref List<string> v, List<string> presetList)
@@ -192,6 +198,15 @@ namespace FourColors
             {
                 if (WinCondition(lists) == "WIN")
                     return true;
+
+
+                foreach (var ct in lists)
+                {
+                    var lt = lists.ToList();
+                    lt.Remove(ct);
+                    if (CheckCastle(lt))
+                        return true;
+                }
             }
 
             return false;
@@ -261,51 +276,129 @@ namespace FourColors
 
         public static double EvaluateState(GameState state)
         {
-            if (WinCondition(state.Hand) == "WIN")
+            if (WinCondition(state.Hand) == "WIN" && state.Hand.Count == 16)
                 return 10000;
 
-            double bestscore = 0;
-            double score = 0;
-            double remainers = 0;
+            double bestscore = double.NegativeInfinity;
 
             var focustile = state.Hand.ToList();
             List<List<string>> H = GetHonourSets(focustile);
             List<List<string>> CH = GetCombinations(H);
 
+            if (CH.Count == 0)
+            {
+                // Fallback scoring based only on color sets
+                var rl = CheckColorSets(focustile).remainerlist;
+                var r = CheckColorSets(focustile).remainer;
+
+                double honorsgroup = 0;
+                double partialBonus = CountPartialColorSets(rl) * 2;
+                double colorPenalty = MaxPair(rl) * 10;
+                double duplicatepenalty = 0;
+                if (r > 0)
+                {
+                    foreach (var item in rl.Distinct())
+                    {
+                        int count = state.Hand.Count(x => x == item);
+                        if (count > duplicatepenalty)
+                            duplicatepenalty = count;
+                    }
+                }
+
+                bestscore = honorsgroup + partialBonus - colorPenalty - duplicatepenalty;
+                return bestscore;
+            }
+
             foreach (var h in CH)
             {
                 focustile = state.Hand.ToList();
                 foreach (var item in h)
-                {
                     focustile.Remove(item);
+
+                var rl = CheckColorSets(focustile).remainerlist;
+                var r = CheckColorSets(focustile).remainer;
+
+                double honorsgroup = h.Count(); // HonorSets forms
+                double partialBonus = CountPartialColorSets(rl) * 2; // If form colorset
+                double colorPenalty = MaxPair(rl) * 10; // Remainer that doest for anything 
+                double duplicatepenalty = 0;
+                if (r > 0)
+                {
+                    foreach (var item in rl.Distinct())
+                    {
+                        int count = state.Hand.Count(x => x == item);
+                        if (count > duplicatepenalty)
+                            duplicatepenalty = count;
+                    }
                 }
 
-                remainers = focustile.Count();
-                double colorPenalty = CheckColorSets(focustile);
-                score = h.Count * 10 - remainers - colorPenalty;  // Adjust weights to emphasize better set formations
+                int maxMatch = 0;
+
+                var prefixGroups = rl.GroupBy(s => s.Substring(0, 2))
+                                       .ToDictionary(g => g.Key, g => g.ToList());
+
+                foreach (var prefix in prefixGroups.Keys)
+                {
+                    int handCount = prefixGroups[prefix].Count;
+                    int tableCount = Table.Where(t =>
+                        t.StartsWith(prefix) && !rl.Contains(t)
+                    ).Count();
+
+                    maxMatch = Math.Max(maxMatch, Math.Min(handCount, tableCount));
+                }
+
+
+                double score = honorsgroup + partialBonus - colorPenalty - duplicatepenalty - maxMatch;
                 bestscore = Math.Max(bestscore, score);
 
-                //remainers = focustile.Count();
-                //score = h.Count + remainers - CheckColorSets(focustile);
-                //bestscore = Math.Max(bestscore, score);
-                //Console.WriteLine($"Combi of {h.Count} + {remainers - CheckColorSets(focustile)} = {score} : {String.Join(",", h)}  Best Score = {bestscore}");
+                Console.WriteLine($"Combi of {honorsgroup}*1 + {CountPartialColorSets(rl)}*2 - {MaxPair(rl)}*10 - {duplicatepenalty} - {maxMatch}  = {score} : honors={String.Join(",", h)} colors=={String.Join(",", rl)}  Best Score = {bestscore}");
             }
 
             return bestscore;
         }
 
+
+        public static double MaxPair(List<string> list)
+        {
+            if (list.Count == 0)
+                return 0;
+
+            var grouped = list
+            .Distinct() // Remove duplicates
+            .GroupBy(card => card.Substring(0, 2)) // Group by first 2 chars
+            .Select(g => new { Prefix = g.Key, Count = g.Count() })
+            .ToList();
+
+            var max = grouped.Max(g => g.Count);
+            return list.Count - max;
+        }
+
+        public static int CountPartialColorSets(List<string> remaining)
+        {
+            var colorGroups = remaining
+                .GroupBy(card => card.Substring(0, 2))
+                .Where(g => g.Count() == 2 || g.Count() == 3);
+
+            return colorGroups.Count();
+        }
+
+
         public static string MAX_AI_DISCARD(GameState state)
         {
-            if (WinCondition(state.Hand) == "WIN")
-                return "";
+            if (WinCondition(state.Hand) == "WIN" && state.Hand.Count == 16)
+                return "WIN";
 
             double handscore = double.NegativeInfinity;
             string tiletodiscard = "";
             foreach (var tile in state.Hand)
             {
+                if (tile.Contains("C7"))
+                    continue;
+
                 var focustile = state.Hand.ToList();
                 focustile.Remove(tile);
                 double score = EvaluateState(new GameState() { Hand = focustile });
+                Console.WriteLine($"discard {tile} score {score}");
                 if (score > handscore)
                 {
                     tiletodiscard = tile;
