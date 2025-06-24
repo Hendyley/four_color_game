@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Project\\Git\\Games\\four_color_game\\algo\\FourColorAlgo\\FourColorAlgo\\FourColorAlgo.csproj": {}
+    "D:\\Github\\FourColorLogic\\algo\\FourColorAlgo\\FourColorAlgo\\FourColorAlgo.csproj": {}
   },
   "projects": {
-    "E:\\Project\\Git\\Games\\four_color_game\\algo\\FourColorAlgo\\FourColorAlgo\\FourColorAlgo.csproj": {
+    "D:\\Github\\FourColorLogic\\algo\\FourColorAlgo\\FourColorAlgo\\FourColorAlgo.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Project\\Git\\Games\\four_color_game\\algo\\FourColorAlgo\\FourColorAlgo\\FourColorAlgo.csproj",
+        "projectUniqueName": "D:\\Github\\FourColorLogic\\algo\\FourColorAlgo\\FourColorAlgo\\FourColorAlgo.csproj",
         "projectName": "FourColorAlgo",
-        "projectPath": "E:\\Project\\Git\\Games\\four_color_game\\algo\\FourColorAlgo\\FourColorAlgo\\FourColorAlgo.csproj",
-        "packagesPath": "C:\\Users\\Hendy\\.nuget\\packages\\",
-        "outputPath": "E:\\Project\\Git\\Games\\four_color_game\\algo\\FourColorAlgo\\FourColorAlgo\\obj\\",
+        "projectPath": "D:\\Github\\FourColorLogic\\algo\\FourColorAlgo\\FourColorAlgo\\FourColorAlgo.csproj",
+        "packagesPath": "C:\\Users\\hendy.lim\\.nuget\\packages\\",
+        "outputPath": "D:\\Github\\FourColorLogic\\algo\\FourColorAlgo\\FourColorAlgo\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Hendy\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\hendy.lim\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -25,8 +25,11 @@
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages": {},
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
+          "C:\\Program Files(x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\TwinCAT\\Functions\\TE2000-HMI-Engineering\\Infrastructure\\Packages": {},
+          "C:\\TwinCAT\\Functions\\TE2000-HMI-Engineering\\References": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -61,34 +64,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.13, 8.0.13]"
-            },
-            {
-              "name": "Microsoft.Net.Sdk.Compilers.Toolset",
-              "version": "[9.0.200, 9.0.200]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[8.0.13, 8.0.13]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[8.0.13, 8.0.13]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[8.0.13, 8.0.13]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.200/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.203/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
