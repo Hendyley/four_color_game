@@ -1,10 +1,14 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "E:\\Project\\Git\\Games\\algo\\FourColorAlgo\\",
+  "WorkspaceRootPath": "E:\\Project\\Git\\Games\\four_color_game\\algo\\FourColorAlgo\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{B2FC7A88-8E52-4BFB-9B44-1823FA4A5F47}|FourColorAlgo\\FourColorAlgo.csproj|e:\\project\\git\\games\\algo\\fourcoloralgo\\fourcoloralgo\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{B2FC7A88-8E52-4BFB-9B44-1823FA4A5F47}|FourColorAlgo\\FourColorAlgo.csproj|e:\\project\\git\\games\\four_color_game\\algo\\fourcoloralgo\\fourcoloralgo\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B2FC7A88-8E52-4BFB-9B44-1823FA4A5F47}|FourColorAlgo\\FourColorAlgo.csproj|solutionrelative:fourcoloralgo\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B2FC7A88-8E52-4BFB-9B44-1823FA4A5F47}|FourColorAlgo\\FourColorAlgo.csproj|e:\\project\\git\\games\\four_color_game\\algo\\fourcoloralgo\\fourcoloralgo\\gamelogic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B2FC7A88-8E52-4BFB-9B44-1823FA4A5F47}|FourColorAlgo\\FourColorAlgo.csproj|solutionrelative:fourcoloralgo\\gamelogic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -13,18 +17,37 @@
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedWidth": 200,
+          "DockedWidth": 243,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "GameLogic.cs",
+              "DocumentMoniker": "E:\\Project\\Git\\Games\\four_color_game\\algo\\FourColorAlgo\\FourColorAlgo\\GameLogic.cs",
+              "RelativeDocumentMoniker": "FourColorAlgo\\GameLogic.cs",
+              "ToolTip": "E:\\Project\\Git\\Games\\four_color_game\\algo\\FourColorAlgo\\FourColorAlgo\\GameLogic.cs",
+              "RelativeToolTip": "FourColorAlgo\\GameLogic.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAcwCkAAABdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-23T05:36:34.825Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedWidth": 231,
           "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Program.cs",
-              "DocumentMoniker": "E:\\Project\\Git\\Games\\algo\\FourColorAlgo\\FourColorAlgo\\Program.cs",
+              "DocumentMoniker": "E:\\Project\\Git\\Games\\four_color_game\\algo\\FourColorAlgo\\FourColorAlgo\\Program.cs",
               "RelativeDocumentMoniker": "FourColorAlgo\\Program.cs",
-              "ToolTip": "E:\\Project\\Git\\Games\\algo\\FourColorAlgo\\FourColorAlgo\\Program.cs*",
+              "ToolTip": "E:\\Project\\Git\\Games\\four_color_game\\algo\\FourColorAlgo\\FourColorAlgo\\Program.cs*",
               "RelativeToolTip": "FourColorAlgo\\Program.cs*",
-              "ViewState": "AgIAACoAAAAAAAAAAAAAAFoAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAACkAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-17T10:02:55.709Z",
               "EditorCaption": ""

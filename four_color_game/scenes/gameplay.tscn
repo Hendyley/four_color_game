@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://cm1bc46c0qr4l"]
+[gd_scene load_steps=25 format=3 uid="uid://cm1bc46c0qr4l"]
 
 [ext_resource type="Texture2D" uid="uid://bojt53ffw6lwv" path="res://art/4_Color_Game/green_BG.png" id="1_n5011"]
 [ext_resource type="Script" path="res://scripts/Gameplay.cs" id="1_s8yka"]
@@ -91,9 +91,6 @@ cache/0/18/0/scale = 1.0
 [sub_resource type="LabelSettings" id="LabelSettings_bsdb8"]
 font = SubResource("FontFile_4di04")
 font_size = 18
-
-[sub_resource type="LabelSettings" id="LabelSettings_4gl7y"]
-font_size = 30
 
 [sub_resource type="ImageTexture" id="ImageTexture_t5eo6"]
 
@@ -247,88 +244,6 @@ text = "1"
 label_settings = SubResource("LabelSettings_bsdb8")
 horizontal_alignment = 1
 autowrap_mode = 3
-
-[node name="windec" type="Panel" parent="Control"]
-visible = false
-layout_direction = 1
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -125.0
-offset_top = -180.0
-offset_right = 125.0
-offset_bottom = 180.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="ShowsTile" parent="Control/windec" instance=ExtResource("2_gevuu")]
-layout_direction = 1
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -25.0
-offset_top = 30.0
-offset_right = -25.0
-offset_bottom = 30.0
-grow_horizontal = 2
-size_flags_horizontal = 4
-size_flags_vertical = 0
-
-[node name="Header" type="Label" parent="Control/windec"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -85.0
-offset_top = 40.0
-offset_right = 95.0
-offset_bottom = 90.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-text = "Take tile?"
-label_settings = SubResource("LabelSettings_4gl7y")
-horizontal_alignment = 1
-
-[node name="Takebtn" type="Button" parent="Control/windec"]
-layout_direction = 2
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 20.0
-offset_top = -80.0
-offset_right = 100.0
-offset_bottom = -20.0
-grow_vertical = 0
-size_flags_horizontal = 0
-size_flags_vertical = 4
-text = "Take"
-
-[node name="Passbtn" type="Button" parent="Control/windec"]
-layout_direction = 2
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -100.0
-offset_top = -80.0
-offset_right = -20.0
-offset_bottom = -20.0
-grow_horizontal = 0
-grow_vertical = 0
-size_flags_horizontal = 8
-size_flags_vertical = 4
-text = "Pass
-"
 
 [node name="Scroll_P_S" type="ScrollContainer" parent="."]
 offset_left = 258.0
@@ -490,9 +405,19 @@ offset_bottom = 508.0
 scale = Vector2(0.2, 0.2)
 icon = ExtResource("5_dmi23")
 
+[node name="windec" type="ConfirmationDialog" parent="."]
+initial_position = 2
+size = Vector2i(253, 100)
+ok_button_text = "Castle"
+dialog_text = "You can castle. Do you want to"
+
+[node name="windec_c" type="AcceptDialog" parent="."]
+initial_position = 2
+size = Vector2i(200, 100)
+
+[node name="Timer" type="Timer" parent="."]
+
 [connection signal="gui_input" from="Control" to="." method="_on_control_gui_input"]
-[connection signal="pressed" from="Control/windec/Takebtn" to="." method="_on_takebtn_pressed"]
-[connection signal="pressed" from="Control/windec/Passbtn" to="." method="_on_passbtn_pressed"]
 [connection signal="pressed" from="pickupbutton" to="." method="_on_pickupbutton_pressed"]
 [connection signal="pressed" from="castlebutton" to="." method="_on_castlebutton_pressed"]
 [connection signal="pressed" from="sortbutton" to="." method="_on_sortbutton_pressed"]

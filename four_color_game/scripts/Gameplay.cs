@@ -30,11 +30,16 @@ public partial class Gameplay : Node
 	//public PackedScene tile = (PackedScene)GD.Load("res://scenes/Tile.tscn");
 	//private TextureRect currentturn;
 	private Tile lastTableTile, lastDrawnTile, showstile;
-	private Panel windec;
 	private Label deckcounterLabel, currentturnLabel, turnlabel, debuglb, debuglb2;
 	private ItemList l2;
 
-	StyleBoxFlat highlightStyle = new StyleBoxFlat();
+	private ConfirmationDialog windec, windec2;
+    private bool decisionMade = false;
+    private bool takeDecision = false;
+    private AcceptDialog autoMessageBox;
+    private Timer autoCloseTimer;
+
+    StyleBoxFlat highlightStyle = new StyleBoxFlat();
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -51,11 +56,25 @@ public partial class Gameplay : Node
         debuglb = (Label)GetNode("Debug");
         debuglb2 = (Label)GetNode("Debug2");
 
-		windec = (Panel)FindChild("windec");
-		showstile = (Tile)FindChild("ShowsTile");
-		windec.Visible = false;
+		windec = (ConfirmationDialog)FindChild("windec");
+		windec.Confirmed += () =>
+		{
+			decisionMade = true;
+			takeDecision = true;
+		};
+		windec.Canceled += () => 
+		{
+			decisionMade = true;
+			takeDecision = false;
+		};
+		autoMessageBox = (AcceptDialog)FindChild("windec_c");
+		autoCloseTimer = (Timer)FindChild("Timer");
+        autoCloseTimer.Timeout += () =>
+        {
+            autoMessageBox.Hide();
+        };
 
-		l2 = (ItemList)FindChild("l2");
+        l2 = (ItemList)FindChild("l2");
 
 		NakamaSingleton.Instance.Connect(nameof(NakamaSingleton.PlayerTileUpdate), new Callable(this, nameof(TileUpdate)));
 
@@ -317,7 +336,6 @@ public partial class Gameplay : Node
 
 	}
 
-
 	public void DiscardTile(int playerid, string tilevalue)
 	{
 		if(!throwhand)
@@ -460,32 +478,6 @@ public partial class Gameplay : Node
         
     }
 
-    private Task<bool> ShowsWindec()
-    {
-        windec.Visible = true;
-        var tcs = new TaskCompletionSource<bool>();
-		showstile.Tileid = lastDrawnTile.Tileid;
-		showstile.CallDeferred("SetCover", false);
-
-        void _on_takebtn_pressed()
-        {
-            tcs.TrySetResult(true); // User chose Take
-        }
-
-        void _on_passbtn_pressed()
-        {
-            tcs.TrySetResult(false); // User chose Pass
-        }
-
-        windec.Visible = false;
-
-        return tcs.Task.ContinueWith(task =>
-        {
-            windec.Visible = false;
-            return task.Result;
-        });
-    }
-
     private void EndGame()
 	{
 		pickButton.Disabled = true;
@@ -497,6 +489,14 @@ public partial class Gameplay : Node
 	}	
 
 	public async void AddTurn(){
+
+        if (NakamaSingleton.Instance.CurrentTurn == NakamaSingleton.Instance.MainPlayerTurn)
+        {
+            if(!castlestatus && GameLogic.CheckCastle(playersHands[NakamaSingleton.Instance.MainPlayerTurn]) )
+			{
+                ShowAutoMessage("You Can Castle. Do you want to?", 2.5f);
+            }
+        }
 
         if (NakamaSingleton.Instance.CurrentTurn < NakamaSingleton.Instance.NumberOfPlayers)
         {
@@ -534,24 +534,30 @@ public partial class Gameplay : Node
                     l2.AddItem($"player {NakamaSingleton.Instance.CurrentTurn} Previous Higher {GameLogic.EvaluateState(gs)} vs {GameLogic.EvaluateState(gs1)}");
                     DrawTile(NakamaSingleton.Instance.CurrentTurn);
 					
-                    if (castlestatus)
+                    if (castlestatus) //Check player Draw
 					{
                         var x = playersHands[1].ToList();
                         x.Add(lastDrawnTile.Tileid);
 
 						if( GameLogic.WinCondition(x) == "WIN" )
 						{
-                            bool take = await ShowsWindec();
+                            decisionMade = false;
+                            takeDecision = false;
+							windec.DialogText = windec.DialogText + $" {lastDrawnTile.Tileid}";
+                            windec.PopupCentered();
 
-                            if (take)
+                            // Wait until user clicks
+                            while (!decisionMade)
+                                await ToSignal(GetTree(), "idle_frame");
+
+                            if (takeDecision)
                             {
-                                l2.AddItem("User clicked Take");
-								TakeTile(1, lastDrawnTile.Tileid);
+                                l2.AddItem("Player chose to Take");
+                                TakeTile(NakamaSingleton.Instance.MainPlayerTurn, lastDrawnTile.Tileid); 
                             }
                             else
                             {
-                                l2.AddItem("User clicked Pass");
-                                // Do logic for passing
+                                l2.AddItem("Player chose to Pass");
                             }
                         }
 
@@ -569,7 +575,7 @@ public partial class Gameplay : Node
                     DiscardTile(NakamaSingleton.Instance.CurrentTurn, GameLogic.MAX_AI_DISCARD(gs1));
                 }
 
-				if (castlestatus)
+				if (castlestatus) //Player Discard
 				{
                     await ToSignal(GetTree(), "idle_frame");
                     var x = playersHands[1].ToList();
@@ -577,19 +583,25 @@ public partial class Gameplay : Node
 
 					if (GameLogic.WinCondition(x) == "WIN")
 					{
-						bool take = await ShowsWindec();
+                        decisionMade = false;
+                        takeDecision = false;
+                        windec.DialogText = windec.DialogText + $" {lastTableTile.Tileid}";
+                        windec.PopupCentered();
 
-						if (take)
-						{
-							l2.AddItem("User clicked Take");
-							TakeTile(1, lastTableTile.Tileid);
-						}
-						else
-						{
-							l2.AddItem("User clicked Pass");
-							// Do logic for passing
-						}
-					}
+                        // Wait until user clicks
+                        while (!decisionMade)
+                            await ToSignal(GetTree(), "idle_frame");
+
+                        if (takeDecision)
+                        {
+                            l2.AddItem("Player chose to Take");
+                            TakeTile(NakamaSingleton.Instance.MainPlayerTurn, lastTableTile.Tileid);
+                        }
+                        else
+                        {
+                            l2.AddItem("Player chose to Pass");
+                        }
+                    }
 				}
 
 			}
@@ -613,6 +625,12 @@ public partial class Gameplay : Node
 
 		container.QueueSort(); // Ensure UI update
 	}
-	
+
+    public void ShowAutoMessage(string message, float durationSeconds = 2.0f)
+    {
+        autoMessageBox.DialogText = message;
+        autoMessageBox.PopupCentered();
+        autoCloseTimer.Start(durationSeconds);
+    }
 
 }
