@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FourColorAlgo")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+38c6cd8837f13b4dd3463176f582ea1c942f8467")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+03a5199b89b875f5b3c61922d0e86eeb6a67d503")]
 [assembly: System.Reflection.AssemblyProductAttribute("FourColorAlgo")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FourColorAlgo")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

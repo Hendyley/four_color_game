@@ -4,9 +4,44 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NLog;
+using NLog.Config;
+using NLog.Targets;
+using System.IO;
 
 namespace FourColors
 {
+
+    public static class LoggerManager
+    {
+        private static readonly Logger logger;
+
+        static LoggerManager()
+        {
+            // Configure NLog in code
+            var config = new LoggingConfiguration();
+
+            var fileTarget = new FileTarget("logfile")
+            {
+                FileName = "logs/app.log",
+                Layout = "${longdate} | ${level:uppercase=true} | ${message} ${exception:format=tostring}"
+            };
+
+            config.AddTarget(fileTarget);
+            config.AddRule(LogLevel.Info, LogLevel.Fatal, fileTarget);
+
+            LogManager.Configuration = config;
+
+            logger = LogManager.GetCurrentClassLogger();
+        }
+
+        public static void Info(string message) => logger.Info(message);
+        public static void Warn(string message) => logger.Warn(message);
+        public static void Error(string message) => logger.Error(message);
+        public static void Debug(string message) => logger.Debug(message);
+    }
+
+
     public class GameLogic
     {
         enum Tile
@@ -171,12 +206,13 @@ namespace FourColors
         {
             var tablendeck = Table.Concat(Deck);
             var g = tablendeck.GroupBy(i => i);
+            var alltilelist = alltile.ToList();
             foreach (var tt in g)
             {
                 //Console.WriteLine("{0} {1}", tt.Key, tt.Count());
                 if (tt.Count() >= 4)
                 {
-                    alltile.Remove(tt.Key);
+                    alltilelist.Remove(tt.Key);
                 }
 
             }
@@ -200,13 +236,13 @@ namespace FourColors
                     return true;
 
 
-                foreach (var ct in lists)
-                {
-                    var lt = lists.ToList();
-                    lt.Remove(ct);
-                    if (CheckCastle(lt))
-                        return true;
-                }
+                //foreach (var ct in lists)
+                //{
+                //    var lt = lists.ToList();
+                //    lt.Remove(ct);
+                //    if (CheckCastle(lt))
+                //        return true;
+                //}
             }
 
             return false;
