@@ -47,7 +47,6 @@ public partial class NakamaSingleton : Node
     public int NumberOfPlayers { get; set; } = 4;
     private string[] content;
 
-
     private IApiGroup currentSelectedGroup;
     private IGroupUserListGroupUser currentlySelectedUser;
     private IChannel currentChat;
@@ -58,6 +57,15 @@ public partial class NakamaSingleton : Node
     [Signal] public delegate void PlayerDataSyncEventHandler(Json data);
     [Signal] public delegate void PlayerJoinGameEventHandler(string data);
     [Signal] public delegate void PlayerReadyGameEventHandler(string data);
+    [Signal] public delegate void PlayerGameStatusEventHandler(string data);
+    [Signal] public delegate void PlayerGameTurnsEventHandler(string data);
+    [Signal] public delegate void GameDeckEventHandler(string data);
+    [Signal] public delegate void PlayerGameSeatsEventHandler(string data);
+    [Signal] public delegate void PlayerGameHandsEventHandler(string data);
+    [Signal] public delegate void GameTableEventHandler(string data);
+    [Signal] public delegate void PlayerGameCastleEventHandler(string data);
+    [Signal] public delegate void PlayerGameChatsEventHandler(string data);
+
     [Signal] public delegate void PlayerTileUpdateEventHandler(string data);
 
     public override void _Ready()
@@ -73,7 +81,7 @@ public partial class NakamaSingleton : Node
         Client = new Client("http", ServerAddress, Port, "defaultkey");
         Client.Timeout = 500;
 
-        GD.Print("NakamaSingleton ready.");
+        LoggerManager.Info("NakamaSingleton ready.");
     }
 
     public async Task HostGame(string playerName, int maxPlayers)
@@ -98,10 +106,10 @@ public partial class NakamaSingleton : Node
 
         Match = await Socket.CreateMatchAsync();
         RoomId = Match.Id;
-        //GD.Print($"Created Match with ID : {Match.Id}");
+        LoggerManager.Info($"Created Room with ID : {Match.Id}");
 
         await Socket.JoinMatchAsync(Match.Id);
-        //GD.Print($"Joined Match with ID : {Match.Id}");
+        //LoggerManager.Info($"Joined Match with ID : {Match.Id}");
 
 
         //EmitSignal(nameof(MatchJoined), Match.Id);
@@ -122,7 +130,7 @@ public partial class NakamaSingleton : Node
         Socket.ReceivedMatchState += onMatchState;
 
         Match = await Socket.JoinMatchAsync(roomId);
-        GD.Print($"Joined Match with ID : {Match.Id}");
+        LoggerManager.Info($"Joined Match with ID : {Match.Id}");
 
         var data = Encoding.UTF8.GetBytes(MainPlayer.player_name);
         await Socket.SendMatchStateAsync(Match.Id, 0, data);
@@ -141,9 +149,10 @@ public partial class NakamaSingleton : Node
   
     private void onMatchPresence(IMatchPresenceEvent @event)
     {
-        //GD.Print(@event.ToString());
+        //LoggerManager.Info(@event.ToString());
     }
 
+    // For others
     private void onMatchState(IMatchState state)
     {
         string data = Encoding.UTF8.GetString(state.State);
@@ -151,11 +160,10 @@ public partial class NakamaSingleton : Node
         {
             case 0: // Players Join
                 CallDeferred(nameof(EmitPlayerJoinGameSignal), data);
-                PlayerJoiningInfo(data); // Host add new player
                 break;
             case 1: // Chats
                 content = JsonConvert.DeserializeObject<string[]>(data);
-                GD.Print($"Received data from user {content[0]} : {content[1]} ");
+                LoggerManager.Info($"Received data from user {content[0]} : {content[1]} ");
                 CallDeferred(nameof(ChatMessages), content);
                 break;
             case 2: // Start Game
@@ -167,12 +175,12 @@ public partial class NakamaSingleton : Node
                 if (input[0] == MainPlayer.player_name)
                 {
                     MainPlayer.player_turn = int.Parse(input[1]);
-                    GD.Print($"{MainPlayer.player_name} assigned {MainPlayer.player_turn}");
+                    LoggerManager.Info($"{MainPlayer.player_name} assigned {MainPlayer.player_turn}");
                 }
                 break;
             case 4: // Update tile
                 content = JsonConvert.DeserializeObject<string[]>(data);
-                GD.Print($"Received data from user {content[0]} : {content[1]} ");
+                LoggerManager.Info($"Received data from user {content[0]} : {content[1]} ");
                 CallDeferred(nameof(EmitSyncTiles), content);
                 break;
         }
@@ -181,34 +189,15 @@ public partial class NakamaSingleton : Node
     private void ChatMessages(string[] content)
     {
         //TLabel.Text = content[1];
-        GD.Print($"I {MainPlayer.player_name} received from {content[0]}");
+        LoggerManager.Info($"I {MainPlayer.player_name} received from {content[0]}");
     }
 
 
-    public void EmitPlayerJoinGameSignal(string data)
+    public async void EmitPlayerJoinGameSignal(string data)
     {
-        EmitSignal(SignalName.PlayerJoinGame, data);
-    }
+        //EmitSignal(nameof(PlayerJoinGame), data);    // send to other classese (page)
 
-    public void EmitReadytostart(string data)
-    {
-        EmitSignal(nameof(PlayerReadyGame), data);
-    }
-
-
-    public void EmitSyncTiles(string[] content)
-    {
-        EmitSignal(nameof(PlayerTileUpdate), content);
-    }
-
-    public async void SyncData(string data, int opcode)
-    {
-        await Socket.SendMatchStateAsync(Match.Id, opcode, data);
-    }
-
-    private async void PlayerJoiningInfo(string data)
-    {
-        if(!IsHost)
+        if (!IsHost)
             return;
 
         var player = new Player(data, false);
@@ -218,16 +207,65 @@ public partial class NakamaSingleton : Node
         await Socket.SendMatchStateAsync(Match.Id, 3, x);
         PlayerList.Add(player);
 
-        GD.Print($" {MainPlayer.player_name} says {player.player_name} Joined. Current Player count {CurrentPlayers}");
+        LoggerManager.Info($" {MainPlayer.player_name} says {player.player_name} Joined. Current Player count {CurrentPlayers}");
         //NakamaStore("PlayerList", Hostname, playerList);
 
         if (CurrentPlayers == NumberOfPlayers)
         {
             //GameStart();
-            CallDeferred(nameof(EmitReadytostart), CurrentPlayers.ToString());
+            CallDeferred(nameof(EmitReadytostart), CurrentPlayers.ToString());  // For self
             //EmitSignal(nameof(PlayerReadyGame), MainPlayer.player_name);
             await Socket.SendMatchStateAsync(Match.Id, 2, CurrentPlayers.ToString());
         }
+
+    }
+
+    public void EmitReadytostart(string data)
+    {
+        EmitSignal(nameof(PlayerReadyGame), data);
+    }
+
+    public void EmitPlayerGameStatus(string data)
+    {
+        EmitSignal(nameof(PlayerGameStatus), data);
+    }
+    public void EmitPlayerGameTurns(string data)
+    {
+        EmitSignal(nameof(PlayerGameTurns), data);
+    }
+    public void EmitGameDeck(string data)
+    {
+        EmitSignal(nameof(GameDeck), data);
+    }
+    public void EmitPlayerGameSeats(string data)
+    {
+        EmitSignal(nameof(PlayerGameSeats), data);
+    }
+    public void EmitPlayerGameHands(string data)
+    {
+        EmitSignal(nameof(PlayerGameHands), data);
+    }
+    public void EmitGameTable(string data)
+    {
+        EmitSignal(nameof(GameTable), data);
+    }
+    public void EmitPlayerGameCastle(string data)
+    {
+        EmitSignal(nameof(PlayerGameCastle), data);
+    }
+    public void EmitPlayerGameChats(string data)
+    {
+        EmitSignal(nameof(PlayerGameChats), data);
+    }
+
+    public void EmitSyncTiles(string[] content)
+    {
+        EmitSignal(nameof(PlayerTileUpdate), content);
+    }
+
+    public async void SyncData(string data, int opcode)
+    {
+        await Socket.SendMatchStateAsync(Match.Id, opcode, data);
     }
 
     // Store data to Nakama
@@ -243,7 +281,7 @@ public partial class NakamaSingleton : Node
         };
 
         await Client.WriteStorageObjectsAsync(Session, new[] { writeStorageObject });
-        GD.Print("NakamaStore Completed!!");
+        LoggerManager.Info("NakamaStore Completed!!");
 
     }
 
@@ -260,7 +298,7 @@ public partial class NakamaSingleton : Node
         if (result.Objects.Any())
         {
             var obj = result.Objects.First();
-            GD.Print($"data received is {obj.Value} {JsonParser.FromJson<Player>(obj.Value)}");
+            LoggerManager.Info($"data received is {obj.Value} {JsonParser.FromJson<Player>(obj.Value)}");
         }
 
     }

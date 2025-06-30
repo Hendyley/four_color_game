@@ -48,9 +48,9 @@ public partial class MultiplayerPage : Node
 		RoomSizeInput.AddItem("4");
 		RoomSizeInput.ItemSelected += onOptionSelected;
 
-		NakamaSingleton.Instance.Connect(nameof(NakamaSingleton.PlayerReadyGame), new Callable(this, nameof(StartGame)));
+		NakamaSingleton.Instance.Connect(nameof(NakamaSingleton.PlayerReadyGame), new Callable(this, nameof(StartGame)));   // Sync Startgame
 
-	}
+    }
 
     private void StartGame(string playernum)
     {
@@ -59,11 +59,9 @@ public partial class MultiplayerPage : Node
 		Node gameplayInstance = (Node)gameplayScene.Instantiate();
 		NakamaSingleton.Instance.Gamemode = "Multiplayer";
 
-
         GetTree().Root.AddChild(gameplayInstance);
         //GetTree().CurrentScene.Free();  // Remove the previous scene
         GetTree().CurrentScene = gameplayInstance;
-
 
     }
 
@@ -75,6 +73,7 @@ public partial class MultiplayerPage : Node
 	public override void _Process(double delta)
 	{
 	}
+
 	private async void OnHostButtonPressed()
 	{
 		string name = PlayernameInput.Text;
