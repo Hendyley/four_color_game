@@ -35,8 +35,7 @@ public partial class NakamaSingleton : Node
     public ISocket Socket { get; private set; }
     public IMatch Match { get; private set; }
 
-    public List<Player> PlayerList { get; private set; } = new();
-    public Dictionary<int,List<string>> PlayerHands { get; set; } = new();
+    public Dictionary<int, Player> PlayerList { get; set; } = new();
 
     public Player MainPlayer { get; set; }
     public int MainPlayerTurn {  get; set; }
@@ -66,8 +65,6 @@ public partial class NakamaSingleton : Node
     [Signal] public delegate void PlayerGameCastleEventHandler(string data);
     [Signal] public delegate void PlayerGameChatsEventHandler(string data);
 
-    [Signal] public delegate void PlayerTileUpdateEventHandler(string data);
-
     public override void _Ready()
     {
         if (Instance != null)
@@ -92,7 +89,7 @@ public partial class NakamaSingleton : Node
         MainPlayer = new Player(playerName, true);
         CurrentPlayers++;
         MainPlayer.player_turn = CurrentPlayers;
-        PlayerList.Add(MainPlayer);
+        PlayerList[CurrentPlayers] = MainPlayer;
         
 
         Session = await Client.AuthenticateCustomAsync(MainPlayer.player_id, MainPlayer.player_name);
@@ -171,17 +168,16 @@ public partial class NakamaSingleton : Node
                 NumberOfPlayers = int.Parse(data);
                 break;
             case 3: // Set Player turn
-                string[] input = data.Split(',');
-                if (input[0] == MainPlayer.player_name)
+                var rjson = JsonConvert.DeserializeObject<Dictionary<int, Player>>(data);
+                foreach (var kvp in rjson)
                 {
-                    MainPlayer.player_turn = int.Parse(input[1]);
-                    LoggerManager.Info($"{MainPlayer.player_name} assigned {MainPlayer.player_turn}");
+                    PlayerList[kvp.Key] = kvp.Value; 
                 }
                 break;
             case 4: // Update tile
                 content = JsonConvert.DeserializeObject<string[]>(data);
                 LoggerManager.Info($"Received data from user {content[0]} : {content[1]} ");
-                CallDeferred(nameof(EmitSyncTiles), content);
+                //CallDeferred(nameof(EmitSyncTiles), content);
                 break;
         }
     }
@@ -204,8 +200,7 @@ public partial class NakamaSingleton : Node
         CurrentPlayers++;
 
         string x = player.player_name + "," + CurrentPlayers;
-        await Socket.SendMatchStateAsync(Match.Id, 3, x);
-        PlayerList.Add(player);
+        PlayerList[CurrentPlayers] = player;
 
         LoggerManager.Info($" {MainPlayer.player_name} says {player.player_name} Joined. Current Player count {CurrentPlayers}");
         //NakamaStore("PlayerList", Hostname, playerList);
@@ -213,9 +208,16 @@ public partial class NakamaSingleton : Node
         if (CurrentPlayers == NumberOfPlayers)
         {
             //GameStart();
-            CallDeferred(nameof(EmitReadytostart), CurrentPlayers.ToString());  // For self
+            CallDeferred(nameof(EmitReadytostart), CurrentPlayers.ToString());  // For self startgame
             //EmitSignal(nameof(PlayerReadyGame), MainPlayer.player_name);
-            await Socket.SendMatchStateAsync(Match.Id, 2, CurrentPlayers.ToString());
+
+            // Update Turns
+            var djson = JsonConvert.SerializeObject(PlayerList);
+            byte[] datas = Encoding.UTF8.GetBytes(djson);
+            await Socket.SendMatchStateAsync(Match.Id, 3, datas); // For other toupdate
+
+
+            await Socket.SendMatchStateAsync(Match.Id, 2, CurrentPlayers.ToString()); // For others startgame
         }
 
     }
@@ -256,11 +258,6 @@ public partial class NakamaSingleton : Node
     public void EmitPlayerGameChats(string data)
     {
         EmitSignal(nameof(PlayerGameChats), data);
-    }
-
-    public void EmitSyncTiles(string[] content)
-    {
-        EmitSignal(nameof(PlayerTileUpdate), content);
     }
 
     public async void SyncData(string data, int opcode)

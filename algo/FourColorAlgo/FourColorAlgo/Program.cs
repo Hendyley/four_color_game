@@ -29,28 +29,29 @@ namespace Program
 
 
             playersHands[1].Add("C1");
-            playersHands[1].Add("C1_Green");
-            playersHands[1].Add("C1_Red");
-            playersHands[1].Add("C1_Yellow");
-
+            playersHands[1].Add("C2_Green");
+            
+            playersHands[1].Add("C3");
+            playersHands[1].Add("C3_Green");
+            playersHands[1].Add("C3_Red");
+            playersHands[1].Add("C3_Yellow");
 
             playersHands[1].Add("C4");
-            playersHands[1].Add("C4_Green");
             playersHands[1].Add("C4_Yellow");
 
-            playersHands[1].Add("C5");
-            playersHands[1].Add("C5_Red");
+            playersHands[1].Add("C5_Green");
+            playersHands[1].Add("C5_Yellow");
             playersHands[1].Add("C5_Yellow");
 
+            playersHands[1].Add("C6");
             playersHands[1].Add("C6_Green");
             playersHands[1].Add("C6_Red");
-            playersHands[1].Add("C6_Yellow");
+
+            playersHands[1].Add("C7_Green");
 
 
-            playersHands[1].Add("C7");
-            playersHands[1].Add("C7_Red");
 
-
+            //playersHands[1].Add("C4_Yellow");
 
             string discard = GameLogic.MAX_AI_DISCARD(new GameLogic.GameState { Hand = new List<string>(playersHands[1].ToList()) });
             Console.WriteLine($"AI suggests discarding: {discard}");
@@ -61,8 +62,9 @@ namespace Program
 
             GameLogic.GameState x2 = new GameLogic.GameState();
             x2.Hand = playersHands[1].ToList();
+            x2.Hand.Add("C4_Green");
 
-            Console.WriteLine($"Score {GameLogic.EvaluateState(x)}");
+            Console.WriteLine($"Score {GameLogic.EvaluateState(x)} vs {GameLogic.EvaluateState(x2)}");
 
             string result = GameLogic.WinCondition(playersHands[1]);
             Console.WriteLine($"AFTER LOGIC: {result}");
