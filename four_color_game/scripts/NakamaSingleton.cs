@@ -179,6 +179,10 @@ public partial class NakamaSingleton : Node
                 LoggerManager.Info($"Received data from user {content[0]} : {content[1]} ");
                 //CallDeferred(nameof(EmitSyncTiles), content);
                 break;
+            case 5: // Update Deck
+                CallDeferred(nameof(EmitGameDeck), data);
+                break;
+
         }
     }
 

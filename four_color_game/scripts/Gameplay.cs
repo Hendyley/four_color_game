@@ -15,34 +15,45 @@ using System.Diagnostics.Eventing.Reader;
 
 public partial class Gameplay : Node
 {
-	[Export] public PackedScene tileScene;
-	
-	public List<string> deck = new List<string>();  
+    [Export] public PackedScene tileScene;
 
-	private Dictionary<int, List<string>> playersHands = new Dictionary<int, List<string> >();
-	private Dictionary<int, HBoxContainer> playersContainers = new Dictionary<int, HBoxContainer>();
-	private Dictionary<int, Player> PlayerSeats = new Dictionary<int, Player>(); // S -> W -> N -> E
-	private Dictionary<int, bool> PlayerCastleStatus = new Dictionary<int, bool>();
+    public List<string> deck = new List<string>();
 
-	private bool throwhand;
-	public Godot.Container tabletilescontainer;
-	private List<string> tabletiles = new();
-	private Button pickButton, castleButton, backButton;
-	private Tile lastTableTile, lastDrawnTile, showstile;
-	private Label deckcounterLabel, currentturnLabel, turnlabel, debuglb, debuglb2;
-	private ItemList l2;
+    private Dictionary<int, List<string>> playersHands = new Dictionary<int, List<string>>();
+    private Dictionary<int, HBoxContainer> playersContainers = new Dictionary<int, HBoxContainer>();
+    private Dictionary<int, Player> PlayerSeats = new Dictionary<int, Player>(); // S -> W -> N -> E
+    private Dictionary<int, bool> PlayerCastleStatus = new Dictionary<int, bool>();
 
-	private ConfirmationDialog windec, windec2;
+    private bool throwhand;
+    public Godot.Container tabletilescontainer;
+    private List<string> tabletiles = new();
+    private Button pickButton, castleButton, backButton;
+    private Tile lastTableTile, lastDrawnTile, showstile;
+    private Label deckcounterLabel, currentturnLabel, turnlabel, debuglb, debuglb2;
+    private ItemList l2;
+    private bool _castleFocusGiven = false;
+
+
+    private ConfirmationDialog windec, windec2;
     private bool decisionMade = false;
     private bool takeDecision = false;
     private AcceptDialog autoMessageBox;
 
     StyleBoxFlat highlightStyle = new StyleBoxFlat();
 
-	public override void _Ready()
-	{
-        if (File.Exists("logs/app.log"))
-            File.Delete("logs/app.log");
+    public async override void _Ready()
+    {
+        string logPath = "logs/app.log";
+        long maxSizeInBytes = 5 * 1024 * 1024; // 5 MB
+
+        if (File.Exists(logPath))
+        {
+            FileInfo logInfo = new FileInfo(logPath);
+            if (logInfo.Length > maxSizeInBytes)
+            {
+                File.Delete(logPath);
+            }
+        }
 
         tileScene = (PackedScene)ResourceLoader.Load("res://scenes/Tile.tscn");
         tabletilescontainer = (Godot.Container)FindChild("TableTiles");
@@ -66,20 +77,20 @@ public partial class Gameplay : Node
         debuglb = (Label)GetNode("Debug");
         debuglb2 = (Label)GetNode("Debug2");
 
-		windec = (ConfirmationDialog)FindChild("windec");
-		windec.Confirmed += () =>
-		{
-			decisionMade = true;
-			takeDecision = true;
-		};
-		windec.Canceled += () => 
-		{
-			decisionMade = true;
-			takeDecision = false;
-		};
+        windec = (ConfirmationDialog)FindChild("windec");
+        windec.Confirmed += () =>
+        {
+            decisionMade = true;
+            takeDecision = true;
+        };
+        windec.Canceled += () =>
+        {
+            decisionMade = true;
+            takeDecision = false;
+        };
 
-		autoMessageBox = (AcceptDialog)FindChild("windec_c");
-		autoCloseTimer = (Timer)FindChild("Timer");
+        autoMessageBox = (AcceptDialog)FindChild("windec_c");
+        autoCloseTimer = (Timer)FindChild("Timer");
         autoCloseTimer.Timeout += () =>
         {
             autoMessageBox.Hide();
@@ -88,18 +99,18 @@ public partial class Gameplay : Node
         l2 = (ItemList)FindChild("l2");
 
         NakamaSingleton.Instance.CurrentTurn = 1;
-		castleButton.Disabled = false;
-		pickButton.Disabled = true;
+        castleButton.Disabled = false;
+        pickButton.Disabled = true;
 
-		List<string> seatsvar;
-		if(NakamaSingleton.Instance.NumberOfPlayers==2)
-			seatsvar = new List<string>() { "S", "N" };
-		else if(NakamaSingleton.Instance.NumberOfPlayers == 3)
-			seatsvar = new List<string>() { "S", "W", "N" };
-		else if (NakamaSingleton.Instance.NumberOfPlayers == 4)
-			seatsvar = new List<string>() { "S", "W", "N", "E" };
-		else
-			seatsvar = new List<string>() { "S", "W", "N", "E" };
+        List<string> seatsvar;
+        if (NakamaSingleton.Instance.NumberOfPlayers == 2)
+            seatsvar = new List<string>() { "S", "N" };
+        else if (NakamaSingleton.Instance.NumberOfPlayers == 3)
+            seatsvar = new List<string>() { "S", "W", "N" };
+        else if (NakamaSingleton.Instance.NumberOfPlayers == 4)
+            seatsvar = new List<string>() { "S", "W", "N", "E" };
+        else
+            seatsvar = new List<string>() { "S", "W", "N", "E" };
 
         PlayerSeats = NakamaSingleton.Instance.PlayerList;
         ///////////////////////////////
@@ -121,46 +132,14 @@ public partial class Gameplay : Node
                 GD.PrintErr($"Could not find container: {containerName}");
             }
         }
-		
-        StartGame();
+
+        if (NakamaSingleton.Instance.Gamemode == "SinglePlayer" || NakamaSingleton.Instance.IsHost)
+            StartGame();
 
         if (NakamaSingleton.Instance.Gamemode == "SinglePlayer")
         {
-            PlayerSeats[NakamaSingleton.Instance.MainPlayerTurn] = NakamaSingleton.Instance.MainPlayer;
+            //PlayerSeats[NakamaSingleton.Instance.MainPlayerTurn] = NakamaSingleton.Instance.MainPlayer;
 
-            for (int i = 0; i < seatsvar.Count; i++)
-            {
-                string containerName = $"HBOX_P_{seatsvar[i]}";
-                HBoxContainer handContainer = (HBoxContainer)FindChild(containerName);
-                playersHands[turnsequence[i]] = new List<string>();
-
-                if (handContainer != null)
-                {
-                    playersContainers[turnsequence[i]] = handContainer;
-                    LoggerManager.Info($"Player {turnsequence[i]} hand assigned to {containerName}");
-                }
-                else
-                {
-                    GD.PrintErr($"Could not find container: {containerName}");
-                }
-            }
-
-            StartGame();
-
-            for (int i = 1; i <= NakamaSingleton.Instance.NumberOfPlayers; i++)
-            {
-				PlayerCastleStatus[i] = false;
-                for (int j = 1; j <= 15; j++)
-                {
-                    DrawTile(i);
-                }
-                SortTiles(i);
-            }
-        }
-
-
-        else if (NakamaSingleton.Instance.Gamemode == "MultiPlayer")
-        {
             for (int i = 1; i <= NakamaSingleton.Instance.NumberOfPlayers; i++)
             {
                 PlayerCastleStatus[i] = false;
@@ -171,39 +150,49 @@ public partial class Gameplay : Node
                 SortTiles(i);
             }
         }
+
+
+        else if (NakamaSingleton.Instance.Gamemode == "MultiPlayer" && NakamaSingleton.Instance.IsHost)
+        {
+            string jsonDeck = JsonConvert.SerializeObject(deck);
+            byte[] deckData = Encoding.UTF8.GetBytes(jsonDeck);
+            await NakamaSingleton.Instance.Socket.SendMatchStateAsync(NakamaSingleton.Instance.Match.Id, 5, deckData);
+        }
+
         DrawTile(NakamaSingleton.Instance.CurrentTurn);
-		throwhand = true;
-	}
+
+        throwhand = true;
+    }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
-    public override void _Process(double delta)
-	{
-		deckcounterLabel.Text = deck.Count.ToString();
+    public async override void _Process(double delta)
+    {
+        deckcounterLabel.Text = deck.Count.ToString();
         currentturnLabel.Text = NakamaSingleton.Instance.CurrentTurn.ToString();
         GameLogic.Deck = deck;
         GameLogic.Table = tabletiles;
 
         debuglb.Text = "";
-		debuglb.Text = $"Tile P!: {playersHands[1].Count}\n";
-		var sub = playersHands[1].ToList();
-		sub.Sort();
-		playersHands[1].Sort();
-		foreach (var v in sub)
-		{
-			debuglb.Text = debuglb.Text + v + " \n";
-		}
+        debuglb.Text = $"Tile P!: {playersHands[1].Count}\n";
+        var sub = playersHands[1].ToList();
+        sub.Sort();
+        playersHands[1].Sort();
+        foreach (var v in sub)
+        {
+            debuglb.Text = debuglb.Text + v + " \n";
+        }
 
-		debuglb2.Text = "";
-		debuglb2.Text = $"Tile P2 : {playersHands[2].Count}\n";
-		sub = playersHands[2].ToList();
-		sub.Sort();
-		playersHands[2].Sort();
-		foreach (var v in sub)
-		{
-			debuglb2.Text = debuglb2.Text + v + " \n";
-		}
+        debuglb2.Text = "";
+        debuglb2.Text = $"Tile P2 : {playersHands[2].Count}\n";
+        sub = playersHands[2].ToList();
+        sub.Sort();
+        playersHands[2].Sort();
+        foreach (var v in sub)
+        {
+            debuglb2.Text = debuglb2.Text + v + " \n";
+        }
 
-		if (l2.ItemCount > 0)
+        if (l2.ItemCount > 0)
         {
             l2.EnsureCurrentIsVisible(); // ensure selected is visible
             l2.Select(l2.ItemCount - 1); // select last item to trigger scroll
@@ -211,45 +200,54 @@ public partial class Gameplay : Node
 
         /////////////////////////////////////////////////////////////////////////////////  "SinglePlayer"
         if (NakamaSingleton.Instance.Gamemode == "SinglePlayer")
-		{
+        {
             if (GameLogic.CheckCastle(playersHands[NakamaSingleton.Instance.MainPlayerTurn]))
             {
                 if (!PlayerCastleStatus[NakamaSingleton.Instance.MainPlayerTurn])
-                    castleButton.GrabFocus();
+                {
+                    if (!_castleFocusGiven)
+                    {
+                        castleButton.GrabFocus();
+                        _castleFocusGiven = true;
+                    }
+                }
                 else
+                {
                     castleButton.ReleaseFocus();
-            } 
-			else if (GameLogic.CheckCastle(playersHands[NakamaSingleton.Instance.CurrentTurn]) && !PlayerCastleStatus[NakamaSingleton.Instance.CurrentTurn])
+                    _castleFocusGiven = false;
+                }
+            }
+            else if (GameLogic.CheckCastle(playersHands[NakamaSingleton.Instance.CurrentTurn]) && !PlayerCastleStatus[NakamaSingleton.Instance.CurrentTurn])
             {
-				PlayerCastleStatus[NakamaSingleton.Instance.CurrentTurn] = true;
+                PlayerCastleStatus[NakamaSingleton.Instance.CurrentTurn] = true;
                 l2.AddItem($"Player {NakamaSingleton.Instance.CurrentTurn} CASTLE !!!!");
                 LoggerManager.Info($"Player {NakamaSingleton.Instance.CurrentTurn} CASTLE !!!!");
             }
 
             if (NakamaSingleton.Instance.CurrentTurn != 1 && PlayerCastleStatus[NakamaSingleton.Instance.CurrentTurn])
-			{
-				if (GameLogic.WinCondition(playersHands[NakamaSingleton.Instance.CurrentTurn]) == "WIN")
-				{
-					turnlabel.Text = $"Player {NakamaSingleton.Instance.CurrentTurn} WIN";
-                    LoggerManager.Info( $"Player {NakamaSingleton.Instance.CurrentTurn} WIN");
+            {
+                if (GameLogic.WinCondition(playersHands[NakamaSingleton.Instance.CurrentTurn]) == "WIN")
+                {
+                    turnlabel.Text = $"Player {NakamaSingleton.Instance.CurrentTurn} WIN";
+                    LoggerManager.Info($"Player {NakamaSingleton.Instance.CurrentTurn} WIN");
                     EndGame();
-				}
-			}
-			else if (NakamaSingleton.Instance.CurrentTurn == 1 && PlayerCastleStatus[NakamaSingleton.Instance.MainPlayerTurn])
-			{
-				if (GameLogic.WinCondition(playersHands[NakamaSingleton.Instance.MainPlayerTurn]) == "WIN")
-				{
-					turnlabel.Text = $"Player {NakamaSingleton.Instance.MainPlayerTurn} WIN";
-                    LoggerManager.Info( $"Player {NakamaSingleton.Instance.MainPlayerTurn} WIN");
+                }
+            }
+            else if (NakamaSingleton.Instance.CurrentTurn == 1 && PlayerCastleStatus[NakamaSingleton.Instance.MainPlayerTurn])
+            {
+                if (GameLogic.WinCondition(playersHands[NakamaSingleton.Instance.MainPlayerTurn]) == "WIN")
+                {
+                    turnlabel.Text = $"Player {NakamaSingleton.Instance.MainPlayerTurn} WIN";
+                    LoggerManager.Info($"Player {NakamaSingleton.Instance.MainPlayerTurn} WIN");
                     EndGame();
-				}
-			}
+                }
+            }
 
-		}
+        }
 
         /////////////////////////////////////////////////////////////////////////////////  "Multiplayer"
         if (NakamaSingleton.Instance.Gamemode == "Multiplayer")
-		{
+        {
             if (GameLogic.CheckCastle(playersHands[NakamaSingleton.Instance.MainPlayerTurn]))
             {
                 if (!PlayerCastleStatus[NakamaSingleton.Instance.MainPlayerTurn])
@@ -261,11 +259,11 @@ public partial class Gameplay : Node
             if (NakamaSingleton.Instance.CurrentTurn == NakamaSingleton.Instance.MainPlayerTurn && PlayerCastleStatus[NakamaSingleton.Instance.MainPlayerTurn])
             {
                 if (GameLogic.WinCondition(playersHands[NakamaSingleton.Instance.MainPlayerTurn]) == "WIN")
-				{
-					turnlabel.Text = $"Player {NakamaSingleton.Instance.MainPlayerTurn} WIN";
-                    LoggerManager.Info( $"Player {NakamaSingleton.Instance.MainPlayerTurn} WIN");
+                {
+                    turnlabel.Text = $"Player {NakamaSingleton.Instance.MainPlayerTurn} WIN";
+                    LoggerManager.Info($"Player {NakamaSingleton.Instance.MainPlayerTurn} WIN");
                     EndGame();
-				}
+                }
             }
 
         }
@@ -284,7 +282,11 @@ public partial class Gameplay : Node
 
     private void GameDeck(string data)
     {
+        if (NakamaSingleton.Instance.IsHost)
+            return;
 
+        deck = JsonConvert.DeserializeObject<List<string>>(data);
+        LoggerManager.Info($"{NakamaSingleton.Instance.MainPlayer.player_name} Deck updated. New deck count: {deck.Count}");
     }
 
     private void GameSeats(string data)
@@ -314,129 +316,132 @@ public partial class Gameplay : Node
 
 
 
-	private void StartGame()
-	{
-		LoggerManager.Info("Game Start");
+    private void StartGame()
+    {
+        LoggerManager.Info("Game Start");
 
-		deck = CreateDeck();
-		ShuffleDeck();
-		for(int i = 1; i <= NakamaSingleton.Instance.NumberOfPlayers; i++){
-			playersHands[i].Clear();
-			foreach (Node child in playersContainers[i].GetChildren())
-				child.QueueFree();
-		}
+        deck = CreateDeck();
+        ShuffleDeck();
+        for (int i = 1; i <= NakamaSingleton.Instance.NumberOfPlayers; i++)
+        {
+            playersHands[i].Clear();
+            foreach (Node child in playersContainers[i].GetChildren())
+                child.QueueFree();
+        }
 
-	}
+    }
 
-	private List<string> CreateDeck()
-	{
-		LoggerManager.Info("Create Deck");
+    private List<string> CreateDeck()
+    {
+        LoggerManager.Info("Create Deck");
 
-		List<string> newDeck = new List<string>();
-		String x;
-		for (int s = 0; s < 4; s++)
-		{
-		  for (int i = 1; i <= 7; i++) // 7 Pieces
-		  {
-			  x=$"C{i}";
-			  newDeck.Add(x);
-			  newDeck.Add(x+"_Green");
-			  newDeck.Add(x+"_Red");
-			  newDeck.Add(x+"_Yellow");
-		  }
-		}
-		LoggerManager.Info("Amount in the Deck: "+newDeck.Count);
+        List<string> newDeck = new List<string>();
+        String x;
+        for (int s = 0; s < 4; s++)
+        {
+            for (int i = 1; i <= 7; i++) // 7 Pieces
+            {
+                x = $"C{i}";
+                newDeck.Add(x);
+                newDeck.Add(x + "_Green");
+                newDeck.Add(x + "_Red");
+                newDeck.Add(x + "_Yellow");
+            }
+        }
+        LoggerManager.Info("Amount in the Deck: " + newDeck.Count);
 
-		return newDeck;
-	}
+        return newDeck;
+    }
 
-	private void ShuffleDeck()
-	{
-		Random rng = new Random();
-		int n = deck.Count;
-		while (n > 1)
-		{
-			n--;
-			int k = rng.Next(n + 1);
-			(deck[k], deck[n]) = (deck[n], deck[k]);
-		}
-	}
+    private void ShuffleDeck()
+    {
+        Random rng = new Random();
+        int n = deck.Count;
+        while (n > 1)
+        {
+            n--;
+            int k = rng.Next(n + 1);
+            (deck[k], deck[n]) = (deck[n], deck[k]);
+        }
+    }
 
-	private void DrawTile(int playerid)
-	{
-		if (lastTableTile != null)
-			lastTableTile.CallDeferred("UpdateHighlightVisual", false);
+    private void DrawTile(int playerid)
+    {
+        if (lastTableTile != null)
+            lastTableTile.CallDeferred("UpdateHighlightVisual", false);
+
         LoggerManager.Info($"Player {playerid} Attempting to draw a card...");
 
-		if (deck.Count > 0)
-		{
-			string tilevalue = deck[0];
-			deck.RemoveAt(0);
-			playersHands[playerid].Add(tilevalue);
-			LoggerManager.Info($"Player {playerid} Drawn Card Value: " + tilevalue);
+        if (deck.Count > 0)
+        {
+            string tilevalue = deck[0];
+            deck.RemoveAt(0);
+            playersHands[playerid].Add(tilevalue);
+
+            LoggerManager.Info($"Player {playerid} Drawn Card Value: " + tilevalue);
             l2.AddItem($"Player {playerid} Drawn Card Value: " + tilevalue);
 
             Tile newTile = (Tile)tileScene.Instantiate();
-			playersContainers[playerid].AddChild(newTile);
-			newTile.Tileid = tilevalue;
+            playersContainers[playerid].AddChild(newTile);
+            newTile.Tileid = tilevalue;
 
             newTile.SetTile(playerid, tilevalue);
-			//newTile.CallDeferred("SetTile", playerid ,tilevalue);
-			newTile.Connect("TileClicked", new Callable(this,"OnTileClicked"));
+            //newTile.CallDeferred("SetTile", playerid ,tilevalue);
+            newTile.Connect("TileClicked", new Callable(this, "OnTileClicked"));
 
-			if (playersContainers[playerid].Name != "HBOX_P_S")
+            if (playersContainers[playerid].Name != "HBOX_P_S")
                 newTile.SetCover(true);
             else
                 newTile.Mainuser = true;
 
-			lastDrawnTile = newTile;
+            lastDrawnTile = newTile;
 
-			throwhand = true;
-		}
-		else
-		{
-			LoggerManager.Info("Deck is empty! No card drawn.");
+            throwhand = true;
+        }
+        else
+        {
+            LoggerManager.Info("Deck is empty! No card drawn.");
             l2.AddItem("Deck is empty! No card drawn.");
-		}
-	}
+        }
+    }
 
-	private void TakeTile(int playerid=1, string tilevalue="C1")
-	{
+    private void TakeTile(int playerid = 1, string tilevalue = "C1")
+    {
 
         l2.AddItem($"player {playerid} take tile {tilevalue}");
-        
+
         lastTableTile.CallDeferred("UpdateHighlightVisual", false);
         //SortTiles(NakamaSingleton.Instance.CurrentTurn);
 
         playersHands[playerid].Add(tilevalue);
-		Tile newTile = (Tile)tileScene.Instantiate();
-		newTile.Tileid = tilevalue;
-		playersContainers[playerid].AddChild(newTile);
-		
-		LoggerManager.Info($"Player {playerid} take tile: " + tilevalue);
+        Tile newTile = (Tile)tileScene.Instantiate();
+        newTile.Tileid = tilevalue;
+        playersContainers[playerid].AddChild(newTile);
+
+        LoggerManager.Info($"Player {playerid} take tile: " + tilevalue);
         l2.AddItem($"Player {playerid} take tile: " + tilevalue);
 
         newTile.SetTile(playerid, tilevalue);
         //newTile.CallDeferred("SetTile", playerid ,tilevalue);
-		newTile.Connect("TileClicked", new Callable(this,"OnTileClicked"));
+        newTile.Connect("TileClicked", new Callable(this, "OnTileClicked"));
 
         if (playersContainers[playerid].Name != "HBOX_P_S")
             newTile.SetCover(true);     //newTile.CallDeferred("SetCover", true);
         else
             newTile.Mainuser = true;
 
-        //lastTableTile = null;
+        lastTableTile = null;
 
-		tabletiles.Remove(tilevalue);
-		pickButton.Disabled = true;
-		throwhand = true;
+        tabletiles.Remove(tilevalue);
+        pickButton.Disabled = true;
+        throwhand = true;
 
-	}
+    }
 
-	public async void DiscardTile(int playerid, string tilevalue)
-	{
+    public async void DiscardTile(int playerid, string tilevalue)
+    {
         if (!throwhand)
-			return;
+            return;
 
         l2.AddItem($"player {playerid} Discard {tilevalue}");
 
@@ -461,18 +466,18 @@ public partial class Gameplay : Node
         await AddTurn(); ////////////////////////////////////////////////////////////////////////////// Turn Change here
         await autoplay();
         return;
-	}
+    }
 
-	private async Task<bool> AddtoTables(string tilevalue)
-	{
-		LoggerManager.Info($"Add {tilevalue} to the table ");
+    private async Task<bool> AddtoTables(string tilevalue)
+    {
+        LoggerManager.Info($"Add {tilevalue} to the table ");
 
-		if (lastTableTile != null)
-		{
-			lastTableTile.Disconnect("TableTileClicked", new Callable(this, "OnTableTileClicked"));
-		}
+        if (lastTableTile != null)
+        {
+            lastTableTile.Disconnect("TableTileClicked", new Callable(this, "OnTableTileClicked"));
+        }
 
-		Tile newTile = (Tile)tileScene.Instantiate();
+        Tile newTile = (Tile)tileScene.Instantiate();
         tabletilescontainer.AddChild(newTile);
         tabletiles.Add(tilevalue);
         newTile.Tileid = tilevalue;
@@ -486,148 +491,150 @@ public partial class Gameplay : Node
         newTile.Connect("TableTileClicked", new Callable(this, "OnTableTileClicked"));
 
         Random rand = new Random();
-		Vector2 containerSize = tabletilescontainer.GetRect().Size;
-		Vector2 tileSize = newTile.GetRect().Size;
-		
-		float randomX = (float)(rand.NextDouble() * (containerSize.X - tileSize.X));
-		float randomY = (float)(rand.NextDouble() * (containerSize.Y - tileSize.Y));
-		newTile.Position = new Vector2(randomX, randomY);
-		float randomRotation = (float)(rand.NextDouble() * 360);
-		newTile.RotationDegrees = randomRotation;
-		
-		
-		throwhand = false;
+        Vector2 containerSize = tabletilescontainer.GetRect().Size;
+        Vector2 tileSize = newTile.GetRect().Size;
+
+        float randomX = (float)(rand.NextDouble() * (containerSize.X - tileSize.X));
+        float randomY = (float)(rand.NextDouble() * (containerSize.Y - tileSize.Y));
+        newTile.Position = new Vector2(randomX, randomY);
+        float randomRotation = (float)(rand.NextDouble() * 360);
+        newTile.RotationDegrees = randomRotation;
+
+
+        throwhand = false;
 
         return true;
-	}
+    }
 
-	private void OnTileClicked(Tile clickedTile)
-	{
-		if(clickedTile.Tileid.Contains("C7"))
-		{
-			LoggerManager.Info("Cannot discard King tile !!!");
-			return;
-		}
-		LoggerManager.Info($"Player {clickedTile.Playerid} Discarding Tile: " + clickedTile.Tileid);
-		DiscardTile(clickedTile.Playerid, clickedTile.Tileid);
-		
-	}
+    private void OnTileClicked(Tile clickedTile)
+    {
+        if (clickedTile.Tileid.Contains("C7"))
+        {
+            LoggerManager.Info("Cannot discard King tile !!!");
+            return;
+        }
+        LoggerManager.Info($"Player {clickedTile.Playerid} Discarding Tile: " + clickedTile.Tileid);
+        DiscardTile(clickedTile.Playerid, clickedTile.Tileid);
 
-	private void OnTableTileClicked(Tile clickedTile)
-	{
-		foreach (Node child in tabletilescontainer.GetChildren())
-		{
-			if (child is Tile tile)
-			{
-				if (tile.Tileid == clickedTile.Tileid)  
-				{
-					tabletilescontainer.RemoveChild(tile);
-					tile.QueueFree(); 
-					break;
-				}
-			}
-			else
-			{
-				LoggerManager.Info("Warning: Child is not a Tile node!");
-			}
-		}
-		LoggerManager.Info($"Player {clickedTile.Playerid} Taking Tile: " + clickedTile.Tileid);
+    }
+
+    private void OnTableTileClicked(Tile clickedTile)
+    {
+        foreach (Node child in tabletilescontainer.GetChildren())
+        {
+            if (child is Tile tile)
+            {
+                if (tile.Tileid == clickedTile.Tileid)
+                {
+                    tabletilescontainer.RemoveChild(tile);
+                    tile.QueueFree();
+                    break;
+                }
+            }
+            else
+            {
+                LoggerManager.Info("Warning: Child is not a Tile node!");
+            }
+        }
+        LoggerManager.Info($"Player {clickedTile.Playerid} Taking Tile: " + clickedTile.Tileid);
         l2.AddItem($"Player {clickedTile.Playerid} Taking Tile: " + clickedTile.Tileid);
         TakeTile(NakamaSingleton.Instance.CurrentTurn, clickedTile.Tileid);
-	}
+    }
 
 
-	private void buttondisable()
-	{
-		pickButton.Disabled = true;
-		castleButton.Disabled = true;
-	}
+    private void buttondisable()
+    {
+        pickButton.Disabled = true;
+        castleButton.Disabled = true;
+    }
 
 
-	private void _on_pickupbutton_pressed()
-	{
-		LoggerManager.Info("pickup button pressed");
-		DrawTile(NakamaSingleton.Instance.CurrentTurn);
-		pickButton.Disabled = true;
-	}
+    private void _on_pickupbutton_pressed()
+    {
+        LoggerManager.Info("pickup button pressed");
+        DrawTile(NakamaSingleton.Instance.CurrentTurn);
+        pickButton.Disabled = true;
+    }
 
-	private void _on_castlebutton_pressed()
-	{
-		LoggerManager.Info("castle button pressed");
+    private void _on_castlebutton_pressed()
+    {
+        LoggerManager.Info("castle button pressed");
         if (!GameLogic.CheckCastle(playersHands[NakamaSingleton.Instance.MainPlayerTurn]))
         {
-			turnlabel.Text = "False Castle";
+            turnlabel.Text = "False Castle";
             castleButton.ReleaseFocus();
             return;
         }
         castleButton.ReleaseFocus();
         PlayerCastleStatus[NakamaSingleton.Instance.MainPlayerTurn] = true;
-		l2.AddItem("CASTLE!!!");
-	}
+        l2.AddItem("CASTLE!!!");
+    }
 
-	private void _on_back_button_pressed()
-	{
-		LoggerManager.Info("back button pressed");
-		GetTree().ChangeSceneToFile("res://scenes/main_menu.tscn");
-	}
+    private void _on_back_button_pressed()
+    {
+        LoggerManager.Info("back button pressed");
+        GetTree().ChangeSceneToFile("res://scenes/main_menu.tscn");
+    }
 
-	private void _on_sortbutton_pressed()
-	{
-		SortTiles(NakamaSingleton.Instance.MainPlayerTurn);
-        
+    private void _on_sortbutton_pressed()
+    {
+        SortTiles(NakamaSingleton.Instance.MainPlayerTurn);
+
     }
 
     private void EndGame()
-	{
-		pickButton.Disabled = true;
-		castleButton.Disabled = true;
-	}
+    {
+        pickButton.Disabled = true;
+        castleButton.Disabled = true;
+    }
 
-	private void _on_control_gui_input(InputEvent inputEvent)
-	{
-	}	
+    private void _on_control_gui_input(InputEvent inputEvent)
+    {
+    }
 
-	public async Task<bool> AddTurn()
-	{
+    public async Task<bool> AddTurn()
+    {
 
         if (NakamaSingleton.Instance.CurrentTurn == NakamaSingleton.Instance.MainPlayerTurn)
         {
-            if(!PlayerCastleStatus[NakamaSingleton.Instance.MainPlayerTurn] && GameLogic.CheckCastle(playersHands[NakamaSingleton.Instance.MainPlayerTurn]) )
-			{
-                ShowAutoMessage("You Can Castle.", 4000);
+            if (!PlayerCastleStatus[NakamaSingleton.Instance.MainPlayerTurn] && GameLogic.CheckCastle(playersHands[NakamaSingleton.Instance.MainPlayerTurn]))
+            {
+                ShowAutoMessage("You Can Castle.", 5000);
             }
         }
 
         if (NakamaSingleton.Instance.CurrentTurn < NakamaSingleton.Instance.NumberOfPlayers)
         {
-			NakamaSingleton.Instance.CurrentTurn++;
+            NakamaSingleton.Instance.CurrentTurn++;
             while (playersContainers[NakamaSingleton.Instance.CurrentTurn] == null)
             {
                 NakamaSingleton.Instance.CurrentTurn++;
-                if(NakamaSingleton.Instance.CurrentTurn > NakamaSingleton.Instance.NumberOfPlayers)
+                if (NakamaSingleton.Instance.CurrentTurn > NakamaSingleton.Instance.NumberOfPlayers)
                     NakamaSingleton.Instance.CurrentTurn = 1;
             }
-		} 
-		else 
-		{
+        }
+        else
+        {
             NakamaSingleton.Instance.CurrentTurn = 1;
-		}
-
-		if (NakamaSingleton.Instance.CurrentTurn == NakamaSingleton.Instance.MainPlayerTurn)
-		{
-            pickButton.Disabled = false;
-            lastTableTile.Mainuser = true;
         }
 
-		if(PlayerCastleStatus[NakamaSingleton.Instance.MainPlayerTurn])
-		{
-			lastTableTile.Mainuser = true;
-		}
+        if (NakamaSingleton.Instance.CurrentTurn == NakamaSingleton.Instance.MainPlayerTurn)
+        {
+            pickButton.Disabled = false;
+            if (lastTableTile!= null)
+                lastTableTile.Mainuser = true;
+        }
+
+        if (PlayerCastleStatus[NakamaSingleton.Instance.MainPlayerTurn])
+        {
+            if (lastTableTile != null)
+                lastTableTile.Mainuser = true;
+        }
 
         return true;
 
     }
-    
+
     private async Task<bool> autoplay()
     {
         /////////////////////////////////////////////////////////////////////////////////  "SinglePlayer"
@@ -697,8 +704,8 @@ public partial class Gameplay : Node
                 else
                 {
                     //l2.AddItem($"player {NakamaSingleton.Instance.CurrentTurn} take tile {lastTableTile.Name}");
-                    
-                    TakeTile(NakamaSingleton.Instance.CurrentTurn, lastTableTile.Tileid);
+
+                    //TakeTile(NakamaSingleton.Instance.CurrentTurn, lastTableTile.Tileid);
                     OnTableTileClicked(lastTableTile);
                     //l2.AddItem($"player {NakamaSingleton.Instance.CurrentTurn} Discard {GameLogic.MAX_AI_DISCARD(gs1)}");
                     DiscardTile(NakamaSingleton.Instance.CurrentTurn, GameLogic.MAX_AI_DISCARD(gs1));
@@ -736,7 +743,7 @@ public partial class Gameplay : Node
                         if (takeDecision)
                         {
                             l2.AddItem("Player chose to Take and Win");
-                            TakeTile(NakamaSingleton.Instance.MainPlayerTurn, lastTableTile.Tileid);
+                            OnTableTileClicked(lastTableTile);
                         }
                         else
                         {
@@ -756,23 +763,23 @@ public partial class Gameplay : Node
         return true;
     }
 
-	private void SortTiles(int playerid)
-	{
-		var container = playersContainers[playerid];
+    private void SortTiles(int playerid)
+    {
+        var container = playersContainers[playerid];
 
-		// Get and sort all Tile nodes inside the container by their Tileid
-		var tiles = container.GetChildren().OfType<Tile>()
-							.OrderBy(tile => tile.Tileid)
-							.ToList();
+        // Get and sort all Tile nodes inside the container by their Tileid
+        var tiles = container.GetChildren().OfType<Tile>()
+                            .OrderBy(tile => tile.Tileid)
+                            .ToList();
 
-		// Move each sorted tile to its correct position
-		for (int i = 0; i < tiles.Count; i++)
-		{
-			container.MoveChild(tiles[i], i);
-		}
+        // Move each sorted tile to its correct position
+        for (int i = 0; i < tiles.Count; i++)
+        {
+            container.MoveChild(tiles[i], i);
+        }
 
-		container.QueueSort(); // Ensure UI update
-	}
+        container.QueueSort(); // Ensure UI update
+    }
 
 
     private Timer autoCloseTimer;
@@ -829,6 +836,6 @@ public partial class Gameplay : Node
             autoMessageBox.Hide();
             autoCloseTimer.Stop();
         }
-    }   
-    
+    }
+
 }

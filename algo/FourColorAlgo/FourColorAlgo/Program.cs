@@ -28,26 +28,26 @@ namespace Program
             GameLogic.Table.AddRange("C1,C1,C1,C1,C1_Yellow,C1_Yellow,C1_Yellow,C1_Yellow".Split(',').Select(s => s.Trim()));
 
 
-            playersHands[1].Add("C1");
+            playersHands[1].Add("C1_Green");
+
             playersHands[1].Add("C2_Green");
-            
+            playersHands[1].Add("C2_Red");
+            playersHands[1].Add("C2_Yellow");
+
             playersHands[1].Add("C3");
+            playersHands[1].Add("C3_Green");
             playersHands[1].Add("C3_Green");
             playersHands[1].Add("C3_Red");
             playersHands[1].Add("C3_Yellow");
 
-            playersHands[1].Add("C4");
-            playersHands[1].Add("C4_Yellow");
-
-            playersHands[1].Add("C5_Green");
-            playersHands[1].Add("C5_Yellow");
-            playersHands[1].Add("C5_Yellow");
+            playersHands[1].Add("C4_Green");
 
             playersHands[1].Add("C6");
             playersHands[1].Add("C6_Green");
-            playersHands[1].Add("C6_Red");
 
+            playersHands[1].Add("C7");
             playersHands[1].Add("C7_Green");
+            playersHands[1].Add("C7_Red");
 
 
 
@@ -62,7 +62,7 @@ namespace Program
 
             GameLogic.GameState x2 = new GameLogic.GameState();
             x2.Hand = playersHands[1].ToList();
-            x2.Hand.Add("C4_Green");
+            x2.Hand.Add("C5_Green");
 
             Console.WriteLine($"Score {GameLogic.EvaluateState(x)} vs {GameLogic.EvaluateState(x2)}");
 
