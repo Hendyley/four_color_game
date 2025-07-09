@@ -168,10 +168,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -299.0
+offset_left = -290.0
 offset_top = -192.0
 offset_right = 288.0
-offset_bottom = 166.0
+offset_bottom = 198.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("4_gw1eg")
@@ -183,10 +183,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -50.0
-offset_top = -40.0
-offset_right = 50.0
-offset_bottom = 40.0
+offset_left = -100.0
+offset_top = -290.0
+offset_bottom = -210.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -216,10 +215,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -50.0
-offset_top = -139.0
-offset_right = 50.0
-offset_bottom = -59.0
+offset_left = 30.0
+offset_top = -290.0
+offset_right = 130.0
+offset_bottom = -210.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -342,10 +341,10 @@ alignment = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 797.0
-offset_top = -493.0
-offset_right = 1114.0
-offset_bottom = -220.0
+offset_left = 29.0
+offset_top = -723.0
+offset_right = 346.0
+offset_bottom = -450.0
 grow_vertical = 0
 
 [node name="Debug" type="Label" parent="."]
@@ -447,7 +446,17 @@ icon = ExtResource("5_dmi23")
 initial_position = 2
 size = Vector2i(253, 100)
 ok_button_text = "Win"
-dialog_text = "Do you want to with"
+dialog_text = "Do you want to win with"
+cancel_button_text = "Skip"
+
+[node name="win_popup" type="ConfirmationDialog" parent="."]
+auto_translate_mode = 1
+initial_position = 2
+size = Vector2i(253, 100)
+ok_button_text = "Play Again"
+dialog_text = "
+"
+cancel_button_text = "Go Back"
 
 [node name="windec_c" type="AcceptDialog" parent="."]
 initial_position = 2

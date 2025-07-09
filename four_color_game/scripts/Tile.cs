@@ -211,6 +211,17 @@ public partial class Tile : Control
                 Vector2 containerGlobalPos = container.GetGlobalPosition();
                 Vector2 containerSize = container.Size;
 
+                if (newGlobalPos.X < containerGlobalPos.X || newGlobalPos.X > containerGlobalPos.X + containerSize.X - Size.X)
+                {
+                    // CANCEL dragging
+                    _isDraggingTile = false;
+                    _isDragging = false;
+                    _isPressed = false;
+                    TopLevel = false;
+                    SetPosition(Vector2.Zero); // Reset to layout
+                    return;
+                }
+
                 float clampedX = Mathf.Clamp(newGlobalPos.X, containerGlobalPos.X, containerGlobalPos.X + containerSize.X - Size.X);
                 float clampedY = Mathf.Clamp(newGlobalPos.Y, containerGlobalPos.Y, containerGlobalPos.Y + containerSize.Y - Size.Y);
 

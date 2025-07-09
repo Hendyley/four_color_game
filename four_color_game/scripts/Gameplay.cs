@@ -34,7 +34,7 @@ public partial class Gameplay : Node
     private bool _castleFocusGiven = false;
 
 
-    private ConfirmationDialog windec, windec2;
+    private ConfirmationDialog windec, windec2, win_popup;
     private bool decisionMade = false;
     private bool takeDecision = false;
     private AcceptDialog autoMessageBox;
@@ -44,7 +44,7 @@ public partial class Gameplay : Node
     public async override void _Ready()
     {
         string logPath = "logs/app.log";
-        long maxSizeInBytes = 5 * 1024 * 1024; // 5 MB
+        long maxSizeInBytes = 50 * 1024 * 1024; // 5 MB
 
         if (File.Exists(logPath))
         {
@@ -88,6 +88,10 @@ public partial class Gameplay : Node
             decisionMade = true;
             takeDecision = false;
         };
+
+        win_popup = (ConfirmationDialog)FindChild("win_popup");
+        win_popup.Confirmed += OnWinPopupConfirmed;
+        win_popup.Canceled += OnWinPopupCanceled;
 
         autoMessageBox = (AcceptDialog)FindChild("windec_c");
         autoCloseTimer = (Timer)FindChild("Timer");
@@ -230,7 +234,8 @@ public partial class Gameplay : Node
                 {
                     turnlabel.Text = $"Player {NakamaSingleton.Instance.CurrentTurn} WIN";
                     LoggerManager.Info($"Player {NakamaSingleton.Instance.CurrentTurn} WIN");
-                    EndGame();
+                    EndGame(NakamaSingleton.Instance.CurrentTurn);
+
                 }
             }
             else if (NakamaSingleton.Instance.CurrentTurn == 1 && PlayerCastleStatus[NakamaSingleton.Instance.MainPlayerTurn])
@@ -239,7 +244,8 @@ public partial class Gameplay : Node
                 {
                     turnlabel.Text = $"Player {NakamaSingleton.Instance.MainPlayerTurn} WIN";
                     LoggerManager.Info($"Player {NakamaSingleton.Instance.MainPlayerTurn} WIN");
-                    EndGame();
+                    EndGame(NakamaSingleton.Instance.MainPlayerTurn);
+
                 }
             }
 
@@ -262,7 +268,7 @@ public partial class Gameplay : Node
                 {
                     turnlabel.Text = $"Player {NakamaSingleton.Instance.MainPlayerTurn} WIN";
                     LoggerManager.Info($"Player {NakamaSingleton.Instance.MainPlayerTurn} WIN");
-                    EndGame();
+                    //EndGame();
                 }
             }
 
@@ -561,7 +567,7 @@ public partial class Gameplay : Node
         LoggerManager.Info("castle button pressed");
         if (!GameLogic.CheckCastle(playersHands[NakamaSingleton.Instance.MainPlayerTurn]))
         {
-            turnlabel.Text = "False Castle";
+            ShowAutoMessage("You Cannot Castle now.", 5000);
             castleButton.ReleaseFocus();
             return;
         }
@@ -582,15 +588,49 @@ public partial class Gameplay : Node
 
     }
 
-    private void EndGame()
+    private void EndGame(int winnerId)
     {
         pickButton.Disabled = true;
         castleButton.Disabled = true;
+
+        string winner = $"Player {winnerId}";
+        win_popup.DialogText = $"🎉 {winner} wins! What would you like to do?";
+        win_popup.PopupCentered();
     }
 
-    private void _on_control_gui_input(InputEvent inputEvent)
+
+
+    private void OnWinPopupConfirmed()
     {
+        LoggerManager.Info("OK (Play Again) selected");
+        RestartGame();
     }
+
+    private void OnWinPopupCanceled()
+    {
+        LoggerManager.Info("Cancel (Go Back) selected");
+        GetTree().ChangeSceneToFile("res://scenes/main_menu.tscn");
+    }
+
+
+    private void RestartGame()
+    {
+        LoggerManager.Info("Restarting game...");
+
+        var gameplayScene = GD.Load<PackedScene>("res://scenes/Gameplay.tscn");
+        var newGame = gameplayScene.Instantiate();
+
+        GetTree().Root.AddChild(newGame);
+
+        // SAFELY queue the old scene for deletion after the new one is added and running
+        GetTree().CurrentScene.CallDeferred("free");
+
+        // Set the new scene as current
+        GetTree().CurrentScene = newGame;
+    }
+
+
+
 
     public async Task<bool> AddTurn()
     {
@@ -666,7 +706,7 @@ public partial class Gameplay : Node
                             windec.DialogText = windec.DialogText + $" {lastDrawnTile.Tileid}";
                             windec.PopupCentered();
 
-                            int timeoutMs = 10000;
+                            int timeoutMs = 50000;
                             int waitedMs = 0;
                             int pollInterval = 100;
 
@@ -698,6 +738,14 @@ public partial class Gameplay : Node
 
                     }
                     gs.Hand = playersHands[NakamaSingleton.Instance.CurrentTurn].ToList();
+                    if (GameLogic.WinCondition(playersHands[NakamaSingleton.Instance.CurrentTurn]) == "WIN")
+                    {
+                        turnlabel.Text = $"Player {NakamaSingleton.Instance.CurrentTurn} WIN";
+                        LoggerManager.Info($"Player {NakamaSingleton.Instance.CurrentTurn} WIN");
+                        EndGame(NakamaSingleton.Instance.CurrentTurn);
+                        return true; // stop autoplay
+                    }
+
                     //l2.AddItem($"player {NakamaSingleton.Instance.CurrentTurn} Discard {GameLogic.MAX_AI_DISCARD(gs)}");
                     DiscardTile(NakamaSingleton.Instance.CurrentTurn, GameLogic.MAX_AI_DISCARD(gs));
                 }
@@ -723,7 +771,7 @@ public partial class Gameplay : Node
                         windec.DialogText = windec.DialogText + $" {lastTableTile.Tileid}";
                         windec.PopupCentered();
 
-                        int timeoutMs = 7000;
+                        int timeoutMs = 50000;
                         int waitedMs = 0;
                         int pollInterval = 100;
 
@@ -819,7 +867,7 @@ public partial class Gameplay : Node
         elapsedMs += updateIntervalMs;
         int timeLeft = Mathf.Max(0, (int)(remainingMs - elapsedMs));
 
-        string display = $"{baseMessage}\nClosing in {timeLeft} ms";
+        string display = $"{baseMessage}\n";// Closing in {timeLeft} ms";
 
         if (autoMessageBox.HasNode("MessageLabel"))
         {
