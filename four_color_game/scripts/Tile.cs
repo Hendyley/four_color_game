@@ -1,6 +1,8 @@
 using Godot;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 
 public partial class Tile : Control
@@ -102,6 +104,7 @@ public partial class Tile : Control
 		} 
 	}
 
+    private int _originalIndex = -1;
     private void _on_gui_input(InputEvent inputEvent)
     {
         if(!Mainuser)
@@ -119,6 +122,9 @@ public partial class Tile : Control
                 _dragOffset = mouseEvent.Position;
                 _isDragging = false;
                 _isPressed = true;
+
+                var container = GetParent<Control>();
+                _originalIndex = container.GetChildren().IndexOf(this);
             }
             else
             {
@@ -128,19 +134,41 @@ public partial class Tile : Control
                 if (_isDraggingTile)
                 {
                     Control container = GetParent<Control>();
+
                     int newIndex = 0;
                     float dropX = GlobalPosition.X;
 
-                    for (int i = 0; i < container.GetChildCount(); i++)
+                    List<Control> siblingTiles = container.GetChildren()
+                        .OfType<Control>()
+                        .Where(c => c != this && c.Visible)
+                        .OrderBy(c => c.GlobalPosition.X)
+                        .ToList();
+
+                    foreach (var tile in siblingTiles)
                     {
-                        if (container.GetChild(i) is Control tile && tile != this && dropX > tile.GlobalPosition.X)
+                        if (dropX > tile.GlobalPosition.X + tile.Size.X / 2f)
                             newIndex++;
                     }
+
 
                     // Ensure the tile is still inside the container
                     if (IsInsideTree() && container.HasNode(this.GetPath()))
                     {
-                        container.MoveChild(this, newIndex);
+                         if (siblingTiles.Count > 0)
+                        {
+                            float leftBound = siblingTiles.First().GlobalPosition.X - 50;
+                            float rightBound = siblingTiles.Last().GlobalPosition.X + siblingTiles.Last().Size.X + 50;
+
+                            if (dropX >= leftBound && dropX <= rightBound)
+                            {
+                                container.MoveChild(this, newIndex);
+                            }
+                            else
+                            {
+                                container.MoveChild(this, _originalIndex);
+                            }
+                        }
+
                     }
 
                     // Reset back to layout mode
@@ -161,6 +189,9 @@ public partial class Tile : Control
                 _startPosition = touchEvent.Position;
                 _isDragging = false;
                 _isPressed = true;
+
+                var container = GetParent<Control>();
+                _originalIndex = container.GetChildren().IndexOf(this);
             }
             else
             {
@@ -173,15 +204,39 @@ public partial class Tile : Control
                     int newIndex = 0;
                     float dropX = GlobalPosition.X;
 
-                    for (int i = 0; i < container.GetChildCount(); i++)
+                    // Collect all tiles (excluding `this`) to compare
+                    List<Control> siblingTiles = container.GetChildren()
+                        .OfType<Control>()
+                        .Where(c => c != this && c.Visible)
+                        .OrderBy(c => c.GlobalPosition.X)
+                        .ToList();
+
+                    foreach (var tile in siblingTiles)
                     {
-                        if (container.GetChild(i) is Control tile && tile != this && dropX > tile.GlobalPosition.X)
+                        if (dropX > tile.GlobalPosition.X + tile.Size.X / 2f)
                             newIndex++;
                     }
 
+
                     if (IsInsideTree() && container.HasNode(this.GetPath()))
                     {
-                        container.MoveChild(this, newIndex);
+                        //container.MoveChild(this, newIndex);
+                        if (siblingTiles.Count > 0)
+                        {
+                            float leftBound = siblingTiles.First().GlobalPosition.X - 50;
+                            float rightBound = siblingTiles.Last().GlobalPosition.X + siblingTiles.Last().Size.X + 50;
+
+                            if (dropX >= leftBound && dropX <= rightBound)
+                            {
+                                container.MoveChild(this, newIndex);
+                            }
+                            else
+                            {
+                                container.MoveChild(this, _originalIndex);
+                            }
+
+                        }
+
                     }
 
                     TopLevel = false;

@@ -83,64 +83,83 @@ public partial class NakamaSingleton : Node
 
     public async Task HostGame(string playerName, int maxPlayers)
     {
-
-        IsHost = true;
-        NumberOfPlayers = maxPlayers;
-        MainPlayer = new Player(playerName, true);
-        CurrentPlayers++;
-        MainPlayer.player_turn = CurrentPlayers;
-        PlayerList[CurrentPlayers] = MainPlayer;
-        
-
-        Session = await Client.AuthenticateCustomAsync(MainPlayer.player_id, MainPlayer.player_name);
-        await Client.UpdateAccountAsync(Session, playerName, playerName);
-
-        Socket = Nakama.Socket.From(Client);
-        await Socket.ConnectAsync(Session);
-
-        Socket.ReceivedMatchPresence += onMatchPresence;
-        Socket.ReceivedMatchState += onMatchState;
-
-        Match = await Socket.CreateMatchAsync();
-        RoomId = Match.Id;
-        LoggerManager.Info($"Created Room with ID : {Match.Id}");
-
-        await Socket.JoinMatchAsync(Match.Id);
-        //LoggerManager.Info($"Joined Match with ID : {Match.Id}");
+        try
+        {
+            IsHost = true;
+            NumberOfPlayers = maxPlayers;
+            MainPlayer = new Player(playerName, true);
+            CurrentPlayers++;
+            MainPlayer.player_turn = CurrentPlayers;
+            PlayerList[CurrentPlayers] = MainPlayer;
 
 
-        //EmitSignal(nameof(MatchJoined), Match.Id);
+            Session = await Client.AuthenticateCustomAsync(MainPlayer.player_id, MainPlayer.player_name);
+            await Client.UpdateAccountAsync(Session, playerName, playerName);
+
+            Socket = Nakama.Socket.From(Client);
+            await Socket.ConnectAsync(Session);
+
+            Socket.ReceivedMatchPresence += onMatchPresence;
+            Socket.ReceivedMatchState += onMatchState;
+
+            Match = await Socket.CreateMatchAsync();
+            RoomId = Match.Id;
+            LoggerManager.Info($"Created Room with ID : {Match.Id}");
+
+            await Socket.JoinMatchAsync(Match.Id);
+
+        }
+        catch (Exception e)
+        {
+            LoggerManager.Error($"NS HostGame : "+e);
+        }
     }
 
     public async Task JoinGame(string playerName, string roomId)
     {
-        IsHost = false;
-        MainPlayer = new Player(playerName, false);
+        try
+        {
+            IsHost = false;
+            MainPlayer = new Player(playerName, false);
 
-        Session = await Client.AuthenticateCustomAsync(MainPlayer.player_id, MainPlayer.player_name);
-        await Client.UpdateAccountAsync(Session, playerName, playerName);
+            Session = await Client.AuthenticateCustomAsync(MainPlayer.player_id, MainPlayer.player_name);
+            await Client.UpdateAccountAsync(Session, playerName, playerName);
 
-        Socket = Nakama.Socket.From(Client);
-        await Socket.ConnectAsync(Session);
+            Socket = Nakama.Socket.From(Client);
+            await Socket.ConnectAsync(Session);
 
-        Socket.ReceivedMatchPresence += onMatchPresence;
-        Socket.ReceivedMatchState += onMatchState;
+            Socket.ReceivedMatchPresence += onMatchPresence;
+            Socket.ReceivedMatchState += onMatchState;
 
-        Match = await Socket.JoinMatchAsync(roomId);
-        LoggerManager.Info($"Joined Match with ID : {Match.Id}");
+            Match = await Socket.JoinMatchAsync(roomId);
+            LoggerManager.Info($"Joined Match with ID : {Match.Id}");
 
-        var data = Encoding.UTF8.GetBytes(MainPlayer.player_name);
-        await Socket.SendMatchStateAsync(Match.Id, 0, data);
-        //EmitSignal(nameof(MatchJoined), Match.Id);
+            var data = Encoding.UTF8.GetBytes(MainPlayer.player_name);
+            await Socket.SendMatchStateAsync(Match.Id, 0, data);
+
+        }
+        catch (Exception e)
+        {
+            LoggerManager.Error($"NS JoinGame : " + e);
+        }
+
     }
 
 
     public async Task SendMessage(string message)
     {
-        var array = new string[] { MainPlayer.player_name, message };
-        var json = JsonConvert.SerializeObject(array);
-        var data = Encoding.UTF8.GetBytes(json);
-        await Socket.SendMatchStateAsync(Match.Id, 1, data);
+        try
+        {
+            var array = new string[] { MainPlayer.player_name, message };
+            var json = JsonConvert.SerializeObject(array);
+            var data = Encoding.UTF8.GetBytes(json);
+            await Socket.SendMatchStateAsync(Match.Id, 1, data);
+        }
+        catch (Exception e)
+        {
+            LoggerManager.Error($"NS SendMessage : " + e);
+        }
+
     }
 
   
@@ -152,76 +171,88 @@ public partial class NakamaSingleton : Node
     // For others
     private void onMatchState(IMatchState state)
     {
-        string data = Encoding.UTF8.GetString(state.State);
-        switch (state.OpCode) //content of the data sent
+        try
         {
-            case 0: // Players Join
-                CallDeferred(nameof(EmitPlayerJoinGameSignal), data);
-                break;
-            case 1: // Chats
-                content = JsonConvert.DeserializeObject<string[]>(data);
-                LoggerManager.Info($"Received data from user {content[0]} : {content[1]} ");
-                CallDeferred(nameof(ChatMessages), content);
-                break;
-            case 2: // Start Game
-                CallDeferred(nameof(EmitReadytostart), data);
-                NumberOfPlayers = int.Parse(data);
-                break;
-            case 3: // Set Player turn
-                var rjson = JsonConvert.DeserializeObject<Dictionary<int, Player>>(data);
-                foreach (var kvp in rjson)
-                {
-                    PlayerList[kvp.Key] = kvp.Value; 
-                }
-                break;
-            case 4: // Update tile
-                content = JsonConvert.DeserializeObject<string[]>(data);
-                LoggerManager.Info($"Received data from user {content[0]} : {content[1]} ");
-                //CallDeferred(nameof(EmitSyncTiles), content);
-                break;
-            case 5: // Update Deck
-                CallDeferred(nameof(EmitGameDeck), data);
-                break;
+            string data = Encoding.UTF8.GetString(state.State);
+            switch (state.OpCode) //content of the data sent
+            {
+                case 0: // Players Join
+                    CallDeferred(nameof(EmitPlayerJoinGameSignal), data);
+                    break;
+                case 1: // Chats
+                    content = JsonConvert.DeserializeObject<string[]>(data);
+                    LoggerManager.Info($"Received data from user {content[0]} : {content[1]} ");
+                    CallDeferred(nameof(ChatMessages), content);
+                    break;
+                case 2: // Start Game
+                    CallDeferred(nameof(EmitReadytostart), data);
+                    NumberOfPlayers = int.Parse(data);
+                    break;
+                case 3: // Set Player turn
+                    var rjson = JsonConvert.DeserializeObject<Dictionary<int, Player>>(data);
+                    foreach (var kvp in rjson)
+                    {
+                        PlayerList[kvp.Key] = kvp.Value;
+                    }
+                    break;
+                case 4: // Update tile
+                    content = JsonConvert.DeserializeObject<string[]>(data);
+                    LoggerManager.Info($"Received data from user {content[0]} : {content[1]} ");
+                    //CallDeferred(nameof(EmitSyncTiles), content);
+                    break;
+                case 5: // Update Deck
+                    CallDeferred(nameof(EmitGameDeck), data);
+                    break;
 
+            }
         }
+        catch (Exception e)
+        {
+            LoggerManager.Error($"NS onMatchState {state.OpCode} : " + e);
+        }
+        
     }
 
     private void ChatMessages(string[] content)
     {
-        //TLabel.Text = content[1];
         LoggerManager.Info($"I {MainPlayer.player_name} received from {content[0]}");
     }
 
 
     public async void EmitPlayerJoinGameSignal(string data)
     {
-        //EmitSignal(nameof(PlayerJoinGame), data);    // send to other classese (page)
-
-        if (!IsHost)
-            return;
-
-        var player = new Player(data, false);
-        CurrentPlayers++;
-
-        string x = player.player_name + "," + CurrentPlayers;
-        PlayerList[CurrentPlayers] = player;
-
-        LoggerManager.Info($" {MainPlayer.player_name} says {player.player_name} Joined. Current Player count {CurrentPlayers}");
-        //NakamaStore("PlayerList", Hostname, playerList);
-
-        if (CurrentPlayers == NumberOfPlayers)
+        try
         {
-            //GameStart();
-            CallDeferred(nameof(EmitReadytostart), CurrentPlayers.ToString());  // For self startgame
-            //EmitSignal(nameof(PlayerReadyGame), MainPlayer.player_name);
+            if (!IsHost)
+                return;
 
-            // Update Turns
-            var djson = JsonConvert.SerializeObject(PlayerList);
-            byte[] datas = Encoding.UTF8.GetBytes(djson);
-            await Socket.SendMatchStateAsync(Match.Id, 3, datas); // For other toupdate
+            var player = new Player(data, false);
+            CurrentPlayers++;
+
+            string x = player.player_name + "," + CurrentPlayers;
+            PlayerList[CurrentPlayers] = player;
+
+            LoggerManager.Info($" {MainPlayer.player_name} says {player.player_name} Joined. Current Player count {CurrentPlayers}");
+            //NakamaStore("PlayerList", Hostname, playerList);
+
+            if (CurrentPlayers == NumberOfPlayers)
+            {
+                //GameStart();
+                CallDeferred(nameof(EmitReadytostart), CurrentPlayers.ToString());  // For self startgame
+                                                                                    //EmitSignal(nameof(PlayerReadyGame), MainPlayer.player_name);
+
+                // Update Turns
+                var djson = JsonConvert.SerializeObject(PlayerList);
+                byte[] datas = Encoding.UTF8.GetBytes(djson);
+                await Socket.SendMatchStateAsync(Match.Id, 3, datas); // For other toupdate
 
 
-            await Socket.SendMatchStateAsync(Match.Id, 2, CurrentPlayers.ToString()); // For others startgame
+                await Socket.SendMatchStateAsync(Match.Id, 2, CurrentPlayers.ToString()); // For others startgame
+            }
+        }
+        catch (Exception e)
+        {
+            LoggerManager.Error($"NS EmitPlayerJoinGameSignal : " + e);
         }
 
     }
@@ -272,46 +303,71 @@ public partial class NakamaSingleton : Node
     // Store data to Nakama
     protected async void NakamaStore(string collection, string key, Object classtype, int permissionread = 1, int permissionwrite = 1)
     {
-        WriteStorageObject writeStorageObject = new WriteStorageObject
-        {
-            Collection = collection,
-            Key = key,
-            Value = Nakama.TinyJson.JsonWriter.ToJson(classtype),
-            PermissionRead = permissionread,  //0 is everyone can , 1 is owner and serveronly
-            PermissionWrite = permissionwrite
-        };
 
-        await Client.WriteStorageObjectsAsync(Session, new[] { writeStorageObject });
-        LoggerManager.Info("NakamaStore Completed!!");
+        try
+        {
+            WriteStorageObject writeStorageObject = new WriteStorageObject
+            {
+                Collection = collection,
+                Key = key,
+                Value = Nakama.TinyJson.JsonWriter.ToJson(classtype),
+                PermissionRead = permissionread,  //0 is everyone can , 1 is owner and serveronly
+                PermissionWrite = permissionwrite
+            };
+
+            await Client.WriteStorageObjectsAsync(Session, new[] { writeStorageObject });
+            LoggerManager.Info("NakamaStore Completed!!");
+        }
+        catch (Exception e)
+        {
+            LoggerManager.Error($"NS NakamaStore : " + e);
+        }
+        
 
     }
 
     // Get data from Nakama
     protected async void NakamaGetStorageObject(string collection, string key)
     {
-        var storageobject = new StorageObjectId
+        try
         {
-            Collection = collection,
-            Key = key,
-            UserId = Session.UserId
-        };
-        var result = await Client.ReadStorageObjectsAsync(Session, new[] { storageobject });
-        if (result.Objects.Any())
-        {
-            var obj = result.Objects.First();
-            LoggerManager.Info($"data received is {obj.Value} {JsonParser.FromJson<Player>(obj.Value)}");
+            var storageobject = new StorageObjectId
+            {
+                Collection = collection,
+                Key = key,
+                UserId = Session.UserId
+            };
+            var result = await Client.ReadStorageObjectsAsync(Session, new[] { storageobject });
+            if (result.Objects.Any())
+            {
+                var obj = result.Objects.First();
+                LoggerManager.Info($"data received is {obj.Value} {JsonParser.FromJson<Player>(obj.Value)}");
+            }
         }
+        catch (Exception e)
+        {
+            LoggerManager.Error($"NS NakamaGetStorageObject : " + e);
+        }
+        
 
     }
 
     public List<int> GetTurnOrder(int myId, int numPlayers)
     {
-        List<int> players = Enumerable.Range(1, numPlayers).ToList();
-        int startIndex = players.IndexOf(myId);
+        try
+        {
+            List<int> players = Enumerable.Range(1, numPlayers).ToList();
+            int startIndex = players.IndexOf(myId);
 
-        // Rotate the list starting from myId
-        List<int> rotated = players.Skip(startIndex).Concat(players.Take(startIndex)).ToList();
-        return rotated;
+            // Rotate the list starting from myId
+            List<int> rotated = players.Skip(startIndex).Concat(players.Take(startIndex)).ToList();
+            return rotated;
+        }
+        catch (Exception e)
+        {
+            LoggerManager.Error($"NS GetTurnOrder : " + e);
+            return null;
+        }
     }
 
 }

@@ -68,6 +68,70 @@ namespace FourColors
         public int AITurn { get; set; }
         public string AItile { get; set; }
 
+        public static string TileName(string tilevalue)
+        {
+            switch (tilevalue)
+            {
+                case "C1":
+                    return "Horse White";
+                case "C1_Green":
+                    return "Horse Green";
+                case "C1_Red":
+                    return "Horse Red";
+                case "C1_Yellow":
+                    return "Horse Yellow";
+                case "C2":
+                    return "Queen White";
+                case "C2_Green":
+                    return "Queen Green";
+                case "C2_Red":
+                    return "Queen Red";
+                case "C2_Yellow":
+                    return "Queen Yellow";
+                case "C3":
+                    return "Rook White";
+                case "C3_Green":
+                    return "Rook Green";
+                case "C3_Red":
+                    return "Rook Red";
+                case "C3_Yellow":
+                    return "Rook Yellow";
+                case "C4":
+                    return "Cannon White";
+                case "C4_Green":
+                    return "Cannon Green";
+                case "C4_Red":
+                    return "Cannon Red";
+                case "C4_Yellow":
+                    return "Cannon Yellow";
+                case "C5":
+                    return "Bishop White";
+                case "C5_Green":
+                    return "Bishop Green";
+                case "C5_Red":
+                    return "Bishop Red";
+                case "C5_Yellow":
+                    return "Bishop Yellow";
+                case "C6":
+                    return "Pawn White";
+                case "C6_Green":
+                    return "Pawn Green";
+                case "C6_Red":
+                    return "Pawn Red";
+                case "C6_Yellow":
+                    return "Pawn Yellow";
+                case "C7":
+                    return "King White";
+                case "C7_Green":
+                    return "King Green";
+                case "C7_Red":
+                    return "King Red";
+                case "C7_Yellow":
+                    return "King Yellow";
+            }
+
+            return "Unknown";
+        }
 
         private static List<string> alltile = new List<string>()
         {// Horse,Queen,Rook,Cannon,King,Pawn,Bishop
@@ -204,18 +268,18 @@ namespace FourColors
 
         public static bool CheckCastle(List<string> lists)
         {
-            var tablendeck = Table.Concat(Deck);
-            var g = tablendeck.GroupBy(i => i);
+            //var tablendeck = Table.Concat(Deck);
+            //var g = tablendeck.GroupBy(i => i);
             var alltilelist = alltile.ToList();
-            foreach (var tt in g)
-            {
-                //Console.WriteLine("{0} {1}", tt.Key, tt.Count());
-                if (tt.Count() >= 4)
-                {
-                    alltilelist.Remove(tt.Key);
-                }
+            //foreach (var tt in g)
+            //{
+            //    //Console.WriteLine("{0} {1}", tt.Key, tt.Count());
+            //    if (tt.Count() >= 4)
+            //    {
+            //        alltilelist.Remove(tt.Key);
+            //    }
 
-            }
+            //}
             if (lists.Count == 15)
             {
                 foreach (var ct in alltile)
