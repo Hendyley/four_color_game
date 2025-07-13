@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using System.Text;
 using System.IO;
 using System.Diagnostics.Eventing.Reader;
+using four_color_game.scripts.FourColors;
 
 public partial class Gameplay : Node
 {
@@ -125,6 +126,13 @@ public partial class Gameplay : Node
             string containerName = $"HBOX_P_{seatsvar[i]}";
             HBoxContainer handContainer = (HBoxContainer)FindChild(containerName);
             playersHands[turnsequence[i]] = new List<string>();
+            if (turnsequence[i] != NakamaSingleton.Instance.MainPlayerTurn)
+            {
+                NakamaSingleton.Instance.PlayerList[turnsequence[i]] = new Player(NakamaSingleton.Instance.GenerateRandomName(), false);
+            }                
+            string PlayerPWName = $"P{seatsvar[i]}";
+            Label PlayerPW = (Label)FindChild(PlayerPWName);
+            PlayerPW.Text = NakamaSingleton.Instance.PlayerList[turnsequence[i]].player_name;
 
             if (handContainer != null)
             {
@@ -175,7 +183,7 @@ public partial class Gameplay : Node
             return;
 
         deckcounterLabel.Text = deck.Count.ToString();
-        currentturnLabel.Text = NakamaSingleton.Instance.CurrentTurn.ToString();
+        currentturnLabel.Text = NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.CurrentTurn].player_name;
         GameLogic.Deck = deck;
         GameLogic.Table = tabletiles;
 
@@ -230,8 +238,8 @@ public partial class Gameplay : Node
             {
                 if (GameLogic.WinCondition(playersHands[NakamaSingleton.Instance.CurrentTurn]) == "WIN")
                 {
-                    l2.AddItem($"Player {NakamaSingleton.Instance.CurrentTurn} WIN");
-                    LoggerManager.Info($"Player {NakamaSingleton.Instance.CurrentTurn} WIN");
+                    l2.AddItem($"Player {NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.CurrentTurn].player_name} WIN");
+                    LoggerManager.Info($"Player {NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.CurrentTurn].player_name} WIN");
                     EndGame(NakamaSingleton.Instance.CurrentTurn);
 
                 }
@@ -240,8 +248,8 @@ public partial class Gameplay : Node
             {
                 if (GameLogic.WinCondition(playersHands[NakamaSingleton.Instance.MainPlayerTurn]) == "WIN")
                 {
-                    l2.AddItem($"Player {NakamaSingleton.Instance.MainPlayerTurn} WIN");
-                    LoggerManager.Info($"Player {NakamaSingleton.Instance.MainPlayerTurn} WIN");
+                    l2.AddItem($"Player {NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.MainPlayerTurn].player_name} WIN");
+                    LoggerManager.Info($"Player {NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.MainPlayerTurn].player_name} WIN");
                     EndGame(NakamaSingleton.Instance.MainPlayerTurn);
 
                 }
@@ -252,23 +260,7 @@ public partial class Gameplay : Node
         /////////////////////////////////////////////////////////////////////////////////  "Multiplayer"
         if (NakamaSingleton.Instance.Gamemode == "Multiplayer")
         {
-            if (GameLogic.CheckCastle(playersHands[NakamaSingleton.Instance.MainPlayerTurn]))
-            {
-                if (!PlayerCastleStatus[NakamaSingleton.Instance.MainPlayerTurn])
-                    castleButton.GrabFocus();
-                else
-                    castleButton.ReleaseFocus();
-            }
 
-            if (NakamaSingleton.Instance.CurrentTurn == NakamaSingleton.Instance.MainPlayerTurn && PlayerCastleStatus[NakamaSingleton.Instance.MainPlayerTurn])
-            {
-                if (GameLogic.WinCondition(playersHands[NakamaSingleton.Instance.MainPlayerTurn]) == "WIN")
-                {
-                    turnlabel.Text = $"Player {NakamaSingleton.Instance.MainPlayerTurn} WIN";
-                    LoggerManager.Info($"Player {NakamaSingleton.Instance.MainPlayerTurn} WIN");
-                    //EndGame();
-                }
-            }
 
         }
     }
@@ -380,8 +372,8 @@ public partial class Gameplay : Node
             deck.RemoveAt(0);
             playersHands[playerid].Add(tilevalue);
 
-            LoggerManager.Info($"Player {playerid} Drawn Card Value: " + GameLogic.TileName(tilevalue));
-            l2.AddItem($"Player {playerid} Drawn Card Value: " + GameLogic.TileName(tilevalue));
+            LoggerManager.Info($"Player {NakamaSingleton.Instance.PlayerList[playerid].player_name} Drawn Card Value: " + GameLogic.TileName(tilevalue));
+            l2.AddItem($"Player {NakamaSingleton.Instance.PlayerList[playerid].player_name} Drawn Card Value: " + GameLogic.TileName(tilevalue));
 
             Tile newTile = (Tile)tileScene.Instantiate();
             playersContainers[playerid].AddChild(newTile);
@@ -418,8 +410,8 @@ public partial class Gameplay : Node
         newTile.Tileid = tilevalue;
         playersContainers[playerid].AddChild(newTile);
 
-        LoggerManager.Info($"Player {playerid} take tile: " + GameLogic.TileName(tilevalue));
-        l2.AddItem($"Player {playerid} take tile: " + GameLogic.TileName(tilevalue));
+        LoggerManager.Info($"Player {NakamaSingleton.Instance.PlayerList[playerid].player_name} take tile: " + GameLogic.TileName(tilevalue));
+        l2.AddItem($"Player {NakamaSingleton.Instance.PlayerList[playerid].player_name} take tile: " + GameLogic.TileName(tilevalue));
 
         newTile.SetTile(playerid, tilevalue);
         //newTile.CallDeferred("SetTile", playerid ,tilevalue);
@@ -443,7 +435,7 @@ public partial class Gameplay : Node
         if (!throwhand)
             return;
 
-        l2.AddItem($"player {playerid} Discard {GameLogic.TileName(tilevalue)}");
+        l2.AddItem($"player {NakamaSingleton.Instance.PlayerList[playerid].player_name} Discard {GameLogic.TileName(tilevalue)}");
 
         var children = playersContainers[playerid].GetChildren();
 
@@ -514,7 +506,6 @@ public partial class Gameplay : Node
             ShowAutoMessage("Cannot discard King tile !!!", 5000);
             return;
         }
-        LoggerManager.Info($"Player {clickedTile.Playerid} Discarding Tile: " + GameLogic.TileName(clickedTile.Tileid));
         DiscardTile(clickedTile.Playerid, clickedTile.Tileid);
 
     }
@@ -543,6 +534,7 @@ public partial class Gameplay : Node
     }
 
 
+
     private void buttondisable()
     {
         pickButton.Disabled = true;
@@ -568,8 +560,8 @@ public partial class Gameplay : Node
         }
         castleButton.ReleaseFocus();
         PlayerCastleStatus[NakamaSingleton.Instance.MainPlayerTurn] = true;
-        ShowAutoMessage($"Player {NakamaSingleton.Instance.MainPlayerTurn} Castle", 5000);
-        LoggerManager.Info($"Player {NakamaSingleton.Instance.MainPlayerTurn} Castle");
+        ShowAutoMessage($"Player {NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.MainPlayerTurn].player_name} Castle", 5000);
+        LoggerManager.Info($"Player {NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.MainPlayerTurn].player_name} Castle");
     }
 
     private void _on_back_button_pressed()
@@ -591,9 +583,14 @@ public partial class Gameplay : Node
         pickButton.Disabled = true;
         castleButton.Disabled = true;
 
-        string winner = $"Player {winnerId}";
-        win_popup.DialogText = $"🎉 {winner} wins! What would you like to do?";
+        if (NakamaSingleton.Instance.MainPlayerTurn == winnerId)
+            NakamaSingleton.Instance.Point += GameLogic.CheckScore(playersHands[NakamaSingleton.Instance.MainPlayerTurn]);
+        else
+            NakamaSingleton.Instance.Point += 10;
+
+        win_popup.DialogText = $"🎉 {NakamaSingleton.Instance.PlayerList[winnerId].player_name} wins! What would you like to do?";
         win_popup.PopupCentered();
+        GameLogic.Savepoint(NakamaSingleton.Instance.Point);
     }
 
 
@@ -690,15 +687,15 @@ public partial class Gameplay : Node
 
                 if (GameLogic.EvaluateState(gs) >= GameLogic.EvaluateState(gs1))
                 {
-                    l2.AddItem($"player {NakamaSingleton.Instance.CurrentTurn} draw {GameLogic.EvaluateState(gs)} vs take {GameLogic.EvaluateState(gs1)}");
+                    l2.AddItem($"player {NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.CurrentTurn].player_name} draw {GameLogic.EvaluateState(gs)} vs take {GameLogic.EvaluateState(gs1)}");
                     DrawTile(NakamaSingleton.Instance.CurrentTurn);
 
                     if (PlayerCastleStatus[NakamaSingleton.Instance.CurrentTurn]) // Check Ai Self Win
                     {
                         if (GameLogic.WinCondition(playersHands[NakamaSingleton.Instance.CurrentTurn]) == "WIN")
                         {
-                            l2.AddItem($"Player {NakamaSingleton.Instance.CurrentTurn} WIN");
-                            LoggerManager.Info($"Player {NakamaSingleton.Instance.CurrentTurn} WIN");
+                            l2.AddItem($"Player {NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.CurrentTurn].player_name} WIN");
+                            LoggerManager.Info($"Player {NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.CurrentTurn].player_name} WIN");
                             EndGame(NakamaSingleton.Instance.CurrentTurn);
                             return true;
                         }
@@ -750,8 +747,8 @@ public partial class Gameplay : Node
                     {
                         if (GameLogic.WinCondition(playersHands[NakamaSingleton.Instance.CurrentTurn]) == "WIN")
                         {
-                            l2.AddItem($"Player {NakamaSingleton.Instance.CurrentTurn} WIN");
-                            LoggerManager.Info($"Player {NakamaSingleton.Instance.CurrentTurn} WIN");
+                            l2.AddItem($"Player {NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.CurrentTurn].player_name} WIN");
+                            LoggerManager.Info($"Player {NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.CurrentTurn].player_name} WIN");
                             EndGame(NakamaSingleton.Instance.CurrentTurn);
                             return true;
                         }
@@ -765,8 +762,8 @@ public partial class Gameplay : Node
                     {
                         if (GameLogic.WinCondition(playersHands[NakamaSingleton.Instance.CurrentTurn]) == "WIN")
                         {
-                            l2.AddItem($"Player {NakamaSingleton.Instance.CurrentTurn} WIN");
-                            LoggerManager.Info($"Player {NakamaSingleton.Instance.CurrentTurn} WIN");
+                            l2.AddItem($"Player {NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.CurrentTurn].player_name} WIN");
+                            LoggerManager.Info($"Player {NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.CurrentTurn].player_name} WIN");
                             EndGame(NakamaSingleton.Instance.CurrentTurn);
                             return true;
                         }
@@ -819,9 +816,9 @@ public partial class Gameplay : Node
                 if (GameLogic.CheckCastle(playersHands[thisturn]) && !PlayerCastleStatus[thisturn])
                 {
                     PlayerCastleStatus[thisturn] = true;
-                    l2.AddItem($"Player {thisturn} CASTLE !!!!");
-                    ShowAutoMessage($"Player {thisturn} CASTLE !!!!", 5000);
-                    LoggerManager.Info($"Player {this} CASTLE !!!!");
+                    l2.AddItem($"Player {NakamaSingleton.Instance.PlayerList[thisturn].player_name} CASTLE !!!!");
+                    ShowAutoMessage($"Player {NakamaSingleton.Instance.PlayerList[thisturn].player_name} CASTLE !!!!", 5000);
+                    LoggerManager.Info($"Player {NakamaSingleton.Instance.PlayerList[thisturn].player_name} CASTLE !!!!");
                 }
 
             }

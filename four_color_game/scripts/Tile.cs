@@ -105,6 +105,8 @@ public partial class Tile : Control
 	}
 
     private int _originalIndex = -1;
+    private Vector2 _originalLocalPos;
+
     private void _on_gui_input(InputEvent inputEvent)
     {
         if(!Mainuser)
@@ -125,6 +127,7 @@ public partial class Tile : Control
 
                 var container = GetParent<Control>();
                 _originalIndex = container.GetChildren().IndexOf(this);
+                _originalLocalPos = Position;
             }
             else
             {
@@ -166,12 +169,13 @@ public partial class Tile : Control
                             else
                             {
                                 container.MoveChild(this, _originalIndex);
+                                TopLevel = false;
+                                SetDeferred("position", _originalLocalPos);
                             }
                         }
 
                     }
 
-                    // Reset back to layout mode
                     TopLevel = false;
                     SetPosition(Vector2.Zero); // Reset local position; layout will override it
                     QueueRedraw(); // Optional: forces a redraw just in case
@@ -192,6 +196,7 @@ public partial class Tile : Control
 
                 var container = GetParent<Control>();
                 _originalIndex = container.GetChildren().IndexOf(this);
+                _originalLocalPos = Position;
             }
             else
             {
@@ -233,6 +238,8 @@ public partial class Tile : Control
                             else
                             {
                                 container.MoveChild(this, _originalIndex);
+                                TopLevel = false;
+                                SetDeferred("position", _originalLocalPos);
                             }
 
                         }

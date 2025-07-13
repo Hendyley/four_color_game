@@ -17,6 +17,7 @@ using System.IO;
 using System.Reflection.Emit;
 using static System.Collections.Specialized.BitVector32;
 using System.Net.Sockets;
+using static System.Formats.Asn1.AsnWriter;
 
 
 public partial class NakamaSingleton : Node
@@ -45,6 +46,7 @@ public partial class NakamaSingleton : Node
     public bool IsHost { get; private set; } = false;
     public int NumberOfPlayers { get; set; } = 4;
     private string[] content;
+    public int Point { get; set; }
 
     private IApiGroup currentSelectedGroup;
     private IGroupUserListGroupUser currentlySelectedUser;
@@ -79,7 +81,30 @@ public partial class NakamaSingleton : Node
         Client.Timeout = 500;
 
         LoggerManager.Info("NakamaSingleton ready.");
+
+        Point = GameLogic.Loadpoint();
+
     }
+
+    public override void _Notification(int what)
+    {
+        //  Main quit request constant in Godot C# is 17
+        const int NotificationWmQuitRequest = 17;
+
+        if (what == NotificationWmQuitRequest || what == NotificationWMCloseRequest)
+        {
+            GD.Print("Game is quitting, saving score: " + Point);
+            GameLogic.Savepoint(Point);
+        }
+    }
+
+    public override void _ExitTree()
+    {
+        GD.Print("Game is quitting, saving score: " + Point);
+        GameLogic.Savepoint(Point);
+    }
+
+
 
     public async Task HostGame(string playerName, int maxPlayers)
     {
@@ -145,7 +170,6 @@ public partial class NakamaSingleton : Node
 
     }
 
-
     public async Task SendMessage(string message)
     {
         try
@@ -161,7 +185,6 @@ public partial class NakamaSingleton : Node
         }
 
     }
-
   
     private void onMatchPresence(IMatchPresenceEvent @event)
     {
@@ -217,7 +240,6 @@ public partial class NakamaSingleton : Node
     {
         LoggerManager.Info($"I {MainPlayer.player_name} received from {content[0]}");
     }
-
 
     public async void EmitPlayerJoinGameSignal(string data)
     {
@@ -369,5 +391,32 @@ public partial class NakamaSingleton : Node
             return null;
         }
     }
+
+
+    private Random rand = new Random();
+
+    private string[] syllables = new[]
+    {
+    "ka", "zu", "mi", "ta", "shi", "ra", "na", "ko", "ha", "yo",
+    "li", "sa", "ne", "mo", "re", "chi", "do", "fu", "ga", "ve"
+    };
+
+    public string GenerateRandomName(int syllableCount = 3)
+    {
+        StringBuilder name = new StringBuilder();
+        for (int i = 0; i < syllableCount; i++)
+        {
+            string syllable = syllables[rand.Next(syllables.Length)];
+            name.Append(syllable);
+        }
+
+        // Capitalize first letter
+        if (name.Length > 0)
+            name[0] = char.ToUpper(name[0]);
+
+        return name.ToString();
+    }
+
+
 
 }

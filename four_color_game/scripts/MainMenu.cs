@@ -7,8 +7,9 @@ public partial class MainMenu : Control
 	[Export] public PackedScene startgamescene;
 	[Export] public PackedScene multiplayerscene;
 
+	Label PointLabel;
 
-	public override void _Ready()
+    public override void _Ready()
 	{
 		Button startButton = (Button) FindChild("StartButton");
 		// startButton.Pressed += _on_start_button_pressed;
@@ -16,12 +17,13 @@ public partial class MainMenu : Control
 		Button storeButton = (Button) FindChild("StoreButton");
 		Button quitButton = (Button) FindChild("StoreButton");
 
-
+		PointLabel = (Label)FindChild("PointLabel");
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
+		PointLabel.Text = $"Accumulated Points : {NakamaSingleton.Instance.Point} ";
 	}
 	
 	private void _on_start_button_pressed()

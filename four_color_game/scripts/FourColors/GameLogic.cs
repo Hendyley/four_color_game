@@ -4,43 +4,42 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NLog;
-using NLog.Config;
-using NLog.Targets;
 using System.IO;
+using Godot;
+using Newtonsoft.Json;
 
 namespace FourColors
 {
 
     public static class LoggerManager
     {
-        private static readonly Logger logger;
+        private static readonly string logPath = "user://app.log";
 
-        static LoggerManager()
+        public static void Info(string message) => Log("INFO", message);
+        public static void Warn(string message) => Log("WARN", message);
+        public static void Error(string message) => Log("ERROR", message);
+        public static void Debug(string message) => Log("DEBUG", message);
+
+        private static void Log(string level, string message)
         {
-            // Configure NLog in code
-            var config = new LoggingConfiguration();
+            string timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            string finalMessage = $"{timestamp} | {level} | {message}\n";
 
-            var fileTarget = new FileTarget("logfile")
+            GD.Print(finalMessage);  // Print to Godot console
+
+            try
             {
-                FileName = "logs/app.log",
-                Layout = "${longdate} | ${level:uppercase=true} | ${message} ${exception:format=tostring}"
-            };
-
-            config.AddTarget(fileTarget);
-            config.AddRule(LogLevel.Info, LogLevel.Fatal, fileTarget);
-
-            LogManager.Configuration = config;
-
-            logger = LogManager.GetCurrentClassLogger();
+                using var file = Godot.FileAccess.Open(logPath, Godot.FileAccess.ModeFlags.WriteRead);
+                file.SeekEnd(); // Move to end of file to append
+                file.StoreString(finalMessage);
+            }
+            catch (Exception ex)
+            {
+                GD.PrintErr($"Failed to write log: {ex.Message}");
+            }
         }
 
-        public static void Info(string message) => logger.Info(message);
-        public static void Warn(string message) => logger.Warn(message);
-        public static void Error(string message) => logger.Error(message);
-        public static void Debug(string message) => logger.Debug(message);
     }
-
 
     public class GameLogic
     {
@@ -175,6 +174,18 @@ namespace FourColors
             return "X";
         }
 
+        public static int CheckScore(List<string> v)
+        {
+            if (v.Contains("C7") || v.Contains("C7_Red") || v.Contains("C7_Green") || v.Contains("C7_Yellow"))
+            {
+                return 100;
+            }
+            else
+            {
+                return 150;
+            }
+        }
+
         public static (List<string> remainerlist, int remainer) CheckColorSets(List<string> remainer)
         {
             //Remove Kings
@@ -268,18 +279,7 @@ namespace FourColors
 
         public static bool CheckCastle(List<string> lists)
         {
-            //var tablendeck = Table.Concat(Deck);
-            //var g = tablendeck.GroupBy(i => i);
             var alltilelist = alltile.ToList();
-            //foreach (var tt in g)
-            //{
-            //    //Console.WriteLine("{0} {1}", tt.Key, tt.Count());
-            //    if (tt.Count() >= 4)
-            //    {
-            //        alltilelist.Remove(tt.Key);
-            //    }
-
-            //}
             if (lists.Count == 15)
             {
                 foreach (var ct in alltile)
@@ -298,15 +298,6 @@ namespace FourColors
             {
                 if (WinCondition(lists) == "WIN")
                     return true;
-
-
-                //foreach (var ct in lists)
-                //{
-                //    var lt = lists.ToList();
-                //    lt.Remove(ct);
-                //    if (CheckCastle(lt))
-                //        return true;
-                //}
             }
 
             return false;
@@ -371,7 +362,7 @@ namespace FourColors
         public class GameState
         {
             public List<string> Hand;
-            public int Score = 0;
+            public int point = 0;
         }
 
         public static double EvaluateState(GameState state)
@@ -379,7 +370,7 @@ namespace FourColors
             if (WinCondition(state.Hand) == "WIN" && state.Hand.Count == 16)
                 return 10000;
 
-            double bestscore = double.NegativeInfinity;
+            double bestpoint = double.NegativeInfinity;
 
             var focustile = state.Hand.ToList();
             List<List<string>> H = GetHonourSets(focustile);
@@ -405,8 +396,8 @@ namespace FourColors
                     }
                 }
 
-                bestscore = honorsgroup + partialBonus - colorPenalty - duplicatepenalty;
-                return bestscore;
+                bestpoint = honorsgroup + partialBonus - colorPenalty - duplicatepenalty;
+                return bestpoint;
             }
 
             foreach (var h in CH)
@@ -448,13 +439,13 @@ namespace FourColors
                 }
 
 
-                double score = honorsgroup + partialBonus - colorPenalty - duplicatepenalty - maxMatch;
-                bestscore = Math.Max(bestscore, score);
+                double point = honorsgroup + partialBonus - colorPenalty - duplicatepenalty - maxMatch;
+                bestpoint = Math.Max(bestpoint, point);
 
-                Console.WriteLine($"Combi of {honorsgroup}*1 + {CountPartialColorSets(rl)}*2 - {MaxPair(rl)}*10 - {duplicatepenalty} - {maxMatch}  = {score} : honors={String.Join(",", h)} colors=={String.Join(",", rl)}  Best Score = {bestscore}");
+                Console.WriteLine($"Combi of {honorsgroup}*1 + {CountPartialColorSets(rl)}*2 - {MaxPair(rl)}*10 - {duplicatepenalty} - {maxMatch}  = {point} : honors={String.Join(",", h)} colors=={String.Join(",", rl)}  Best point = {bestpoint}");
             }
 
-            return bestscore;
+            return bestpoint;
         }
 
 
@@ -488,7 +479,7 @@ namespace FourColors
             if (WinCondition(state.Hand) == "WIN" && state.Hand.Count == 16)
                 return "WIN";
 
-            double handscore = double.NegativeInfinity;
+            double handpoint = double.NegativeInfinity;
             string tiletodiscard = "";
             foreach (var tile in state.Hand)
             {
@@ -497,15 +488,66 @@ namespace FourColors
 
                 var focustile = state.Hand.ToList();
                 focustile.Remove(tile);
-                double score = EvaluateState(new GameState() { Hand = focustile });
-                Console.WriteLine($"discard {tile} score {score}");
-                if (score > handscore)
+                double point = EvaluateState(new GameState() { Hand = focustile });
+                Console.WriteLine($"discard {tile} point {point}");
+                if (point > handpoint)
                 {
                     tiletodiscard = tile;
-                    handscore = score;
+                    handpoint = point;
                 }
             }
             return tiletodiscard;
         }
+
+        private static readonly string saveFilePath = ProjectSettings.GlobalizePath("user://save_data.json");
+
+        public static void Savepoint(int points)
+        {
+            try
+            {
+                var data = new Dictionary<string, int> { { "points", points } };
+
+                // Make sure directory exists
+                var directory = Path.GetDirectoryName(saveFilePath);
+                if (!Directory.Exists(directory))
+                    Directory.CreateDirectory(directory);
+
+                var json = JsonConvert.SerializeObject(data, Formatting.Indented);
+                File.WriteAllText(saveFilePath, json); // using System.IO
+                //GD.Print("Saved points to: " + saveFilePath);
+            }
+            catch (Exception e)
+            {
+                GD.PrintErr("Save failed: " + e.Message);
+            }
+        }
+
+        public static int Loadpoint()
+        {
+            try
+            {
+                if (!File.Exists(saveFilePath))
+                {
+                    GD.Print("Save file not found.");
+                    return 0;
+                }
+
+                var json = File.ReadAllText(saveFilePath);
+                var data = JsonConvert.DeserializeObject<Dictionary<string, int>>(json);
+
+                if (data != null && data.ContainsKey("points"))
+                {
+                    GD.Print("Loaded points: " + data["points"]);
+                    return data["points"];
+                }
+            }
+            catch (Exception e)
+            {
+                GD.PrintErr("Load failed: " + e.Message);
+            }
+
+            return 0;
+        }
+
     }
 }

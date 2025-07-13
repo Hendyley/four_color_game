@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://blewkvksqkipr"]
+[gd_scene load_steps=17 format=3 uid="uid://blewkvksqkipr"]
 
 [ext_resource type="Script" path="res://scripts/MainMenu.cs" id="1_ppnmh"]
 [ext_resource type="Texture2D" uid="uid://bojt53ffw6lwv" path="res://art/4_Color_Game/green_BG.png" id="2_cv4nh"]
@@ -25,6 +25,9 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6nnjd"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ppawf"]
+font_size = 30
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -139,6 +142,13 @@ offset_top = -350.0
 offset_right = 454.0
 grow_vertical = 0
 texture = ExtResource("8_74eii")
+
+[node name="PointLabel" type="Label" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Accumulated Points : "
+label_settings = SubResource("LabelSettings_ppawf")
 
 [connection signal="pressed" from="MarginContainer/HBoxContainer2/VBoxContainer2/CenterContainer/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer2/VBoxContainer2/CenterContainer/VBoxContainer/MultiButton" to="." method="_on_multi_button_pressed"]
