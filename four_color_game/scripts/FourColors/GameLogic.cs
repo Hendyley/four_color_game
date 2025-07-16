@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.IO;
 using Godot;
 using Newtonsoft.Json;
+using FourColors;
 
 namespace FourColors
 {
@@ -499,54 +500,115 @@ namespace FourColors
             return tiletodiscard;
         }
 
+        public static SaveData CurrentSave = new SaveData();
         private static readonly string saveFilePath = ProjectSettings.GlobalizePath("user://save_data.json");
+
+        private static SaveData CreateDefaultSaveData()
+        {
+            var saveData = new SaveData
+            {
+                Points = 0,
+                BG = new Dictionary<string, StoreItem>
+                {
+                    { "green_BG", new StoreItem { Equip = true, Purchase = true } },
+                    { "beehive1", new StoreItem { Equip = false, Purchase = false } },
+                    { "checkboard1", new StoreItem { Equip = false, Purchase = false } },
+                    { "maze1", new StoreItem { Equip = false, Purchase = false } },
+                    { "wood1", new StoreItem { Equip = false, Purchase = false } }
+                },
+                Tile = new Dictionary<string, StoreItem>
+                {
+                    { "Default", new StoreItem { Equip = true, Purchase = true } }
+                },
+                Music = new Dictionary<string, StoreItem>
+                {
+                    { "Default", new StoreItem { Equip = true, Purchase = true } }
+                }
+            };
+
+            return saveData;
+        }
+
+        public static void LoadFromFile()
+        {
+            if (!File.Exists(saveFilePath))
+            {
+                CurrentSave = CreateDefaultSaveData();
+                SaveToFile();
+                return;
+            }
+
+            string json = File.ReadAllText(saveFilePath);
+            if (json.Contains("\"Points\"")) // ✅ New Format
+            {
+                CurrentSave = JsonConvert.DeserializeObject<SaveData>(json) ?? new SaveData();
+            }
+            else if (json.Contains("\"points\"")) // ✅ Old Format (lowercase)
+            {
+                var dict = JsonConvert.DeserializeObject<Dictionary<string, int>>(json);
+                if (dict != null && dict.TryGetValue("points", out int pts))
+                {
+                    CurrentSave = CreateDefaultSaveData();
+                    CurrentSave = new SaveData { Points = pts };
+                    SaveToFile(); // Upgrade file
+                }
+            }
+            else
+            {
+                LoggerManager.Error("Invalid save format, creating fresh.");
+                CurrentSave = new SaveData();
+                SaveToFile();
+            }
+        }
+
+        private static void SaveToFile()
+        {
+            var json = JsonConvert.SerializeObject(CurrentSave, Formatting.Indented);
+            File.WriteAllText(saveFilePath, json);
+        }
+
 
         public static void Savepoint(int points)
         {
-            try
-            {
-                var data = new Dictionary<string, int> { { "points", points } };
-
-                // Make sure directory exists
-                var directory = Path.GetDirectoryName(saveFilePath);
-                if (!Directory.Exists(directory))
-                    Directory.CreateDirectory(directory);
-
-                var json = JsonConvert.SerializeObject(data, Formatting.Indented);
-                File.WriteAllText(saveFilePath, json); // using System.IO
-                //GD.Print("Saved points to: " + saveFilePath);
-            }
-            catch (Exception e)
-            {
-                GD.PrintErr("Save failed: " + e.Message);
-            }
+            LoadFromFile(); // Always load current data first
+            CurrentSave.Points = points;
+            SaveToFile();
         }
 
         public static int Loadpoint()
         {
-            try
+            LoadFromFile();
+            return CurrentSave.Points;
+        }
+
+        public static string GetEquippedBG()
+        {
+            LoadFromFile();
+            var equipped = CurrentSave.BG.FirstOrDefault(kvp => kvp.Value.Equip).Key;
+            return string.IsNullOrEmpty(equipped) ? "green_BG.png" : equipped+ ".png";
+        }
+
+
+        public static string GetEquippedTile()
+        {
+            if (CurrentSave.Tile != null && CurrentSave.Tile.Count > 0)
             {
-                if (!File.Exists(saveFilePath))
-                {
-                    GD.Print("Save file not found.");
-                    return 0;
-                }
-
-                var json = File.ReadAllText(saveFilePath);
-                var data = JsonConvert.DeserializeObject<Dictionary<string, int>>(json);
-
-                if (data != null && data.ContainsKey("points"))
-                {
-                    GD.Print("Loaded points: " + data["points"]);
-                    return data["points"];
-                }
+                var equipped = CurrentSave.Tile.FirstOrDefault(kv => kv.Value.Equip);
+                if (!string.IsNullOrEmpty(equipped.Key))
+                    return equipped.Key;
             }
-            catch (Exception e)
+            return "default_tile.png"; // your default tile
+        }
+
+        public static string GetEquippedMusic()
+        {
+            if (CurrentSave.Music != null && CurrentSave.Music.Count > 0)
             {
-                GD.PrintErr("Load failed: " + e.Message);
+                var equipped = CurrentSave.Music.FirstOrDefault(kv => kv.Value.Equip);
+                if (!string.IsNullOrEmpty(equipped.Key))
+                    return equipped.Key;
             }
-
-            return 0;
+            return "default_sound.mp3"; // your default music
         }
 
     }

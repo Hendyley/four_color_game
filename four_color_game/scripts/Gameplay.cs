@@ -39,6 +39,13 @@ public partial class Gameplay : Node
     private bool decisionMade = false;
     private bool takeDecision = false;
     private AcceptDialog autoMessageBox;
+    private Panel bg_panel;
+    private AudioStreamPlayer bgm;
+    private AudioStreamPlayer sfxm;
+    private string mp3tilediscard = "Tile_Discard";
+    private string mp3tiledraw = "Tile_Draw";
+    private string mp3win = "Win";
+    private string mp3castle = "Castle";
 
     StyleBoxFlat highlightStyle = new StyleBoxFlat();
 
@@ -65,6 +72,28 @@ public partial class Gameplay : Node
         deckcounterLabel = (Label)FindChild("DeckCounter");
         currentturnLabel = (Label)FindChild("CurrentTurn");
         turnlabel = (Label)FindChild("TurnLabel");
+
+        bg_panel = (Panel)FindChild("Panel");
+        var stylebox = bg_panel.GetThemeStylebox("panel") as StyleBoxTexture;
+        if (stylebox != null)
+        {
+            stylebox = (StyleBoxTexture)stylebox.Duplicate();
+            bg_panel.AddThemeStyleboxOverride("panel", stylebox);
+
+            stylebox.Texture = GD.Load<Texture2D>($"res://art/4_Color_Game/Background/{NakamaSingleton.Instance.BGThemeEquiped}");
+        }
+
+        bgm = (AudioStreamPlayer)FindChild("BGM");
+        sfxm = (AudioStreamPlayer)FindChild("SFXM");
+
+        var stream = GD.Load<AudioStream>($"res://art/4_Color_Game/Music/Piki - Monogatari (freetouse.com).mp3");
+        if (stream != null)
+        {
+            bgm.Stream = stream;
+            bgm.VolumeDb = -10;
+            bgm.Play();
+            ((AudioStreamMP3)bgm.Stream).Loop = true;
+        }
 
         NakamaSingleton.Instance.Connect(nameof(NakamaSingleton.PlayerGameStatus), new Callable(this, nameof(GameStatus)));   // Sync Status (connect, disconnect, endgame)
         NakamaSingleton.Instance.Connect(nameof(NakamaSingleton.PlayerGameTurns), new Callable(this, nameof(GameTurns)));	// Sync Turns
@@ -363,6 +392,8 @@ public partial class Gameplay : Node
 
     private void DrawTile(int playerid)
     {
+        PlaySoundEffect(mp3tiledraw);
+
         if (lastTableTile != null)
             lastTableTile.CallDeferred("UpdateHighlightVisual", false);
 
@@ -401,6 +432,7 @@ public partial class Gameplay : Node
 
     private void TakeTile(int playerid = 1, string tilevalue = "C1")
     {
+        PlaySoundEffect(mp3tiledraw);
 
         lastTableTile.CallDeferred("UpdateHighlightVisual", false);
         //SortTiles(NakamaSingleton.Instance.CurrentTurn);
@@ -434,6 +466,8 @@ public partial class Gameplay : Node
     {
         if (!throwhand)
             return;
+
+        PlaySoundEffect(mp3tilediscard);
 
         l2.AddItem($"player {NakamaSingleton.Instance.PlayerList[playerid].player_name} Discard {GameLogic.TileName(tilevalue)}");
 
@@ -551,6 +585,7 @@ public partial class Gameplay : Node
 
     private void _on_castlebutton_pressed()
     {
+        PlaySoundEffect(mp3castle);
         LoggerManager.Info("castle button pressed");
         if (!GameLogic.CheckCastle(playersHands[NakamaSingleton.Instance.MainPlayerTurn]))
         {
@@ -567,6 +602,8 @@ public partial class Gameplay : Node
     private void _on_back_button_pressed()
     {
         LoggerManager.Info("back button pressed");
+        bgm.Stop();
+        sfxm.Stop();
         GetTree().ChangeSceneToFile("res://scenes/main_menu.tscn");
     }
 
@@ -578,6 +615,9 @@ public partial class Gameplay : Node
 
     private void EndGame(int winnerId)
     {
+        bgm.Stop();
+        PlaySoundEffect(mp3win);
+
         gameEnded = true;
 
         pickButton.Disabled = true;
@@ -604,6 +644,8 @@ public partial class Gameplay : Node
     private void OnWinPopupCanceled()
     {
         LoggerManager.Info("Cancel (Go Back) selected");
+        bgm.Stop();
+        sfxm.Stop();
         GetTree().ChangeSceneToFile("res://scenes/main_menu.tscn");
     }
 
@@ -816,6 +858,7 @@ public partial class Gameplay : Node
                 if (GameLogic.CheckCastle(playersHands[thisturn]) && !PlayerCastleStatus[thisturn])
                 {
                     PlayerCastleStatus[thisturn] = true;
+                    PlaySoundEffect(mp3castle);
                     l2.AddItem($"Player {NakamaSingleton.Instance.PlayerList[thisturn].player_name} CASTLE !!!!");
                     ShowAutoMessage($"Player {NakamaSingleton.Instance.PlayerList[thisturn].player_name} CASTLE !!!!", 5000);
                     LoggerManager.Info($"Player {NakamaSingleton.Instance.PlayerList[thisturn].player_name} CASTLE !!!!");
@@ -905,5 +948,23 @@ public partial class Gameplay : Node
             autoCloseTimer.Stop();
         }
     }
+
+    public async void PlaySoundEffect(string name, float duration = -1f)
+    {
+        var path = $"res://art/4_Color_Game/Music/{name}.mp3";
+        var stream = GD.Load<AudioStream>(path);
+        if (stream != null)
+        {
+            sfxm.Stream = stream;
+            sfxm.Play();
+
+            if (duration > 0 && duration < stream.GetLength())
+            {
+                await ToSignal(GetTree().CreateTimer(duration), "timeout");
+                sfxm.Stop();
+            }
+        }
+    }
+
 
 }

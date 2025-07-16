@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://jpveeys13hcl"
+path="res://.godot/imported/Piki - Kitty (freetouse.com).mp3-b7ee32ddb9436c37cb2da736795aa379.mp3str"
+
+[deps]
+
+source_file="res://art/4_Color_Game/Music/Piki - Kitty (freetouse.com).mp3"
+dest_files=["res://.godot/imported/Piki - Kitty (freetouse.com).mp3-b7ee32ddb9436c37cb2da736795aa379.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

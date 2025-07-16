@@ -1,17 +1,17 @@
 [gd_scene load_steps=26 format=3 uid="uid://cm1bc46c0qr4l"]
 
-[ext_resource type="Texture2D" uid="uid://bojt53ffw6lwv" path="res://art/4_Color_Game/green_BG.png" id="1_n5011"]
 [ext_resource type="Script" path="res://scripts/Gameplay.cs" id="1_s8yka"]
 [ext_resource type="Texture2D" uid="uid://du3akvbf2wq3n" path="res://art/4_Color_Game/Buttons/Removed_BG/Pick_Up.png" id="2_0u1nr"]
 [ext_resource type="PackedScene" uid="uid://cwa251fvo0n6p" path="res://scenes/Tile.tscn" id="2_gevuu"]
 [ext_resource type="Texture2D" uid="uid://3s82nmpcrqub" path="res://art/4_Color_Game/Buttons/Removed_BG/Castle.png" id="3_3csrh"]
+[ext_resource type="Texture2D" uid="uid://bojt53ffw6lwv" path="res://art/4_Color_Game/Background/green_BG.png" id="3_nsim1"]
 [ext_resource type="Script" path="res://scripts/TableTiles.cs" id="4_gw1eg"]
 [ext_resource type="Texture2D" uid="uid://bek515n3g5nm3" path="res://art/4_Color_Game/Buttons/Removed_BG/BackButton.png" id="5_dmi23"]
 [ext_resource type="Script" path="res://scripts/ScrollCont.cs" id="8_5oogl"]
 [ext_resource type="Texture2D" uid="uid://bstoofnujwo3x" path="res://art/4_Color_Game/Buttons/SortButton.png" id="9_ycwdk"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_a8r7m"]
-texture = ExtResource("1_n5011")
+texture = ExtResource("3_nsim1")
 
 [sub_resource type="LabelSettings" id="LabelSettings_qofp6"]
 font_size = 25
@@ -397,6 +397,7 @@ offset_bottom = -450.0
 grow_vertical = 0
 
 [node name="Debug" type="Label" parent="."]
+visible = false
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
@@ -415,6 +416,7 @@ text = "00"
 label_settings = SubResource("LabelSettings_bsdb8")
 
 [node name="Debug2" type="Label" parent="."]
+visible = false
 anchors_preset = 6
 anchor_left = 1.0
 anchor_top = 0.5
@@ -512,6 +514,10 @@ initial_position = 2
 size = Vector2i(200, 100)
 
 [node name="Timer" type="Timer" parent="."]
+
+[node name="SFXM" type="AudioStreamPlayer" parent="."]
+
+[node name="BGM" type="AudioStreamPlayer" parent="."]
 
 [connection signal="gui_input" from="Control" to="." method="_on_control_gui_input"]
 [connection signal="pressed" from="pickupbutton" to="." method="_on_pickupbutton_pressed"]

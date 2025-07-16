@@ -1,9 +1,9 @@
-[gd_scene load_steps=17 format=3 uid="uid://blewkvksqkipr"]
+[gd_scene load_steps=18 format=3 uid="uid://blewkvksqkipr"]
 
 [ext_resource type="Script" path="res://scripts/MainMenu.cs" id="1_ppnmh"]
-[ext_resource type="Texture2D" uid="uid://bojt53ffw6lwv" path="res://art/4_Color_Game/green_BG.png" id="2_cv4nh"]
 [ext_resource type="PackedScene" uid="uid://1uc4okqjc05u" path="res://scenes/startgame_page.tscn" id="2_uyw1c"]
 [ext_resource type="PackedScene" uid="uid://c3m7752aheoyu" path="res://scenes/multiplayer_page.tscn" id="3_4k8ng"]
+[ext_resource type="Texture2D" uid="uid://bojt53ffw6lwv" path="res://art/4_Color_Game/Background/green_BG.png" id="4_0pnrd"]
 [ext_resource type="Texture2D" uid="uid://cenph8gpfxtyh" path="res://art/4_Color_Game/Buttons/Removed_BG/Start Game.png" id="4_6aatj"]
 [ext_resource type="Texture2D" uid="uid://bsyiihos33p14" path="res://art/4_Color_Game/Buttons/Removed_BG/Multiplayer.png" id="5_78ona"]
 [ext_resource type="Texture2D" uid="uid://dk6sl1q3olfja" path="res://art/4_Color_Game/Buttons/Removed_BG/Store.png" id="6_dnbwb"]
@@ -12,7 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://dccs0227mtuch" path="res://art/4_Color_Game/Animation/RemoveBG/A5.png" id="8_74eii"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hpxs7"]
-texture = ExtResource("2_cv4nh")
+texture = ExtResource("4_0pnrd")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vi6vx"]
 bg_color = Color(0.212, 0.239, 0.29, 0)
@@ -28,6 +28,9 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="LabelSettings" id="LabelSettings_ppawf"]
 font_size = 30
+
+[sub_resource type="LabelSettings" id="LabelSettings_uq8yd"]
+font_size = 20
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -121,7 +124,6 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 size_flags_stretch_ratio = 0.5
 theme_override_styles/normal = SubResource("StyleBoxFlat_okf7p")
-disabled = true
 icon = ExtResource("6_dnbwb")
 
 [node name="QuitButton" type="Button" parent="MarginContainer/HBoxContainer2/VBoxContainer2/CenterContainer/VBoxContainer"]
@@ -149,6 +151,29 @@ offset_right = 40.0
 offset_bottom = 23.0
 text = "Accumulated Points : "
 label_settings = SubResource("LabelSettings_ppawf")
+
+[node name="SFXM" type="AudioStreamPlayer" parent="."]
+
+[node name="BGM" type="AudioStreamPlayer" parent="."]
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1755.72
+offset_top = -140.32
+offset_right = -1402.72
+offset_bottom = -19.3199
+grow_horizontal = 0
+grow_vertical = 0
+text = "Music track: Monogatari by Piki
+Music track: A New Day by Piki
+Music track: Kitty by Piki
+Source: https://freetouse.com/music"
+label_settings = SubResource("LabelSettings_uq8yd")
 
 [connection signal="pressed" from="MarginContainer/HBoxContainer2/VBoxContainer2/CenterContainer/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer2/VBoxContainer2/CenterContainer/VBoxContainer/MultiButton" to="." method="_on_multi_button_pressed"]

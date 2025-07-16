@@ -48,6 +48,10 @@ public partial class NakamaSingleton : Node
     private string[] content;
     public int Point { get; set; }
 
+    public string BGThemeEquiped { get; set; }
+    public string SoundEquiped { get; set; }
+    public string TileThemeEquiped { get; set; }
+
     private IApiGroup currentSelectedGroup;
     private IGroupUserListGroupUser currentlySelectedUser;
     private IChannel currentChat;
@@ -82,7 +86,13 @@ public partial class NakamaSingleton : Node
 
         LoggerManager.Info("NakamaSingleton ready.");
 
+        GameLogic.LoadFromFile();
+
         Point = GameLogic.Loadpoint();
+        BGThemeEquiped = GameLogic.GetEquippedBG();
+        TileThemeEquiped = GameLogic.GetEquippedTile();
+        SoundEquiped = GameLogic.GetEquippedMusic();
+
 
     }
 
