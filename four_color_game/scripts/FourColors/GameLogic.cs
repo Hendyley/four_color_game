@@ -512,9 +512,10 @@ namespace FourColors
                 {
                     { "green_BG", new StoreItem { Equip = true, Purchase = true } },
                     { "beehive1", new StoreItem { Equip = false, Purchase = false } },
-                    { "checkboard1", new StoreItem { Equip = false, Purchase = false } },
                     { "maze1", new StoreItem { Equip = false, Purchase = false } },
-                    { "wood1", new StoreItem { Equip = false, Purchase = false } }
+                    { "MenuBG", new StoreItem { Equip = false, Purchase = false } },
+                    { "checkboard1", new StoreItem { Equip = false, Purchase = false } },
+                    { "wood1", new StoreItem { Equip = false, Purchase = false } },
                 },
                 Tile = new Dictionary<string, StoreItem>
                 {
@@ -581,35 +582,42 @@ namespace FourColors
             return CurrentSave.Points;
         }
 
+        public static SaveData GetGameSaved()
+        {
+            LoadFromFile();
+            return CurrentSave;
+        }
+
+        public static void SetGameSaved( SaveData saved)
+        {
+            LoadFromFile();
+            CurrentSave = saved;
+            SaveToFile();
+        }
+
         public static string GetEquippedBG()
         {
             LoadFromFile();
             var equipped = CurrentSave.BG.FirstOrDefault(kvp => kvp.Value.Equip).Key;
-            return string.IsNullOrEmpty(equipped) ? "green_BG.png" : equipped+ ".png";
+            return string.IsNullOrEmpty(equipped) ? "green_BG" : equipped;
         }
 
 
         public static string GetEquippedTile()
         {
-            if (CurrentSave.Tile != null && CurrentSave.Tile.Count > 0)
-            {
-                var equipped = CurrentSave.Tile.FirstOrDefault(kv => kv.Value.Equip);
-                if (!string.IsNullOrEmpty(equipped.Key))
-                    return equipped.Key;
-            }
-            return "default_tile.png"; // your default tile
+            LoadFromFile();
+            var equipped = CurrentSave.Tile.FirstOrDefault(kvp => kvp.Value.Equip).Key;
+            return string.IsNullOrEmpty(equipped) ? "green_BG.png" : equipped + ".png";
         }
 
         public static string GetEquippedMusic()
         {
-            if (CurrentSave.Music != null && CurrentSave.Music.Count > 0)
-            {
-                var equipped = CurrentSave.Music.FirstOrDefault(kv => kv.Value.Equip);
-                if (!string.IsNullOrEmpty(equipped.Key))
-                    return equipped.Key;
-            }
-            return "default_sound.mp3"; // your default music
+            LoadFromFile();
+            var equipped = CurrentSave.Music.FirstOrDefault(kvp => kvp.Value.Equip).Key;
+            return string.IsNullOrEmpty(equipped) ? "green_BG.png" : equipped + ".png";
         }
+
+
 
     }
 }

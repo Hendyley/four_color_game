@@ -6,8 +6,9 @@ public partial class MainMenu : Control
 	
 	[Export] public PackedScene startgamescene;
 	[Export] public PackedScene multiplayerscene;
+    [Export] public PackedScene storegamescene;
 
-	private Label PointLabel;
+    private Label PointLabel;
 	private Panel bg_panel;
 	private AudioStreamPlayer bgm;
     private AudioStreamPlayer sfxm;
@@ -29,7 +30,7 @@ public partial class MainMenu : Control
             stylebox = (StyleBoxTexture)stylebox.Duplicate();
             bg_panel.AddThemeStyleboxOverride("panel", stylebox);
 
-            stylebox.Texture = GD.Load<Texture2D>($"res://art/4_Color_Game/Background/{NakamaSingleton.Instance.BGThemeEquiped}");
+            stylebox.Texture = GD.Load<Texture2D>($"res://art/4_Color_Game/Background/{NakamaSingleton.Instance.BGThemeEquiped}.png");
         }
 
 		bgm = (AudioStreamPlayer)FindChild("BGM");
@@ -49,13 +50,12 @@ public partial class MainMenu : Control
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		PointLabel.Text = $"Accumulated Points : {NakamaSingleton.Instance.Point} ";
+		PointLabel.Text = $"Accumulated Points : {NakamaSingleton.Instance.SD.Points} ";
 	}
 	
 	private void _on_start_button_pressed()
 	{
-		GD.Print("Start button pressed"); // Use GD.Print for Godot console
-		// GetTree().ChangeSceneToFile("res://scenes/gameplay.tscn");
+		GD.Print("Start button pressed");
 		StartGamePage startmenu = (StartGamePage)startgamescene.Instantiate();
 		bgm.Stop();
 		AddChild(startmenu);
@@ -73,7 +73,10 @@ public partial class MainMenu : Control
 	private void _on_store_button_pressed()
 	{
 		GD.Print("Store button pressed");
-	}
+        GameStore startmenu = (GameStore)storegamescene.Instantiate();
+        bgm.Stop();
+        AddChild(startmenu);
+    }
 
 	private void _on_quit_button_pressed()
 	{

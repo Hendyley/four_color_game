@@ -30,10 +30,11 @@ public partial class Gameplay : Node
     private List<string> tabletiles = new();
     private Button pickButton, castleButton, backButton;
     private Tile lastTableTile, lastDrawnTile, showstile;
-    private Label deckcounterLabel, currentturnLabel, turnlabel, debuglb, debuglb2;
+    private Label deckcounterLabel, currentturnLabel, turnlabel, timerview, debuglb, debuglb2;
     private ItemList l2;
     private bool _castleFocusGiven = false;
     private bool gameEnded = false;
+    private int turnpass = 0;
 
     private ConfirmationDialog windec, windec2, win_popup;
     private bool decisionMade = false;
@@ -72,6 +73,7 @@ public partial class Gameplay : Node
         deckcounterLabel = (Label)FindChild("DeckCounter");
         currentturnLabel = (Label)FindChild("CurrentTurn");
         turnlabel = (Label)FindChild("TurnLabel");
+        timerview = (Label)FindChild("TimerView");
 
         bg_panel = (Panel)FindChild("Panel");
         var stylebox = bg_panel.GetThemeStylebox("panel") as StyleBoxTexture;
@@ -80,7 +82,7 @@ public partial class Gameplay : Node
             stylebox = (StyleBoxTexture)stylebox.Duplicate();
             bg_panel.AddThemeStyleboxOverride("panel", stylebox);
 
-            stylebox.Texture = GD.Load<Texture2D>($"res://art/4_Color_Game/Background/{NakamaSingleton.Instance.BGThemeEquiped}");
+            stylebox.Texture = GD.Load<Texture2D>($"res://art/4_Color_Game/Background/{NakamaSingleton.Instance.BGThemeEquiped}.png");
         }
 
         bgm = (AudioStreamPlayer)FindChild("BGM");
@@ -129,6 +131,11 @@ public partial class Gameplay : Node
         {
             autoMessageBox.Hide();
         };
+
+
+        turnTimer = (Timer)FindChild("TurnTimer");
+        turnTimer.Timeout += OnTurnTick;
+
 
         l2 = (ItemList)FindChild("l2");
 
@@ -190,6 +197,9 @@ public partial class Gameplay : Node
                 }
                 SortTiles(i);
             }
+
+            DrawTile(NakamaSingleton.Instance.CurrentTurn);
+            StartTurnTimer();
         }
 
 
@@ -200,7 +210,6 @@ public partial class Gameplay : Node
             await NakamaSingleton.Instance.Socket.SendMatchStateAsync(NakamaSingleton.Instance.Match.Id, 5, deckData);
         }
 
-        DrawTile(NakamaSingleton.Instance.CurrentTurn);
 
         throwhand = true;
     }
@@ -666,14 +675,12 @@ public partial class Gameplay : Node
         GetTree().CurrentScene = newGame;
     }
 
-
-
-
     public async Task<bool> AddTurn()
     {
-
+        turnpass++;
         if (NakamaSingleton.Instance.CurrentTurn == NakamaSingleton.Instance.MainPlayerTurn)
         {
+            StartTurnTimer();
             if (!PlayerCastleStatus[NakamaSingleton.Instance.MainPlayerTurn] && GameLogic.CheckCastle(playersHands[NakamaSingleton.Instance.MainPlayerTurn]))
             {
                 ShowAutoMessage("You Can Castle.", 5000);
@@ -795,6 +802,7 @@ public partial class Gameplay : Node
                             return true;
                         }
                     }
+                    gs.Hand.Add(lastDrawnTile.Tileid);
                     DiscardTile(NakamaSingleton.Instance.CurrentTurn, GameLogic.MAX_AI_DISCARD(gs));
                 }
                 else
@@ -876,6 +884,132 @@ public partial class Gameplay : Node
         return true;
     }
 
+    public void StartTurnTimer()
+    {
+        elapsedMs = 0;
+
+        if (turnTimer == null)
+        {
+            LoggerManager.Info("Starting Turn Timer");
+            turnTimer = new Timer
+            {
+                OneShot = false,
+                WaitTime = updateIntervalMs / 1000.0f
+            };
+            turnTimer.Timeout += OnTurnTick;
+            AddChild(turnTimer);
+        }
+
+        turnTimer.Start();
+    }
+
+
+    private void OnTurnTick()
+    {
+        elapsedMs += updateIntervalMs;
+
+        LoggerManager.Info($"Elapsed: {elapsedMs} ms");
+        timerview.Text = $"{Math.Round( (Decimal)(elapsedMs / 1000) ,0).ToString()}";
+        
+        if (NakamaSingleton.Instance.CurrentTurn != NakamaSingleton.Instance.MainPlayerTurn)
+            turnTimer.Stop();
+
+        if (elapsedMs >= 30*1000)
+        {
+            LoggerManager.Info("Turn timeout. Skipping turn.");
+            turnTimer.Stop();
+            SkipTurn();
+        }
+    }
+
+    private void SkipTurn()
+    {
+        if(turnpass==1)
+        {
+            var c = new GameLogic.GameState();
+            c.Hand = playersHands[NakamaSingleton.Instance.MainPlayerTurn].ToList(); //Current Hand
+            DiscardTile(NakamaSingleton.Instance.CurrentTurn, GameLogic.MAX_AI_DISCARD(c));
+        }
+            
+        var gs = new GameLogic.GameState();
+        gs.Hand = playersHands[NakamaSingleton.Instance.MainPlayerTurn].ToList(); //Current Hand
+
+        var gs1 = new GameLogic.GameState();
+        gs1.Hand = playersHands[NakamaSingleton.Instance.MainPlayerTurn].ToList(); //Current hand + take tile from table
+        gs1.Hand.Add(lastTableTile.Tileid);
+
+        if (GameLogic.EvaluateState(gs) >= GameLogic.EvaluateState(gs1))
+        {
+            l2.AddItem($"player {NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.CurrentTurn].player_name} draw {GameLogic.EvaluateState(gs)} vs take {GameLogic.EvaluateState(gs1)}");
+            DrawTile(NakamaSingleton.Instance.MainPlayerTurn);
+
+            if (PlayerCastleStatus[NakamaSingleton.Instance.MainPlayerTurn])
+            {
+                if (GameLogic.WinCondition(playersHands[NakamaSingleton.Instance.MainPlayerTurn]) == "WIN")
+                {
+                    l2.AddItem($"Player {NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.CurrentTurn].player_name} WIN");
+                    LoggerManager.Info($"Player {NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.CurrentTurn].player_name} WIN");
+                    EndGame(NakamaSingleton.Instance.CurrentTurn);
+                }
+            }
+
+            for (int i = 1; i <= NakamaSingleton.Instance.NumberOfPlayers; i++)
+            {
+                if (i == NakamaSingleton.Instance.MainPlayerTurn)
+                    continue;
+
+                if (PlayerCastleStatus[i])
+                {
+                    if (GameLogic.WinCondition(playersHands[i]) == "WIN")
+                    {
+                        l2.AddItem($"Player {NakamaSingleton.Instance.PlayerList[i].player_name} WIN");
+                        LoggerManager.Info($"Player {NakamaSingleton.Instance.PlayerList[i].player_name} WIN");
+                        EndGame(i);
+                    }
+                }
+            }
+
+            gs.Hand.Add(lastDrawnTile.Tileid);
+            DiscardTile(NakamaSingleton.Instance.CurrentTurn, GameLogic.MAX_AI_DISCARD(gs));
+        }
+        else
+        {
+            OnTableTileClicked(lastTableTile);
+
+            if (PlayerCastleStatus[NakamaSingleton.Instance.MainPlayerTurn])
+            {
+                if (GameLogic.WinCondition(playersHands[NakamaSingleton.Instance.MainPlayerTurn]) == "WIN")
+                {
+                    l2.AddItem($"Player {NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.CurrentTurn].player_name} WIN");
+                    LoggerManager.Info($"Player {NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.CurrentTurn].player_name} WIN");
+                    EndGame(NakamaSingleton.Instance.CurrentTurn);
+                }
+            }
+
+            for (int i = 1; i <= NakamaSingleton.Instance.NumberOfPlayers; i++)
+            {
+                if (i == NakamaSingleton.Instance.MainPlayerTurn)
+                    continue;
+
+                if (PlayerCastleStatus[i])
+                {
+                    if (GameLogic.WinCondition(playersHands[i]) == "WIN")
+                    {
+                        l2.AddItem($"Player {NakamaSingleton.Instance.PlayerList[i].player_name} WIN");
+                        LoggerManager.Info($"Player {NakamaSingleton.Instance.PlayerList[i].player_name} WIN");
+                        EndGame(i);
+                    }
+                }
+            }
+
+            DiscardTile(NakamaSingleton.Instance.CurrentTurn, GameLogic.MAX_AI_DISCARD(gs1));
+        }
+
+        
+
+    }
+
+
     private void SortTiles(int playerid)
     {
         var container = playersContainers[playerid];
@@ -893,7 +1027,7 @@ public partial class Gameplay : Node
     }
 
 
-    private Timer autoCloseTimer;
+    private Timer autoCloseTimer, turnTimer;
     private float remainingMs;
     private float elapsedMs;
     private float updateIntervalMs = 50f; // update every 50ms

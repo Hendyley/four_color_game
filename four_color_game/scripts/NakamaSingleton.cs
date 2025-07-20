@@ -46,6 +46,8 @@ public partial class NakamaSingleton : Node
     public bool IsHost { get; private set; } = false;
     public int NumberOfPlayers { get; set; } = 4;
     private string[] content;
+
+    public SaveData SD;
     public int Point { get; set; }
 
     public string BGThemeEquiped { get; set; }
@@ -88,12 +90,17 @@ public partial class NakamaSingleton : Node
 
         GameLogic.LoadFromFile();
 
+        UpdateSaveData();
+
+    }
+
+    public void UpdateSaveData()
+    {
+        SD = GameLogic.GetGameSaved();
         Point = GameLogic.Loadpoint();
         BGThemeEquiped = GameLogic.GetEquippedBG();
         TileThemeEquiped = GameLogic.GetEquippedTile();
         SoundEquiped = GameLogic.GetEquippedMusic();
-
-
     }
 
     public override void _Notification(int what)
@@ -193,7 +200,6 @@ public partial class NakamaSingleton : Node
         {
             LoggerManager.Error($"NS SendMessage : " + e);
         }
-
     }
   
     private void onMatchPresence(IMatchPresenceEvent @event)

@@ -229,10 +229,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -60.0
+offset_left = -96.0
 offset_top = -270.0
-offset_right = 40.0
-offset_bottom = -190.0
+offset_right = 29.0
+offset_bottom = -180.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -264,8 +264,8 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = 60.0
 offset_top = -270.0
-offset_right = 160.0
-offset_bottom = -190.0
+offset_right = 210.0
+offset_bottom = -180.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -284,6 +284,14 @@ text = "Current Turn
 horizontal_alignment = 1
 
 [node name="CurrentTurn" type="Label" parent="Control/Turn/VBoxContainer"]
+custom_minimum_size = Vector2(100, 25)
+layout_mode = 2
+text = "x"
+label_settings = SubResource("LabelSettings_bsdb8")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="TimerView" type="Label" parent="Control/Turn/VBoxContainer"]
 custom_minimum_size = Vector2(100, 25)
 layout_mode = 2
 text = "x"
@@ -514,6 +522,8 @@ initial_position = 2
 size = Vector2i(200, 100)
 
 [node name="Timer" type="Timer" parent="."]
+
+[node name="TurnTimer" type="Timer" parent="."]
 
 [node name="SFXM" type="AudioStreamPlayer" parent="."]
 

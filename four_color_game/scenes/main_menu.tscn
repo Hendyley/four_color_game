@@ -1,10 +1,11 @@
-[gd_scene load_steps=18 format=3 uid="uid://blewkvksqkipr"]
+[gd_scene load_steps=20 format=3 uid="uid://blewkvksqkipr"]
 
 [ext_resource type="Script" path="res://scripts/MainMenu.cs" id="1_ppnmh"]
 [ext_resource type="PackedScene" uid="uid://1uc4okqjc05u" path="res://scenes/startgame_page.tscn" id="2_uyw1c"]
 [ext_resource type="PackedScene" uid="uid://c3m7752aheoyu" path="res://scenes/multiplayer_page.tscn" id="3_4k8ng"]
 [ext_resource type="Texture2D" uid="uid://bojt53ffw6lwv" path="res://art/4_Color_Game/Background/green_BG.png" id="4_0pnrd"]
 [ext_resource type="Texture2D" uid="uid://cenph8gpfxtyh" path="res://art/4_Color_Game/Buttons/Removed_BG/Start Game.png" id="4_6aatj"]
+[ext_resource type="PackedScene" uid="uid://c5mo32ucbeop4" path="res://scenes/GameStore.tscn" id="4_aybtd"]
 [ext_resource type="Texture2D" uid="uid://bsyiihos33p14" path="res://art/4_Color_Game/Buttons/Removed_BG/Multiplayer.png" id="5_78ona"]
 [ext_resource type="Texture2D" uid="uid://dk6sl1q3olfja" path="res://art/4_Color_Game/Buttons/Removed_BG/Store.png" id="6_dnbwb"]
 [ext_resource type="Texture2D" uid="uid://bwvo103v3e310" path="res://art/4_Color_Game/GameRules.png" id="7_eu6x0"]
@@ -26,6 +27,9 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6nnjd"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m40eb"]
+bg_color = Color(0.113725, 0.701961, 0.690196, 1)
+
 [sub_resource type="LabelSettings" id="LabelSettings_ppawf"]
 font_size = 30
 
@@ -43,6 +47,7 @@ grow_vertical = 2
 script = ExtResource("1_ppnmh")
 startgamescene = ExtResource("2_uyw1c")
 multiplayerscene = ExtResource("3_4k8ng")
+storegamescene = ExtResource("4_aybtd")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1
@@ -140,8 +145,9 @@ layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -350.0
+offset_top = -366.0
 offset_right = 454.0
+offset_bottom = -16.0
 grow_vertical = 0
 texture = ExtResource("8_74eii")
 
@@ -149,6 +155,15 @@ texture = ExtResource("8_74eii")
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_m40eb")
+text = "Accumulated Points : "
+label_settings = SubResource("LabelSettings_ppawf")
+
+[node name="PointLabel2" type="Label" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_m40eb")
 text = "Accumulated Points : "
 label_settings = SubResource("LabelSettings_ppawf")
 
@@ -164,9 +179,9 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -1755.72
-offset_top = -140.32
+offset_top = -167.32
 offset_right = -1402.72
-offset_bottom = -19.3199
+offset_bottom = -46.3199
 grow_horizontal = 0
 grow_vertical = 0
 text = "Music track: Monogatari by Piki
