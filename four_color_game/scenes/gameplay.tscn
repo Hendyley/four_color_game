@@ -294,7 +294,7 @@ autowrap_mode = 3
 [node name="TimerView" type="Label" parent="Control/Turn/VBoxContainer"]
 custom_minimum_size = Vector2(100, 25)
 layout_mode = 2
-text = "x"
+text = "30 s"
 label_settings = SubResource("LabelSettings_bsdb8")
 horizontal_alignment = 1
 autowrap_mode = 3

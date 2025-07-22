@@ -53,7 +53,7 @@ public partial class Gameplay : Node
     public async override void _Ready()
     {
         string logPath = "logs/app.log";
-        long maxSizeInBytes = 50 * 1024 * 1024; // 5 MB
+        long maxSizeInBytes = 50 * 1024 * 1024; // 50 MB
 
         if (File.Exists(logPath))
         {
@@ -134,8 +134,8 @@ public partial class Gameplay : Node
 
 
         turnTimer = (Timer)FindChild("TurnTimer");
+        turnTimer.WaitTime = 1.0;
         turnTimer.Timeout += OnTurnTick;
-
 
         l2 = (ItemList)FindChild("l2");
 
@@ -887,34 +887,27 @@ public partial class Gameplay : Node
     public void StartTurnTimer()
     {
         elapsedMs = 0;
-
-        if (turnTimer == null)
-        {
-            LoggerManager.Info("Starting Turn Timer");
-            turnTimer = new Timer
-            {
-                OneShot = false,
-                WaitTime = updateIntervalMs / 1000.0f
-            };
-            turnTimer.Timeout += OnTurnTick;
-            AddChild(turnTimer);
-        }
-
+        remainingTurnTimeMs = 30_000;
         turnTimer.Start();
     }
 
+    private int remainingTurnTimeMs = 30_000;
+    private int elapsedTurnTimeMs = 0;
 
     private void OnTurnTick()
     {
-        elapsedMs += updateIntervalMs;
 
+        elapsedMs += 1000;
+        remainingTurnTimeMs = Mathf.Max(0, remainingTurnTimeMs - 1000);
+
+        int secondsLeft = remainingTurnTimeMs / 1000;
         LoggerManager.Info($"Elapsed: {elapsedMs} ms");
-        timerview.Text = $"{Math.Round( (Decimal)(elapsedMs / 1000) ,0).ToString()}";
-        
+        timerview.Text = $"{remainingTurnTimeMs / 1000} s";
+
         if (NakamaSingleton.Instance.CurrentTurn != NakamaSingleton.Instance.MainPlayerTurn)
             turnTimer.Stop();
 
-        if (elapsedMs >= 30*1000)
+        if (remainingTurnTimeMs <= 0)
         {
             LoggerManager.Info("Turn timeout. Skipping turn.");
             turnTimer.Stop();
@@ -936,7 +929,8 @@ public partial class Gameplay : Node
 
         var gs1 = new GameLogic.GameState();
         gs1.Hand = playersHands[NakamaSingleton.Instance.MainPlayerTurn].ToList(); //Current hand + take tile from table
-        gs1.Hand.Add(lastTableTile.Tileid);
+        if(lastTableTile!=null)
+            gs1.Hand.Add(lastTableTile.Tileid);
 
         if (GameLogic.EvaluateState(gs) >= GameLogic.EvaluateState(gs1))
         {
