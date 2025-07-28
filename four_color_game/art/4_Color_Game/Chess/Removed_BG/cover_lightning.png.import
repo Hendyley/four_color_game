@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cdeu8eyuqcjfp"
-path="res://.godot/imported/DeckDispenser.png-20a22013b294691cb23ed7a2eff56b0e.ctex"
+uid="uid://byjlrpsg0mlwy"
+path="res://.godot/imported/cover_lightning.png-ca4046f694d94fd85f47dbd3c6a15bd3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/4_Color_Game/DeckDispenser.png"
-dest_files=["res://.godot/imported/DeckDispenser.png-20a22013b294691cb23ed7a2eff56b0e.ctex"]
+source_file="res://art/4_Color_Game/Chess/Removed_BG/cover_lightning.png"
+dest_files=["res://.godot/imported/cover_lightning.png-ca4046f694d94fd85f47dbd3c6a15bd3.ctex"]
 
 [params]
 

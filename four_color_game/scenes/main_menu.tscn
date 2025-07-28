@@ -84,7 +84,7 @@ size_flags_horizontal = 0
 layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer"]
-custom_minimum_size = Vector2(900, 700)
+custom_minimum_size = Vector2(950, 1000)
 layout_mode = 2
 tooltip_text = "Four Color Game"
 texture = ExtResource("7_eu6x0")
@@ -173,17 +173,13 @@ label_settings = SubResource("LabelSettings_ppawf")
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 1
-anchors_preset = 3
+anchors_preset = 1
 anchor_left = 1.0
-anchor_top = 1.0
 anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -1755.72
-offset_top = -167.32
-offset_right = -1402.72
-offset_bottom = -46.3199
+offset_left = -412.72
+offset_right = -59.7198
+offset_bottom = 121.0
 grow_horizontal = 0
-grow_vertical = 0
 text = "Music track: Monogatari by Piki
 Music track: A New Day by Piki
 Music track: Kitty by Piki
