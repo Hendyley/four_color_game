@@ -837,6 +837,7 @@ size = Vector2i(200, 100)
 [node name="Timer" type="Timer" parent="."]
 
 [node name="PointLabel" type="Label" parent="."]
+layout_mode = 0
 offset_left = 128.0
 offset_top = 15.0
 offset_right = 440.0

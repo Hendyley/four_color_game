@@ -887,7 +887,7 @@ public partial class Gameplay : Node
     public void StartTurnTimer()
     {
         elapsedMs = 0;
-
+        remainingTurnTimeMs = 30_000;
         turnTimer.Start();
     }
 
@@ -896,13 +896,14 @@ public partial class Gameplay : Node
 
     private void OnTurnTick()
     {
+
         elapsedMs += 1000;
         remainingTurnTimeMs = Mathf.Max(0, remainingTurnTimeMs - 1000);
 
         int secondsLeft = remainingTurnTimeMs / 1000;
         LoggerManager.Info($"Elapsed: {elapsedMs} ms");
-        timerview.Text = $"{Math.Round( (Decimal)(elapsedMs / 1000) ,0)}";
-        
+        timerview.Text = $"{remainingTurnTimeMs / 1000} s";
+
         if (NakamaSingleton.Instance.CurrentTurn != NakamaSingleton.Instance.MainPlayerTurn)
             turnTimer.Stop();
 
@@ -928,7 +929,8 @@ public partial class Gameplay : Node
 
         var gs1 = new GameLogic.GameState();
         gs1.Hand = playersHands[NakamaSingleton.Instance.MainPlayerTurn].ToList(); //Current hand + take tile from table
-        gs1.Hand.Add(lastTableTile.Tileid);
+        if(lastTableTile!=null)
+            gs1.Hand.Add(lastTableTile.Tileid);
 
         if (GameLogic.EvaluateState(gs) >= GameLogic.EvaluateState(gs1))
         {
