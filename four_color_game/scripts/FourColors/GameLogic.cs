@@ -617,7 +617,17 @@ namespace FourColors
             return string.IsNullOrEmpty(equipped) ? "green_BG.png" : equipped + ".png";
         }
 
-
+        public static string GenerateToken(int length = 12)
+        {
+            const string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            Random rnd = new Random();
+            char[] token = new char[length];
+            for (int i = 0; i < length; i++)
+            {
+                token[i] = chars[rnd.Next(chars.Length)];
+            }
+            return new string(token);
+        }
 
     }
 }

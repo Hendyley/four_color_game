@@ -54,6 +54,8 @@ public partial class NakamaSingleton : Node
     public string SoundEquiped { get; set; }
     public string TileThemeEquiped { get; set; }
 
+    public string GameToken { get; set; }
+
     private IApiGroup currentSelectedGroup;
     private IGroupUserListGroupUser currentlySelectedUser;
     private IChannel currentChat;

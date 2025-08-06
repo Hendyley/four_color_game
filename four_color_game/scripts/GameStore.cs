@@ -1,13 +1,21 @@
-using FourColors;
+﻿using FourColors;
 using Godot;
 using System;
 using System.Linq;
+using System.Text.Json;
+using System.Net.Http;
 using System.Reflection.Metadata.Ecma335;
+using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
+using Nakama;
+using Newtonsoft.Json.Linq;
 
 public partial class GameStore : Control
 {
-	private TabContainer TabContainer1;
+
+    [Export] public PackedScene popoutpaymentscene;
+
+    private TabContainer TabContainer1;
     private Panel bg_panel;
     private AudioStreamPlayer bgm;
     private AudioStreamPlayer sfxm;
@@ -55,7 +63,7 @@ public partial class GameStore : Control
         PointLabel.Text = $"Accumulated Points : {NakamaSingleton.Instance.SD.Points} ";
     }
 
-    private void UpdateUI()
+    public void UpdateUI()
     {
         GameLogic.SetGameSaved(NakamaSingleton.Instance.SD);
         var keys = NakamaSingleton.Instance.SD.BG.Keys.ToList();
@@ -309,45 +317,70 @@ public partial class GameStore : Control
     /// <summary>
     /// Points Purchase and Equip
     /// </summary>
+    /// 
+
     private void _on_purchase_point()
     {
-
-    }
-    private void _on_equip_point()
-    {
-
+        // Test $0 price_1RqzZlLdza4NS4ZJNt0hqxE8
+        // $1 price_1RsgknLdza4NS4ZJlvERmh0H
+        GetCheckoutUrlAndOpen("P1_10000_","price_1Rs2VtQ2uLIvcn7YRtBim8JQ");
     }
     private void _on_purchase_point2()
     {
-
-    }
-    private void _on_equip_point2()
-    {
-
+        // $1.5 price_1RsmlCLdza4NS4ZJHbYL35uu
+        GetCheckoutUrlAndOpen("P1.5_20000_", "price_1Rs2VtQ2uLIvcn7YRtBim8JQ");
     }
     private void _on_purchase_point3()
     {
-
-    }
-    private void _on_equip_point3()
-    {
-
+        GetCheckoutUrlAndOpen("P2_30000_","price_1RsmmOLdza4NS4ZJRiGG9u29");
     }
     private void _on_purchase_point4()
     {
-
-    }
-    private void _on_equip_point4()
-    {
-
+        GetCheckoutUrlAndOpen("P3_50000_","price_1RsmohLdza4NS4ZJRlwZHBCt");
     }
     private void _on_purchase_point5()
     {
-
+        GetCheckoutUrlAndOpen("P5_100000_","price_1Rsmp4Ldza4NS4ZJebBVTYCY");
     }
-    private void _on_equip_point5()
-    {
+   
+    private static readonly System.Net.Http.HttpClient client = new System.Net.Http.HttpClient();
 
+    private async void GetCheckoutUrlAndOpen(string token="",string priceID= "price_1Rs2VtQ2uLIvcn7YRtBim8JQ")
+    {
+        token = token + GameLogic.GenerateToken();
+        NakamaSingleton.Instance.GameToken = token;
+        string url = $"https://renderserver-2hxj.onrender.com/create_checkout?token={NakamaSingleton.Instance.GameToken}&product_id=ss&price_id={priceID}";
+        LoggerManager.Info($"url POST {url}");
+        try
+        {
+            HttpResponseMessage response = await client.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+
+            string responseBody = await response.Content.ReadAsStringAsync();
+            LoggerManager.Info($"✅ Server response: {responseBody}");
+
+            JObject json = JObject.Parse(responseBody);
+            string checkoutUrl = json["checkout_url"]?.ToString();
+
+            if (!string.IsNullOrEmpty(checkoutUrl))
+            {
+                LoggerManager.Info($"🌐 Opening Stripe Checkout:{checkoutUrl}");
+                OS.ShellOpen(checkoutUrl); // Opens in default browser
+            }
+            else
+            {
+                LoggerManager.Info("❌ checkout_url not found in response.");
+            }
+
+            LoggerManager.Info("Waiting for payment...");
+            PurchasePopup popuppaymentconfirm = (PurchasePopup)popoutpaymentscene.Instantiate();
+            popuppaymentconfirm.ParentStore = this;
+            AddChild(popuppaymentconfirm);
+        }
+        catch (Exception e)
+        {
+            LoggerManager.Error($"❌ Error during request: {e.Message}");
+        }
     }
 
 }

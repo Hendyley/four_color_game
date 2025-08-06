@@ -1,7 +1,8 @@
-[gd_scene load_steps=29 format=3 uid="uid://c5mo32ucbeop4"]
+[gd_scene load_steps=30 format=3 uid="uid://c5mo32ucbeop4"]
 
 [ext_resource type="Script" path="res://scripts/GameStore.cs" id="1_gtee6"]
 [ext_resource type="Texture2D" uid="uid://bojt53ffw6lwv" path="res://art/4_Color_Game/Background/green_BG.png" id="1_y11qr"]
+[ext_resource type="PackedScene" uid="uid://d0su6t0fw5tg6" path="res://scenes/PurchasePopup.tscn" id="2_n5pf1"]
 [ext_resource type="Texture2D" uid="uid://dkp635bvsw8dv" path="res://art/4_Color_Game/Background/beehive1.png" id="3_8wlnx"]
 [ext_resource type="Texture2D" uid="uid://kif0uoi0cqer" path="res://art/4_Color_Game/Background/checkboard1.png" id="4_eobij"]
 [ext_resource type="Texture2D" uid="uid://kskyfb2mip7k" path="res://art/4_Color_Game/Background/maze1.png" id="4_l6c7n"]
@@ -73,6 +74,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_gtee6")
+popoutpaymentscene = ExtResource("2_n5pf1")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1
@@ -99,9 +101,10 @@ theme_override_constants/outline_size = 0
 theme_override_constants/side_margin = 10
 theme_override_constants/icon_separation = 100
 theme_override_constants/icon_max_width = 200
-current_tab = 0
+current_tab = 3
 
 [node name="Background" type="Control" parent="TabContainer"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -504,7 +507,6 @@ text = "Nothing in here
 horizontal_alignment = 1
 
 [node name="Points" type="Control" parent="TabContainer"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 3
 
