@@ -30,8 +30,9 @@ theme_override_constants/margin_right = 40
 theme_override_constants/margin_bottom = 40
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+custom_minimum_size = Vector2(0, 400)
 layout_mode = 2
-theme_override_constants/separation = 30
+theme_override_constants/separation = 100
 
 [node name="Fill" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -40,7 +41,7 @@ layout_mode = 2
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 40
+theme_override_font_sizes/font_size = 35
 text = "Please click the button Below after you complete the payment."
 
 [node name="Fill2" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
@@ -49,19 +50,21 @@ layout_mode = 2
 [node name="Purchase status2" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Fill2"]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 40
+size_flags_horizontal = 6
+theme_override_font_sizes/font_size = 35
 text = "Status...."
 
 [node name="Purchase_Fill" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
+size_flags_vertical = 8
 theme_override_constants/separation = 100
 
 [node name="btn" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Purchase_Fill"]
 custom_minimum_size = Vector2(300, 80)
 layout_direction = 3
 layout_mode = 2
+size_flags_vertical = 8
 theme_override_font_sizes/font_size = 30
 text = "Cancel"
 

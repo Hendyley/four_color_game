@@ -1,12 +1,14 @@
+using FourColors;
 using Godot;
 using System;
 
 public partial class MainMenu : Control
 {
 	
-	[Export] public PackedScene startgamescene;
-	[Export] public PackedScene multiplayerscene;
-    [Export] public PackedScene storegamescene;
+	[Export] private PackedScene startgamescene;
+	[Export] private PackedScene multiplayerscene;
+    [Export] private PackedScene tutorialgamescene;
+    [Export] private PackedScene storegamescene;
 
     private Label PointLabel;
 	private Panel bg_panel;
@@ -55,7 +57,7 @@ public partial class MainMenu : Control
 	
 	private void _on_start_button_pressed()
 	{
-		GD.Print("Start button pressed");
+		LoggerManager.Info("Start button pressed");
 		StartGamePage startmenu = (StartGamePage)startgamescene.Instantiate();
 		bgm.Stop();
 		AddChild(startmenu);
@@ -63,16 +65,37 @@ public partial class MainMenu : Control
 
 	private void _on_multi_button_pressed()
 	{
-		GD.Print("Multi button pressed");
+		LoggerManager.Info("Multi button pressed");
 		MultiplayerPage startmenu = (MultiplayerPage)multiplayerscene.Instantiate();
 		bgm.Stop();
 		AddChild(startmenu);
 		
 	}
 
-	private void _on_store_button_pressed()
+	private void _on_tutorial_button_pressed()
 	{
-		GD.Print("Store button pressed");
+        LoggerManager.Info("Tutorial button pressed");
+        bgm.Stop();
+
+        var player = new Player("You", true);
+        player.player_turn = 1;
+        NakamaSingleton.Instance.MainPlayer = player;
+        NakamaSingleton.Instance.PlayerList[1] = player;
+        Node tutorial = (Node)tutorialgamescene.Instantiate();
+        NakamaSingleton.Instance.NumberOfPlayers = 2;
+        NakamaSingleton.Instance.MainPlayerTurn = 1;
+        NakamaSingleton.Instance.Gamemode = "SinglePlayer";
+
+
+        GetTree().Root.AddChild(tutorial);
+        //AddChild(tutorial);
+        GetTree().CurrentScene = tutorial;
+    }
+
+
+    private void _on_store_button_pressed()
+	{
+		LoggerManager.Info("Store button pressed");
         GameStore startmenu = (GameStore)storegamescene.Instantiate();
         bgm.Stop();
         AddChild(startmenu);
@@ -80,7 +103,7 @@ public partial class MainMenu : Control
 
 	private void _on_quit_button_pressed()
 	{
-		GD.Print("Quit button pressed");
+		LoggerManager.Info("Quit button pressed");
 		GetTree().Quit(); 
 	}
 }

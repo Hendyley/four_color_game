@@ -1,0 +1,536 @@
+[gd_scene load_steps=26 format=3 uid="uid://cuuw52k6pign4"]
+
+[ext_resource type="Script" path="res://scripts/Gameplay.cs" id="1_wxq18"]
+[ext_resource type="PackedScene" uid="uid://cwa251fvo0n6p" path="res://scenes/Tile.tscn" id="2_i6cwq"]
+[ext_resource type="Texture2D" uid="uid://bojt53ffw6lwv" path="res://art/4_Color_Game/Background/green_BG.png" id="3_wr70c"]
+[ext_resource type="Script" path="res://scripts/TableTiles.cs" id="4_685q8"]
+[ext_resource type="Script" path="res://scripts/ScrollCont.cs" id="5_xqru7"]
+[ext_resource type="Texture2D" uid="uid://du3akvbf2wq3n" path="res://art/4_Color_Game/Buttons/Removed_BG/Pick_Up.png" id="6_knt7s"]
+[ext_resource type="Texture2D" uid="uid://3s82nmpcrqub" path="res://art/4_Color_Game/Buttons/Removed_BG/Castle.png" id="7_x5pft"]
+[ext_resource type="Texture2D" uid="uid://bstoofnujwo3x" path="res://art/4_Color_Game/Buttons/SortButton.png" id="8_pb4hq"]
+[ext_resource type="Texture2D" uid="uid://bek515n3g5nm3" path="res://art/4_Color_Game/Buttons/Removed_BG/BackButton.png" id="9_h2ssg"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_a8r7m"]
+texture = ExtResource("3_wr70c")
+
+[sub_resource type="LabelSettings" id="LabelSettings_qofp6"]
+font_size = 25
+
+[sub_resource type="FontFile" id="FontFile_4di04"]
+subpixel_positioning = 0
+msdf_pixel_range = 14
+msdf_size = 128
+cache/0/16/0/ascent = 0.0
+cache/0/16/0/descent = 0.0
+cache/0/16/0/underline_position = 0.0
+cache/0/16/0/underline_thickness = 0.0
+cache/0/16/0/scale = 1.0
+cache/0/30/0/ascent = 0.0
+cache/0/30/0/descent = 0.0
+cache/0/30/0/underline_position = 0.0
+cache/0/30/0/underline_thickness = 0.0
+cache/0/30/0/scale = 1.0
+cache/0/29/0/ascent = 0.0
+cache/0/29/0/descent = 0.0
+cache/0/29/0/underline_position = 0.0
+cache/0/29/0/underline_thickness = 0.0
+cache/0/29/0/scale = 1.0
+cache/0/28/0/ascent = 0.0
+cache/0/28/0/descent = 0.0
+cache/0/28/0/underline_position = 0.0
+cache/0/28/0/underline_thickness = 0.0
+cache/0/28/0/scale = 1.0
+cache/0/27/0/ascent = 0.0
+cache/0/27/0/descent = 0.0
+cache/0/27/0/underline_position = 0.0
+cache/0/27/0/underline_thickness = 0.0
+cache/0/27/0/scale = 1.0
+cache/0/26/0/ascent = 0.0
+cache/0/26/0/descent = 0.0
+cache/0/26/0/underline_position = 0.0
+cache/0/26/0/underline_thickness = 0.0
+cache/0/26/0/scale = 1.0
+cache/0/25/0/ascent = 0.0
+cache/0/25/0/descent = 0.0
+cache/0/25/0/underline_position = 0.0
+cache/0/25/0/underline_thickness = 0.0
+cache/0/25/0/scale = 1.0
+cache/0/24/0/ascent = 0.0
+cache/0/24/0/descent = 0.0
+cache/0/24/0/underline_position = 0.0
+cache/0/24/0/underline_thickness = 0.0
+cache/0/24/0/scale = 1.0
+cache/0/23/0/ascent = 0.0
+cache/0/23/0/descent = 0.0
+cache/0/23/0/underline_position = 0.0
+cache/0/23/0/underline_thickness = 0.0
+cache/0/23/0/scale = 1.0
+cache/0/22/0/ascent = 0.0
+cache/0/22/0/descent = 0.0
+cache/0/22/0/underline_position = 0.0
+cache/0/22/0/underline_thickness = 0.0
+cache/0/22/0/scale = 1.0
+cache/0/21/0/ascent = 0.0
+cache/0/21/0/descent = 0.0
+cache/0/21/0/underline_position = 0.0
+cache/0/21/0/underline_thickness = 0.0
+cache/0/21/0/scale = 1.0
+cache/0/20/0/ascent = 0.0
+cache/0/20/0/descent = 0.0
+cache/0/20/0/underline_position = 0.0
+cache/0/20/0/underline_thickness = 0.0
+cache/0/20/0/scale = 1.0
+cache/0/19/0/ascent = 0.0
+cache/0/19/0/descent = 0.0
+cache/0/19/0/underline_position = 0.0
+cache/0/19/0/underline_thickness = 0.0
+cache/0/19/0/scale = 1.0
+cache/0/18/0/ascent = 0.0
+cache/0/18/0/descent = 0.0
+cache/0/18/0/underline_position = 0.0
+cache/0/18/0/underline_thickness = 0.0
+cache/0/18/0/scale = 1.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_bsdb8"]
+font = SubResource("FontFile_4di04")
+font_size = 18
+
+[sub_resource type="ImageTexture" id="ImageTexture_t5eo6"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dusa1"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d3ak4"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tddjc"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_plaov"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4fllh"]
+
+[sub_resource type="Theme" id="Theme_kv1b3"]
+HScrollBar/icons/decrement = SubResource("ImageTexture_t5eo6")
+HScrollBar/icons/decrement_highlight = SubResource("ImageTexture_t5eo6")
+HScrollBar/icons/decrement_pressed = SubResource("ImageTexture_t5eo6")
+HScrollBar/icons/increment = SubResource("ImageTexture_t5eo6")
+HScrollBar/icons/increment_highlight = SubResource("ImageTexture_t5eo6")
+HScrollBar/icons/increment_pressed = SubResource("ImageTexture_t5eo6")
+HScrollBar/styles/grabber = SubResource("StyleBoxEmpty_dusa1")
+HScrollBar/styles/grabber_highlight = SubResource("StyleBoxEmpty_d3ak4")
+HScrollBar/styles/grabber_pressed = SubResource("StyleBoxEmpty_tddjc")
+HScrollBar/styles/scroll = SubResource("StyleBoxEmpty_plaov")
+HScrollBar/styles/scroll_focus = SubResource("StyleBoxEmpty_4fllh")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fl5nc"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_flr2c"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hc1qr"]
+bg_color = Color(0.6, 0.815686, 0.360784, 0.752941)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.952941, 0.780392, 0.235294, 0.843137)
+border_blend = true
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kyjrm"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hya2i"]
+
+[node name="Gameplay" type="Node"]
+script = ExtResource("1_wxq18")
+tileScene = ExtResource("2_i6cwq")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_a8r7m")
+
+[node name="PW" type="Label" parent="Control"]
+layout_mode = 2
+offset_left = 120.0
+offset_top = 120.0
+offset_right = 277.0
+offset_bottom = 155.0
+label_settings = SubResource("LabelSettings_qofp6")
+horizontal_alignment = 1
+
+[node name="PN" type="Label" parent="Control"]
+layout_mode = 2
+offset_left = 940.0
+offset_top = 200.0
+offset_right = 1097.0
+offset_bottom = 235.0
+label_settings = SubResource("LabelSettings_qofp6")
+horizontal_alignment = 1
+
+[node name="PE" type="Label" parent="Control"]
+layout_mode = 2
+offset_left = 1650.0
+offset_top = 120.0
+offset_right = 1807.0
+offset_bottom = 155.0
+label_settings = SubResource("LabelSettings_qofp6")
+horizontal_alignment = 1
+
+[node name="PS" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -240.0
+offset_right = 137.0
+offset_bottom = -205.0
+grow_horizontal = 2
+grow_vertical = 0
+label_settings = SubResource("LabelSettings_qofp6")
+horizontal_alignment = 1
+
+[node name="TableTiles" type="Container" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -225.0
+offset_top = -175.0
+offset_right = 225.0
+offset_bottom = 175.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_685q8")
+
+[node name="Deck" type="Panel" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -96.0
+offset_top = -270.0
+offset_right = 29.0
+offset_bottom = -180.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/Deck"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DeckLabel" type="Label" parent="Control/Deck/VBoxContainer"]
+layout_mode = 2
+text = "Deck Cards"
+horizontal_alignment = 1
+
+[node name="DeckCounter" type="Label" parent="Control/Deck/VBoxContainer"]
+layout_mode = 2
+text = "00"
+label_settings = SubResource("LabelSettings_bsdb8")
+horizontal_alignment = 1
+
+[node name="Turn" type="Panel" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 60.0
+offset_top = -270.0
+offset_right = 210.0
+offset_bottom = -180.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/Turn"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TurnLabel" type="Label" parent="Control/Turn/VBoxContainer"]
+layout_mode = 2
+text = "Current Turn
+"
+horizontal_alignment = 1
+
+[node name="CurrentTurn" type="Label" parent="Control/Turn/VBoxContainer"]
+custom_minimum_size = Vector2(100, 25)
+layout_mode = 2
+text = "x"
+label_settings = SubResource("LabelSettings_bsdb8")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="TimerView" type="Label" parent="Control/Turn/VBoxContainer"]
+custom_minimum_size = Vector2(100, 25)
+layout_mode = 2
+text = "30 s"
+label_settings = SubResource("LabelSettings_bsdb8")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Scroll_P_S" type="ScrollContainer" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 40.0
+offset_top = -200.0
+offset_right = 40.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 11
+size_flags_vertical = 2
+theme = SubResource("Theme_kv1b3")
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 0
+script = ExtResource("5_xqru7")
+metadata/_edit_use_anchors_ = true
+
+[node name="HBOX_P_S" type="HBoxContainer" parent="Scroll_P_S"]
+custom_minimum_size = Vector2(950, 0)
+layout_mode = 2
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="Scroll_P_N" type="ScrollContainer" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -525.0
+offset_right = 525.0
+offset_bottom = 200.0
+grow_horizontal = 2
+theme = SubResource("Theme_kv1b3")
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 0
+script = ExtResource("5_xqru7")
+metadata/_edit_use_anchors_ = true
+
+[node name="HBOX_P_N" type="HBoxContainer" parent="Scroll_P_N"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="Scroll_P_W" type="ScrollContainer" parent="."]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 200.0
+offset_top = -380.0
+offset_right = 980.0
+offset_bottom = -180.0
+grow_vertical = 2
+rotation = 1.57079
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme = SubResource("Theme_kv1b3")
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 0
+script = ExtResource("5_xqru7")
+
+[node name="HBOX_P_W" type="HBoxContainer" parent="Scroll_P_W"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="Scroll_P_E" type="ScrollContainer" parent="."]
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = 400.0
+offset_right = 580.0
+offset_bottom = 600.0
+grow_horizontal = 0
+grow_vertical = 2
+rotation = 4.71239
+size_flags_horizontal = 8
+size_flags_vertical = 4
+theme = SubResource("Theme_kv1b3")
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 0
+script = ExtResource("5_xqru7")
+
+[node name="HBOX_P_E" type="HBoxContainer" parent="Scroll_P_E"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="l2" type="ItemList" parent="."]
+visible = false
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 29.0
+offset_top = -723.0
+offset_right = 346.0
+offset_bottom = -450.0
+grow_vertical = 0
+
+[node name="Debug" type="Label" parent="."]
+visible = false
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 358.0
+offset_top = -356.0
+offset_right = 668.0
+offset_bottom = 110.0
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0.241156, 0.241156, 0.241156, 1)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 4
+theme_override_constants/outline_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_fl5nc")
+text = "00"
+label_settings = SubResource("LabelSettings_bsdb8")
+
+[node name="Debug2" type="Label" parent="."]
+visible = false
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -580.0
+offset_top = -346.0
+offset_right = -295.0
+offset_bottom = 120.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0.241156, 0.241156, 0.241156, 1)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 4
+theme_override_constants/outline_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_fl5nc")
+text = "00"
+label_settings = SubResource("LabelSettings_bsdb8")
+
+[node name="pickupbutton" type="Button" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -473.0
+offset_top = -317.0
+offset_right = 499.0
+offset_bottom = -60.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.25, 0.25)
+theme_override_styles/normal = SubResource("StyleBoxFlat_flr2c")
+icon = ExtResource("6_knt7s")
+
+[node name="castlebutton" type="Button" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -475.0
+offset_top = -232.0
+offset_right = 513.0
+offset_bottom = 25.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.25, 0.25)
+theme_override_styles/focus = SubResource("StyleBoxFlat_hc1qr")
+theme_override_styles/normal = SubResource("StyleBoxFlat_kyjrm")
+icon = ExtResource("7_x5pft")
+
+[node name="sortbutton" type="Button" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -242.0
+offset_top = -118.0
+offset_right = -162.0
+offset_bottom = -38.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleBoxEmpty_hya2i")
+icon = ExtResource("8_pb4hq")
+
+[node name="backbutton" type="Button" parent="."]
+offset_right = 508.0
+offset_bottom = 508.0
+scale = Vector2(0.2, 0.2)
+icon = ExtResource("9_h2ssg")
+
+[node name="windec" type="ConfirmationDialog" parent="."]
+initial_position = 2
+size = Vector2i(253, 100)
+ok_button_text = "Win"
+dialog_text = "Do you want to win with"
+cancel_button_text = "Skip"
+
+[node name="win_popup" type="ConfirmationDialog" parent="."]
+auto_translate_mode = 1
+initial_position = 2
+size = Vector2i(253, 100)
+ok_button_text = "Play Again"
+dialog_text = "
+"
+cancel_button_text = "Go Back"
+
+[node name="windec_c" type="AcceptDialog" parent="."]
+initial_position = 2
+size = Vector2i(200, 100)
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="TurnTimer" type="Timer" parent="."]
+
+[node name="SFXM" type="AudioStreamPlayer" parent="."]
+
+[node name="BGM" type="AudioStreamPlayer" parent="."]
+
+[connection signal="gui_input" from="Control" to="." method="_on_control_gui_input"]
+[connection signal="pressed" from="pickupbutton" to="." method="_on_pickupbutton_pressed"]
+[connection signal="pressed" from="castlebutton" to="." method="_on_castlebutton_pressed"]
+[connection signal="pressed" from="sortbutton" to="." method="_on_sortbutton_pressed"]
+[connection signal="pressed" from="backbutton" to="." method="_on_back_button_pressed"]
