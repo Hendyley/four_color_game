@@ -517,11 +517,19 @@ dialog_text = "
 "
 cancel_button_text = "Go Back"
 
+[node name="GuideWindow" type="AcceptDialog" parent="."]
+auto_translate_mode = 1
+title = "Tutorial"
+initial_position = 2
+size = Vector2i(500, 500)
+
 [node name="windec_c" type="AcceptDialog" parent="."]
 initial_position = 2
 size = Vector2i(200, 100)
 
 [node name="Timer" type="Timer" parent="."]
+
+[node name="GuideTimer" type="Timer" parent="."]
 
 [node name="TurnTimer" type="Timer" parent="."]
 

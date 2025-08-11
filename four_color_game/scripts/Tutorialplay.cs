@@ -36,10 +36,15 @@ public partial class Tutorialplay : Node
     private bool gameEnded = false;
     private int turnpass = 0;
 
-    private ConfirmationDialog windec, windec2, win_popup;
+    private ConfirmationDialog windec, windec2, win_popup, guidewindow;
     private bool decisionMade = false;
     private bool takeDecision = false;
     private AcceptDialog autoMessageBox;
+    private Timer autoCloseTimer, turnTimer;
+    private float remainingMs;
+    private float elapsedMs;
+    private float updateIntervalMs = 50f; // update every 50ms
+
     private Panel bg_panel;
     private AudioStreamPlayer bgm;
     private AudioStreamPlayer sfxm;
@@ -123,6 +128,7 @@ public partial class Tutorialplay : Node
             autoMessageBox.Hide();
         };
 
+        guidewindow = (ConfirmationDialog)FindChild("GuideWindow");
 
         turnTimer = (Timer)FindChild("TurnTimer");
         turnTimer.WaitTime = 1.0;
@@ -217,15 +223,18 @@ public partial class Tutorialplay : Node
 
 
 
-            // Each player start with 15 tiles
-            // The Goal of game is to form color sets and honor sets
-            // Color sets refer to combination of the same rank with different color (3 or 4 tiles)
-            /*
-             Honor sets refer to combination of either:
-             - King, Queen, Bishop with the same color
-             - Horse, Rock, Cannon with the same color
-             - 3 or 4 Tiles of Pawns with different color
-             */
+            ShowAutoMessage("Each player start with 15 tiles", guidewindow, 5000);
+            ShowAutoMessage("The Goal of game is to form color sets and honor sets", guidewindow, 5000);
+            ShowAutoMessage("Color sets refer to combination of the same rank with different color (3 or 4 tiles)", guidewindow, 5000);
+            ShowAutoMessage(
+                "Honor sets refer to combination of either:\n" +
+                "- King, Queen, Bishop with the same color\n" +
+                "- Horse, Rock, Cannon with the same color\n" +
+                "- 3 or 4 Tiles of Pawns with different color",
+                guidewindow,
+                8000
+            );
+
 
 
             DrawTile(1, "C4");
@@ -385,14 +394,15 @@ public partial class Tutorialplay : Node
 
         if (deck.Count > 0)
         {
+            string tilevalue;
             if (tileid=="")
             {
-                string tilevalue = deck[0];
+                tilevalue = deck[0];
                 deck.RemoveAt(0);
             }
             else
             {
-                string tilevalue = tileid;
+                tilevalue = tileid;
                 deck.Remove(tileid);
             }
 
@@ -532,7 +542,7 @@ public partial class Tutorialplay : Node
         if (clickedTile.Tileid.Contains("C7"))
         {
             LoggerManager.Info("Cannot discard King tile !!!");
-            ShowAutoMessage("Cannot discard King tile !!!", 5000);
+            ShowAutoMessage("Cannot discard King tile !!!",autoMessageBox, 5000);
             return;
         }
         DiscardTile(clickedTile.Playerid, clickedTile.Tileid);
@@ -584,13 +594,13 @@ public partial class Tutorialplay : Node
         LoggerManager.Info("castle button pressed");
         if (!GameLogic.CheckCastle(playersHands[NakamaSingleton.Instance.MainPlayerTurn]))
         {
-            ShowAutoMessage("You Cannot Castle now.", 5000);
+            ShowAutoMessage("You Cannot Castle now.",autoMessageBox, 5000);
             castleButton.ReleaseFocus();
             return;
         }
         castleButton.ReleaseFocus();
         PlayerCastleStatus[NakamaSingleton.Instance.MainPlayerTurn] = true;
-        ShowAutoMessage($"Player {NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.MainPlayerTurn].player_name} Castle", 5000);
+        ShowAutoMessage($"Player {NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.MainPlayerTurn].player_name} Castle",autoMessageBox, 5000);
         LoggerManager.Info($"Player {NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.MainPlayerTurn].player_name} Castle");
     }
 
@@ -669,7 +679,7 @@ public partial class Tutorialplay : Node
             StartTurnTimer();
             if (!PlayerCastleStatus[NakamaSingleton.Instance.MainPlayerTurn] && GameLogic.CheckCastle(playersHands[NakamaSingleton.Instance.MainPlayerTurn]))
             {
-                ShowAutoMessage("You Can Castle.", 5000);
+                ShowAutoMessage("You Can Castle.",autoMessageBox, 5000);
             }
         }
 
@@ -854,7 +864,7 @@ public partial class Tutorialplay : Node
                     PlayerCastleStatus[thisturn] = true;
                     PlaySoundEffect(mp3castle);
                     l2.AddItem($"Player {NakamaSingleton.Instance.PlayerList[thisturn].player_name} CASTLE !!!!");
-                    ShowAutoMessage($"Player {NakamaSingleton.Instance.PlayerList[thisturn].player_name} CASTLE !!!!", 5000);
+                    ShowAutoMessage($"Player {NakamaSingleton.Instance.PlayerList[thisturn].player_name} CASTLE !!!!",autoMessageBox, 5000);
                     LoggerManager.Info($"Player {NakamaSingleton.Instance.PlayerList[thisturn].player_name} CASTLE !!!!");
                 }
 
@@ -984,9 +994,7 @@ public partial class Tutorialplay : Node
 
             DiscardTile(NakamaSingleton.Instance.CurrentTurn, GameLogic.MAX_AI_DISCARD(gs1));
         }
-
         
-
     }
 
 
@@ -1006,18 +1014,11 @@ public partial class Tutorialplay : Node
         container.QueueSort(); // Ensure UI update
     }
 
-
-    private Timer autoCloseTimer, turnTimer;
-    private float remainingMs;
-    private float elapsedMs;
-    private float updateIntervalMs = 50f; // update every 50ms
-
-    public void ShowAutoMessage(string message, int durationMs = 2000)
+    public void ShowAutoMessage(string message, AcceptDialog ad, int durationMs = 2000)
     {
         remainingMs = durationMs;
         elapsedMs = 0;
 
-        // Lazy create the timer
         if (autoCloseTimer == null)
         {
             autoCloseTimer = new Timer();
@@ -1027,15 +1028,13 @@ public partial class Tutorialplay : Node
             AddChild(autoCloseTimer);
         }
 
-        // Hide OK button if it's AcceptDialog
-        if (autoMessageBox is AcceptDialog dialog)
+        if (ad is AcceptDialog dialog)
         {
             dialog.GetOkButton()?.Hide();
         }
 
-        // Initial display
         UpdateCountdown(message);
-        autoMessageBox.PopupCentered();
+        ad.PopupCentered();
         autoCloseTimer.Start();
     }
 
@@ -1044,7 +1043,7 @@ public partial class Tutorialplay : Node
         elapsedMs += updateIntervalMs;
         int timeLeft = Mathf.Max(0, (int)(remainingMs - elapsedMs));
 
-        string display = $"{baseMessage}\n";// Closing in {timeLeft} ms";
+        string display = $"{baseMessage}\n";
 
         if (autoMessageBox.HasNode("MessageLabel"))
         {
