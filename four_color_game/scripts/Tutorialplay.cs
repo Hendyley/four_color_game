@@ -97,15 +97,6 @@ public partial class Tutorialplay : Node
             ((AudioStreamMP3)bgm.Stream).Loop = true;
         }
 
-        NakamaSingleton.Instance.Connect(nameof(NakamaSingleton.PlayerGameStatus), new Callable(this, nameof(GameStatus)));   // Sync Status (connect, disconnect, endgame)
-        NakamaSingleton.Instance.Connect(nameof(NakamaSingleton.PlayerGameTurns), new Callable(this, nameof(GameTurns)));	// Sync Turns
-        NakamaSingleton.Instance.Connect(nameof(NakamaSingleton.GameDeck), new Callable(this, nameof(GameDeck)));   // Sync Deck
-        NakamaSingleton.Instance.Connect(nameof(NakamaSingleton.PlayerGameSeats), new Callable(this, nameof(GameSeats)));   // Sync Seats + Container
-        NakamaSingleton.Instance.Connect(nameof(NakamaSingleton.PlayerGameHands), new Callable(this, nameof(GameHands)));   // Sync Hands
-        NakamaSingleton.Instance.Connect(nameof(NakamaSingleton.GameTable), new Callable(this, nameof(GameTable)));   // Sync Table
-        NakamaSingleton.Instance.Connect(nameof(NakamaSingleton.PlayerGameCastle), new Callable(this, nameof(GameCastle)));	// Sync CastleStatus
-        NakamaSingleton.Instance.Connect(nameof(NakamaSingleton.PlayerGameChats), new Callable(this, nameof(GameChats)));	// Sync Chats
-
         debuglb = (Label)GetNode("Debug");
         debuglb2 = (Label)GetNode("Debug2");
 
@@ -186,35 +177,75 @@ public partial class Tutorialplay : Node
 
         if (NakamaSingleton.Instance.Gamemode == "SinglePlayer")
         {
-            //PlayerSeats[NakamaSingleton.Instance.MainPlayerTurn] = NakamaSingleton.Instance.MainPlayer;
 
-            for (int i = 1; i <= NakamaSingleton.Instance.NumberOfPlayers; i++)
-            {
-                PlayerCastleStatus[i] = false;
-                for (int j = 1; j <= 15; j++)
-                {
-                    DrawTile(i);
-                }
-                SortTiles(i);
-            }
+            DrawTile(2, "C1_Green");
+            DrawTile(2, "C1_Red");
+            DrawTile(2, "C1_Yellow");
+            DrawTile(2, "C2_Green");
+            DrawTile(2, "C2_Red");
+            DrawTile(2, "C2_Yellow");
+            DrawTile(2, "C2");
+            DrawTile(2, "C1_Green");
+            DrawTile(2, "C3_Green");
+            DrawTile(2, "C4_Green");
+            DrawTile(2, "C6_Green");
+            DrawTile(2, "C6_Red");
+            DrawTile(2, "C6_Yellow");
+            DrawTile(2, "C6");
+            DrawTile(2, "C7");
 
-            DrawTile(NakamaSingleton.Instance.CurrentTurn);
+            
+            DrawTile(1, "C1_Green");
+            DrawTile(1, "C1_Red");
+            DrawTile(1, "C1_Yellow");
+
+            DrawTile(1, "C2_Green");
+            DrawTile(1, "C2_Red");
+            DrawTile(1, "C2_Yellow");
+            DrawTile(1, "C2");
+
+            DrawTile(1, "C1_Green");
+            DrawTile(1, "C3_Green");
+            DrawTile(1, "C4_Green");
+
+            DrawTile(1, "C6_Green");
+            DrawTile(1, "C6_Red");
+            DrawTile(1, "C6_Yellow");
+            DrawTile(1, "C6");
+
+            DrawTile(1, "C7");
+
+
+
+            // Each player start with 15 tiles
+            // The Goal of game is to form color sets and honor sets
+            // Color sets refer to combination of the same rank with different color (3 or 4 tiles)
+            /*
+             Honor sets refer to combination of either:
+             - King, Queen, Bishop with the same color
+             - Horse, Rock, Cannon with the same color
+             - 3 or 4 Tiles of Pawns with different color
+             */
+
+
+            DrawTile(1, "C4");
+            // The First player will draw an extra tile
             StartTurnTimer();
+            // Timer will then start to count down.
+
+            // The player will then decide a tile to discard to the table (random tile will be choose to discard if player did not pick a tile in given time).
+            // King tile cannot be discard.
+            // White Cannon doesnt form new color or honor set, hence can be choose to be discard
+
+
+
+
+
         }
-
-
-        else if (NakamaSingleton.Instance.Gamemode == "MultiPlayer" && NakamaSingleton.Instance.IsHost)
-        {
-            string jsonDeck = JsonConvert.SerializeObject(deck);
-            byte[] deckData = Encoding.UTF8.GetBytes(jsonDeck);
-            await NakamaSingleton.Instance.Socket.SendMatchStateAsync(NakamaSingleton.Instance.Match.Id, 5, deckData);
-        }
-
 
         throwhand = true;
     }
 
-    // Called every frame. 'delta' is the elapsed time since the previous frame.
     public async override void _Process(double delta)
     {
         if (gameEnded)
@@ -294,61 +325,7 @@ public partial class Tutorialplay : Node
             }
 
         }
-
-        /////////////////////////////////////////////////////////////////////////////////  "Multiplayer"
-        if (NakamaSingleton.Instance.Gamemode == "Multiplayer")
-        {
-
-
-        }
     }
-
-    //////////////////////////////////////////////////////////////////////////////   For Multiplayer Updates
-    private void GameStatus(string data)
-    {
-
-    }
-
-    private void GameTurns(string data)
-    {
-        //✅
-    }
-
-    private void GameDeck(string data)
-    {
-        if (NakamaSingleton.Instance.IsHost)
-            return;
-
-        deck = JsonConvert.DeserializeObject<List<string>>(data);
-        LoggerManager.Info($"{NakamaSingleton.Instance.MainPlayer.player_name} Deck updated. New deck count: {deck.Count}");
-    }
-
-    private void GameSeats(string data)
-    {
-        //✅
-    }
-
-    private void GameHands(string data)
-    {
-
-    }
-
-    private void GameTable(string data)
-    {
-
-    }
-
-    private void GameCastle(string data)
-    {
-
-    }
-    private void GameChats(string data)
-    {
-
-    }
-    //////////////////////////////////////////////////////////////////////////////////////////////////
-
-
 
     private void StartGame()
     {
@@ -399,7 +376,7 @@ public partial class Tutorialplay : Node
         }
     }
 
-    private void DrawTile(int playerid)
+    private void DrawTile(int playerid, string tileid = "")
     {
         PlaySoundEffect(mp3tiledraw);
 
@@ -408,8 +385,17 @@ public partial class Tutorialplay : Node
 
         if (deck.Count > 0)
         {
-            string tilevalue = deck[0];
-            deck.RemoveAt(0);
+            if (tileid=="")
+            {
+                string tilevalue = deck[0];
+                deck.RemoveAt(0);
+            }
+            else
+            {
+                string tilevalue = tileid;
+                deck.Remove(tileid);
+            }
+
             playersHands[playerid].Add(tilevalue);
 
             LoggerManager.Info($"Player {NakamaSingleton.Instance.PlayerList[playerid].player_name} Drawn Card Value: " + GameLogic.TileName(tilevalue));
