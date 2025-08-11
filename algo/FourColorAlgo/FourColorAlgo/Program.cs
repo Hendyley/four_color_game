@@ -11,7 +11,7 @@ C2, C5, C7 (Same Color of this sets)         KQB
 */
 // Sets
 /*
-Same Colors and same sets (except C5 (kings)
+Same Colors and same sets (except C7 (kings)
 */
 namespace Program
 {
