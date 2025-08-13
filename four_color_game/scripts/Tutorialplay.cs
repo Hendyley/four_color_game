@@ -222,7 +222,7 @@ public partial class Tutorialplay : Node
             DrawTile(1, "C7");
 
 
-
+            ShowAutoMessage("Welcome to tutorial.", guidewindow, 5000);
             ShowAutoMessage("Each player start with 15 tiles", guidewindow, 5000);
             ShowAutoMessage("The Goal of game is to form color sets and honor sets", guidewindow, 5000);
             ShowAutoMessage("Color sets refer to combination of the same rank with different color (3 or 4 tiles)", guidewindow, 5000);
@@ -238,7 +238,6 @@ public partial class Tutorialplay : Node
 
 
             DrawTile(1, "C4");
-            tutorialstep++;
             ShowAutoMessage("The First player will draw an extra tile", guidewindow, 5000);
             StartTurnTimer();
             ShowAutoMessage("Timer will then start to count down.", guidewindow, 5000);
@@ -247,6 +246,7 @@ public partial class Tutorialplay : Node
             ShowAutoMessage("White Cannon doesnt form new color or honor set, hence can be choose to be discard. Click on the white cannon to discard", guidewindow, 5000);
 
             // /Shows preview to discard white cannon (block out specific region of the UI
+            MouseFiller(200, 700, 600, 100);
 
         }
 
@@ -1047,6 +1047,59 @@ public partial class Tutorialplay : Node
             }
         }
     }
+
+    public void MouseFiller(int x, int y, int width, int height)
+    {
+        var root = GetTree().CurrentScene;
+
+        DisableMouseFiller();
+
+        var overlay = new Control
+        {
+            Name = "MouseFillerOverlay",
+            MouseFilter = Control.MouseFilterEnum.Stop
+        };
+        overlay.AnchorLeft = 0;
+        overlay.AnchorTop = 0;
+        overlay.AnchorRight = 1;
+        overlay.AnchorBottom = 1;
+        overlay.Size = GetViewport().GetVisibleRect().Size;
+
+        Vector2 screenSize = overlay.Size;
+        Color dimColor = new Color(0, 0, 0, 0.5f);
+
+        // Top panel
+        overlay.AddChild(CreateBlocker(0, 0, screenSize.X, y, dimColor));
+        // Bottom panel
+        overlay.AddChild(CreateBlocker(0, y + height, screenSize.X, screenSize.Y - (y + height), dimColor));
+        // Left panel
+        overlay.AddChild(CreateBlocker(0, y, x, height, dimColor));
+        // Right panel
+        overlay.AddChild(CreateBlocker(x + width, y, screenSize.X - (x + width), height, dimColor));
+
+        root.AddChild(overlay);
+    }
+
+    private ColorRect CreateBlocker(float px, float py, float w, float h, Color color)
+    {
+        var rect = new ColorRect
+        {
+            Position = new Vector2(px, py),
+            Size = new Vector2(w, h),
+            Color = color,
+            MouseFilter = Control.MouseFilterEnum.Stop // block clicks here
+        };
+        return rect;
+    }
+
+    public void DisableMouseFiller()
+    {
+        var root = GetTree().CurrentScene;
+        var overlay = root.GetNodeOrNull<Control>("MouseFillerOverlay");
+        if (overlay != null)
+            overlay.QueueFree();
+    }
+
 
 
 }
