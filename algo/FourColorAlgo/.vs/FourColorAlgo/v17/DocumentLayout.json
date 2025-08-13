@@ -17,7 +17,7 @@
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedWidth": 243,
+          "DockedWidth": 200,
           "SelectedChildIndex": 43,
           "Children": [
             {
@@ -198,8 +198,7 @@
               "RelativeToolTip": "FourColorAlgo\\GameLogic.cs",
               "ViewState": "AgIAABEAAAAAAAAAAAAmwDwAAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-23T05:36:34.825Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-23T05:36:34.825Z"
             },
             {
               "$type": "Document",
@@ -209,7 +208,7 @@
               "RelativeDocumentMoniker": "FourColorAlgo\\Program.cs",
               "ToolTip": "D:\\Github\\FourColorLogic\\algo\\FourColorAlgo\\FourColorAlgo\\Program.cs",
               "RelativeToolTip": "FourColorAlgo\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAkAAAAAAAAAA==",
+              "ViewState": "AgIAABYAAAAAAAAAAAAuwDQAAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-17T10:02:55.709Z",
               "EditorCaption": ""

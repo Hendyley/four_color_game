@@ -184,21 +184,21 @@ public partial class Tutorialplay : Node
         if (NakamaSingleton.Instance.Gamemode == "SinglePlayer")
         {
 
-            DrawTile(2, "C1_Green");
-            DrawTile(2, "C1_Red");
-            DrawTile(2, "C1_Yellow");
-            DrawTile(2, "C2_Green");
+            DrawTile(2, "C1");
             DrawTile(2, "C2_Red");
-            DrawTile(2, "C2_Yellow");
-            DrawTile(2, "C2");
-            DrawTile(2, "C1_Green");
-            DrawTile(2, "C3_Green");
+            DrawTile(2, "C3_Yellow");
             DrawTile(2, "C4_Green");
-            DrawTile(2, "C6_Green");
-            DrawTile(2, "C6_Red");
-            DrawTile(2, "C6_Yellow");
-            DrawTile(2, "C6");
-            DrawTile(2, "C7");
+            DrawTile(2, "C1");
+            DrawTile(2, "C2_Red");
+            DrawTile(2, "C3_Yellow");
+            DrawTile(2, "C4_Green");
+            DrawTile(2, "C1");
+            DrawTile(2, "C2_Red");
+            DrawTile(2, "C3_Yellow");
+            DrawTile(2, "C4_Green");
+            DrawTile(2, "C5_Yellow");
+            DrawTile(2, "C5_Yellow");
+            DrawTile(2, "C5_Yellow");
 
             
             DrawTile(1, "C1_Green");
@@ -238,17 +238,15 @@ public partial class Tutorialplay : Node
 
 
             DrawTile(1, "C4");
-            // The First player will draw an extra tile
+            tutorialstep++;
+            ShowAutoMessage("The First player will draw an extra tile", guidewindow, 5000);
             StartTurnTimer();
-            // Timer will then start to count down.
+            ShowAutoMessage("Timer will then start to count down.", guidewindow, 5000);
+            ShowAutoMessage("The player will then decide a tile to discard to the table (random tile will be choose to discard if player did not pick a tile in given time).", guidewindow, 8000);
+            ShowAutoMessage("King tile cannot be discard.", guidewindow, 5000);
+            ShowAutoMessage("White Cannon doesnt form new color or honor set, hence can be choose to be discard. Click on the white cannon to discard", guidewindow, 5000);
 
-            // The player will then decide a tile to discard to the table (random tile will be choose to discard if player did not pick a tile in given time).
-            // King tile cannot be discard.
-            // White Cannon doesnt form new color or honor set, hence can be choose to be discard
-
-
-
-
+            // /Shows preview to discard white cannon (block out specific region of the UI
 
         }
 
@@ -264,32 +262,6 @@ public partial class Tutorialplay : Node
         currentturnLabel.Text = NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.CurrentTurn].player_name;
         GameLogic.Deck = deck;
         GameLogic.Table = tabletiles;
-
-        debuglb.Text = "";
-        debuglb.Text = $"Tile P!: {playersHands[1].Count}\n";
-        var sub = playersHands[1].ToList();
-        sub.Sort();
-        playersHands[1].Sort();
-        foreach (var v in sub)
-        {
-            debuglb.Text = debuglb.Text + GameLogic.TileName(v) + " "+ v + " \n";
-        }
-
-        debuglb2.Text = "";
-        debuglb2.Text = $"Tile P2 : {playersHands[2].Count}\n";
-        sub = playersHands[2].ToList();
-        sub.Sort();
-        playersHands[2].Sort();
-        foreach (var v in sub)
-        {
-            debuglb2.Text = debuglb2.Text + GameLogic.TileName(v) +" "+ v + " \n";
-        }
-
-        if (l2.ItemCount > 0)
-        {
-            l2.EnsureCurrentIsVisible(); // ensure selected is visible
-            l2.Select(l2.ItemCount - 1); // select last item to trigger scroll
-        }
 
         /////////////////////////////////////////////////////////////////////////////////  "SinglePlayer"
         if (NakamaSingleton.Instance.Gamemode == "SinglePlayer")
@@ -332,7 +304,6 @@ public partial class Tutorialplay : Node
 
                 }
             }
-
         }
     }
 
@@ -638,8 +609,6 @@ public partial class Tutorialplay : Node
         GameLogic.Savepoint(NakamaSingleton.Instance.Point);
     }
 
-
-
     private void OnWinPopupConfirmed()
     {
         LoggerManager.Info("OK (Play Again) selected");
@@ -653,7 +622,6 @@ public partial class Tutorialplay : Node
         sfxm.Stop();
         GetTree().ChangeSceneToFile("res://scenes/main_menu.tscn");
     }
-
 
     private void RestartGame()
     {
@@ -679,7 +647,16 @@ public partial class Tutorialplay : Node
             StartTurnTimer();
             if (!PlayerCastleStatus[NakamaSingleton.Instance.MainPlayerTurn] && GameLogic.CheckCastle(playersHands[NakamaSingleton.Instance.MainPlayerTurn]))
             {
-                ShowAutoMessage("You Can Castle.",autoMessageBox, 5000);
+                ShowAutoMessage(
+                "You Can Castle.when you are 1 tile away from winning\n" +
+                "now, you had form at least 1 set of Honor (Green, Red, Yellow, and White pawns) and you can win with either \n" +
+                "any of the king tile or white Horse \n" +
+                "You must castle before you can declare your win.",
+                guidewindow,
+                10000
+                );
+
+                // /Block View and show only castle button
             }
         }
 
@@ -867,14 +844,7 @@ public partial class Tutorialplay : Node
                     ShowAutoMessage($"Player {NakamaSingleton.Instance.PlayerList[thisturn].player_name} CASTLE !!!!",autoMessageBox, 5000);
                     LoggerManager.Info($"Player {NakamaSingleton.Instance.PlayerList[thisturn].player_name} CASTLE !!!!");
                 }
-
             }
-        }
-
-        /////////////////////////////////////////////////////////////////////////////////  "Multiplayer"
-        if (NakamaSingleton.Instance.Gamemode == "Multiplayer")
-        {
-
         }
 
         return true;
@@ -996,7 +966,6 @@ public partial class Tutorialplay : Node
         }
         
     }
-
 
     private void SortTiles(int playerid)
     {
