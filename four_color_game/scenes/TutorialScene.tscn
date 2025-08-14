@@ -1,7 +1,6 @@
-[gd_scene load_steps=26 format=3 uid="uid://cuuw52k6pign4"]
+[gd_scene load_steps=25 format=3 uid="uid://cuuw52k6pign4"]
 
-[ext_resource type="Script" path="res://scripts/Gameplay.cs" id="1_wxq18"]
-[ext_resource type="PackedScene" uid="uid://cwa251fvo0n6p" path="res://scenes/Tile.tscn" id="2_i6cwq"]
+[ext_resource type="Script" path="res://scripts/Tutorialplay.cs" id="1_xe35p"]
 [ext_resource type="Texture2D" uid="uid://bojt53ffw6lwv" path="res://art/4_Color_Game/Background/green_BG.png" id="3_wr70c"]
 [ext_resource type="Script" path="res://scripts/TableTiles.cs" id="4_685q8"]
 [ext_resource type="Script" path="res://scripts/ScrollCont.cs" id="5_xqru7"]
@@ -144,8 +143,7 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hya2i"]
 
 [node name="Gameplay" type="Node"]
-script = ExtResource("1_wxq18")
-tileScene = ExtResource("2_i6cwq")
+script = ExtResource("1_xe35p")
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3

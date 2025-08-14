@@ -36,10 +36,10 @@ public partial class Tutorialplay : Node
     private bool gameEnded = false;
     private int turnpass = 0;
 
-    private ConfirmationDialog windec, windec2, win_popup, guidewindow;
+    private ConfirmationDialog windec, windec2, win_popup;
     private bool decisionMade = false;
     private bool takeDecision = false;
-    private AcceptDialog autoMessageBox;
+    private AcceptDialog autoMessageBox, guidewindow;
     private Timer autoCloseTimer, turnTimer;
     private float remainingMs;
     private float elapsedMs;
@@ -128,7 +128,7 @@ public partial class Tutorialplay : Node
             autoMessageBox.Hide();
         };
 
-        guidewindow = (ConfirmationDialog)FindChild("GuideWindow");
+        guidewindow = (AcceptDialog)FindChild("GuideWindow");
 
         turnTimer = (Timer)FindChild("TurnTimer");
         turnTimer.WaitTime = 1.0;
