@@ -122,10 +122,12 @@ public partial class Gameplay : Node
         };
 
         win_popup = (ConfirmationDialog)FindChild("win_popup");
+        win_popup.Exclusive = false;
         win_popup.Confirmed += OnWinPopupConfirmed;
         win_popup.Canceled += OnWinPopupCanceled;
 
         autoMessageBox = (AcceptDialog)FindChild("windec_c");
+        autoMessageBox.Exclusive = false;
         autoCloseTimer = (Timer)FindChild("Timer");
         autoCloseTimer.Timeout += () =>
         {

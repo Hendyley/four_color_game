@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://cuuw52k6pign4"]
+[gd_scene load_steps=27 format=3 uid="uid://cuuw52k6pign4"]
 
 [ext_resource type="Script" path="res://scripts/Tutorialplay.cs" id="1_xe35p"]
 [ext_resource type="Texture2D" uid="uid://bojt53ffw6lwv" path="res://art/4_Color_Game/Background/green_BG.png" id="3_wr70c"]
@@ -141,6 +141,12 @@ corner_radius_bottom_left = 1
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hya2i"]
+
+[sub_resource type="SystemFont" id="SystemFont_08jp3"]
+
+[sub_resource type="Theme" id="Theme_cnljd"]
+default_font = SubResource("SystemFont_08jp3")
+default_font_size = 25
 
 [node name="Gameplay" type="Node"]
 script = ExtResource("1_xe35p")
@@ -519,15 +525,16 @@ cancel_button_text = "Go Back"
 auto_translate_mode = 1
 title = "Tutorial"
 initial_position = 2
-size = Vector2i(500, 500)
+size = Vector2i(422, 300)
+theme = SubResource("Theme_cnljd")
+dialog_autowrap = true
 
 [node name="windec_c" type="AcceptDialog" parent="."]
 initial_position = 2
 size = Vector2i(200, 100)
+dialog_autowrap = true
 
 [node name="Timer" type="Timer" parent="."]
-
-[node name="GuideTimer" type="Timer" parent="."]
 
 [node name="TurnTimer" type="Timer" parent="."]
 

@@ -122,6 +122,7 @@ public partial class Tutorialplay : Node
         win_popup.Canceled += OnWinPopupCanceled;
 
         autoMessageBox = (AcceptDialog)FindChild("windec_c");
+    
         autoCloseTimer = (Timer)FindChild("Timer");
         autoCloseTimer.Timeout += () =>
         {
@@ -129,6 +130,7 @@ public partial class Tutorialplay : Node
         };
 
         guidewindow = (AcceptDialog)FindChild("GuideWindow");
+        guidewindow.Exclusive = true;
 
         turnTimer = (Timer)FindChild("TurnTimer");
         turnTimer.WaitTime = 1.0;
@@ -183,7 +185,8 @@ public partial class Tutorialplay : Node
 
         if (NakamaSingleton.Instance.Gamemode == "SinglePlayer")
         {
-
+            PlayerCastleStatus[1] = false;
+            PlayerCastleStatus[2] = false;
             DrawTile(2, "C1");
             DrawTile(2, "C2_Red");
             DrawTile(2, "C3_Yellow");
@@ -222,28 +225,22 @@ public partial class Tutorialplay : Node
             DrawTile(1, "C7");
 
 
-            ShowAutoMessage("Welcome to tutorial.", guidewindow, 5000);
-            ShowAutoMessage("Each player start with 15 tiles", guidewindow, 5000);
-            ShowAutoMessage("The Goal of game is to form color sets and honor sets", guidewindow, 5000);
-            ShowAutoMessage("Color sets refer to combination of the same rank with different color (3 or 4 tiles)", guidewindow, 5000);
-            ShowAutoMessage(
+            await ShowAutoMessage("Welcome to tutorial.", guidewindow, 5000, wait: true);
+            await ShowAutoMessage("Each player start with 15 tiles", guidewindow, 5000, wait: true);
+            await ShowAutoMessage("The Goal of game is to form color sets and honor sets", guidewindow, 5000, wait: true);
+            await ShowAutoMessage("Color sets refer to combination of the same rank with different color (3 or 4 tiles)", guidewindow, 5000, wait: true);
+            await ShowAutoMessage(
                 "Honor sets refer to combination of either:\n" +
                 "- King, Queen, Bishop with the same color\n" +
                 "- Horse, Rock, Cannon with the same color\n" +
                 "- 3 or 4 Tiles of Pawns with different color",
                 guidewindow,
-                8000
+                8000,
+                wait: true
             );
 
-
-
             DrawTile(1, "C4");
-            ShowAutoMessage("The First player will draw an extra tile", guidewindow, 5000);
-            StartTurnTimer();
-            ShowAutoMessage("Timer will then start to count down.", guidewindow, 5000);
-            ShowAutoMessage("The player will then decide a tile to discard to the table (random tile will be choose to discard if player did not pick a tile in given time).", guidewindow, 8000);
-            ShowAutoMessage("King tile cannot be discard.", guidewindow, 5000);
-            ShowAutoMessage("White Cannon doesnt form new color or honor set, hence can be choose to be discard. Click on the white cannon to discard", guidewindow, 5000);
+            await ShowAutoMessage("The First player will draw an extra tile", guidewindow, 5000, wait: true);
 
             // /Shows preview to discard white cannon (block out specific region of the UI
             MouseFiller(200, 700, 600, 100);
@@ -983,7 +980,7 @@ public partial class Tutorialplay : Node
         container.QueueSort(); // Ensure UI update
     }
 
-    public void ShowAutoMessage(string message, AcceptDialog ad, int durationMs = 2000)
+    public async Task ShowAutoMessage(string message, AcceptDialog ad, int durationMs = 2000, bool wait = false)
     {
         remainingMs = durationMs;
         elapsedMs = 0;
@@ -993,40 +990,55 @@ public partial class Tutorialplay : Node
             autoCloseTimer = new Timer();
             autoCloseTimer.OneShot = false;
             autoCloseTimer.WaitTime = updateIntervalMs / 1000f;
-            autoCloseTimer.Timeout += () => UpdateCountdown(message);
+            autoCloseTimer.Timeout += () => UpdateCountdown(message, ad);
             AddChild(autoCloseTimer);
         }
 
-        if (ad is AcceptDialog dialog)
+        if (ad is AcceptDialog dialog && ad == autoMessageBox)
         {
             dialog.GetOkButton()?.Hide();
         }
 
-        UpdateCountdown(message);
+        UpdateCountdown(message, ad);
         ad.PopupCentered();
         autoCloseTimer.Start();
+
+        if (wait)
+        {
+            // Wait for timer duration before returning
+            //var timer = GetTree().CreateTimer(durationMs / 1000.0f);
+            //await ToSignal(timer, "timeout");
+            await ToSignal(ad, "confirmed");
+        }
     }
 
-    private void UpdateCountdown(string baseMessage)
+
+    private void UpdateCountdown(string baseMessage, AcceptDialog ad)
     {
         elapsedMs += updateIntervalMs;
         int timeLeft = Mathf.Max(0, (int)(remainingMs - elapsedMs));
 
         string display = $"{baseMessage}\n";
 
-        if (autoMessageBox.HasNode("MessageLabel"))
+        if (ad.HasNode("MessageLabel"))
         {
-            var label = autoMessageBox.GetNode<Label>("MessageLabel");
+            var label = ad.GetNode<Label>("MessageLabel");
             label.Text = display;
+            label.AutowrapMode = TextServer.AutowrapMode.Word;
+            label.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
+            label.SizeFlagsVertical = Control.SizeFlags.ExpandFill;
+            label.HorizontalAlignment = HorizontalAlignment.Center;
+            label.VerticalAlignment = VerticalAlignment.Center;
+
         }
         else
         {
-            autoMessageBox.DialogText = display;
+            ad.DialogText = display;
         }
 
         if (timeLeft <= 0)
         {
-            autoMessageBox.Hide();
+            ad.Hide();
             autoCloseTimer.Stop();
         }
     }
