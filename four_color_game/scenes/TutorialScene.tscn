@@ -143,6 +143,7 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hya2i"]
 
 [sub_resource type="SystemFont" id="SystemFont_08jp3"]
+subpixel_positioning = 0
 
 [sub_resource type="Theme" id="Theme_cnljd"]
 default_font = SubResource("SystemFont_08jp3")
@@ -527,6 +528,7 @@ title = "Tutorial"
 initial_position = 2
 size = Vector2i(422, 300)
 theme = SubResource("Theme_cnljd")
+ok_button_text = "   OK   "
 dialog_autowrap = true
 
 [node name="windec_c" type="AcceptDialog" parent="."]

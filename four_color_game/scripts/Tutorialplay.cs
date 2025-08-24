@@ -53,6 +53,9 @@ public partial class Tutorialplay : Node
     private string mp3win = "Win";
     private string mp3castle = "Castle";
 
+    private string allowedtile = "";
+    private string allowedmove = "";
+
     StyleBoxFlat highlightStyle = new StyleBoxFlat();
 
     public async override void _Ready()
@@ -230,7 +233,7 @@ public partial class Tutorialplay : Node
             await ShowAutoMessage("The Goal of game is to form color sets and honor sets", guidewindow, 5000, wait: true);
             await ShowAutoMessage("Color sets refer to combination of the same rank with different color (3 or 4 tiles)", guidewindow, 5000, wait: true);
             await ShowAutoMessage(
-                "Honor sets refer to combination of either:\n" +
+                "Honor sets refer to combination of:\n" +
                 "- King, Queen, Bishop with the same color\n" +
                 "- Horse, Rock, Cannon with the same color\n" +
                 "- 3 or 4 Tiles of Pawns with different color",
@@ -241,9 +244,16 @@ public partial class Tutorialplay : Node
 
             DrawTile(1, "C4");
             await ShowAutoMessage("The First player will draw an extra tile", guidewindow, 5000, wait: true);
-
-            // /Shows preview to discard white cannon (block out specific region of the UI
-            MouseFiller(200, 700, 600, 100);
+            await ShowAutoMessage(
+                "Currently, your hand consist of\n" +
+                "Colors set of Horse (3 different colors) and Queen (4 different colors).\n" +
+                "Honor set of Green (Horse, Rook, Cannon) and Pawn (4 different color)\n" +
+                "Best choice in this scenario is to discard White Cannon",
+                guidewindow,
+                8000,
+                wait: true
+            );
+            allowedtile = "C4";
 
         }
 
@@ -439,6 +449,12 @@ public partial class Tutorialplay : Node
     {
         if (!throwhand)
             return;
+
+        if(allowedtile == "" || allowedtile != tilevalue)
+        {
+            await ShowAutoMessage("Wrong tile, choose again",guidewindow,3000,wait:true);
+            return;
+        }
 
         PlaySoundEffect(mp3tilediscard);
 
@@ -1060,37 +1076,6 @@ public partial class Tutorialplay : Node
         }
     }
 
-    public void MouseFiller(int x, int y, int width, int height)
-    {
-        var root = GetTree().CurrentScene;
-
-        DisableMouseFiller();
-
-        var overlay = new Control
-        {
-            Name = "MouseFillerOverlay",
-            MouseFilter = Control.MouseFilterEnum.Stop
-        };
-        overlay.AnchorLeft = 0;
-        overlay.AnchorTop = 0;
-        overlay.AnchorRight = 1;
-        overlay.AnchorBottom = 1;
-        overlay.Size = GetViewport().GetVisibleRect().Size;
-
-        Vector2 screenSize = overlay.Size;
-        Color dimColor = new Color(0, 0, 0, 0.5f);
-
-        // Top panel
-        overlay.AddChild(CreateBlocker(0, 0, screenSize.X, y, dimColor));
-        // Bottom panel
-        overlay.AddChild(CreateBlocker(0, y + height, screenSize.X, screenSize.Y - (y + height), dimColor));
-        // Left panel
-        overlay.AddChild(CreateBlocker(0, y, x, height, dimColor));
-        // Right panel
-        overlay.AddChild(CreateBlocker(x + width, y, screenSize.X - (x + width), height, dimColor));
-
-        root.AddChild(overlay);
-    }
 
     private ColorRect CreateBlocker(float px, float py, float w, float h, Color color)
     {
