@@ -216,9 +216,9 @@ public partial class Tutorialplay : Node
             DrawTile(1, "C2_Yellow");
             DrawTile(1, "C2");
 
-            DrawTile(1, "C1_Green");
-            DrawTile(1, "C3_Green");
-            DrawTile(1, "C4_Green");
+            DrawTile(1, "C1");
+            DrawTile(1, "C3");
+            DrawTile(1, "C4");
 
             DrawTile(1, "C6_Green");
             DrawTile(1, "C6_Red");
@@ -242,18 +242,86 @@ public partial class Tutorialplay : Node
                 wait: true
             );
 
-            DrawTile(1, "C4");
+            DrawTile(1, "C4_Green");
+
             await ShowAutoMessage("The First player will draw an extra tile", guidewindow, 5000, wait: true);
+            foreach (Tile t in playersContainers[1].GetChildren())
+            {
+                if (t.Tileid == "C1_Green" || t.Tileid == "C1_Red" || t.Tileid == "C1_Yellow")
+                    t.CallDeferred("UpdateHighlightVisual", true);
+                else
+                    t.CallDeferred("UpdateHighlightVisual", false);
+            }
             await ShowAutoMessage(
                 "Currently, your hand consist of\n" +
-                "Colors set of Horse (3 different colors) and Queen (4 different colors).\n" +
-                "Honor set of Green (Horse, Rook, Cannon) and Pawn (4 different color)\n" +
-                "Best choice in this scenario is to discard White Cannon",
-                guidewindow,
-                8000,
+                "Colors set of Horse (3 different colors).\n"
+                ,guidewindow,
+                5000,
                 wait: true
             );
-            allowedtile = "C4";
+            foreach (Tile t in playersContainers[1].GetChildren())
+            {
+                if (t.Tileid == "C2_Green" || t.Tileid == "C2_Red" || t.Tileid == "C2_Yellow" || t.Tileid == "C2")
+                    t.CallDeferred("UpdateHighlightVisual", true);
+                else
+                    t.CallDeferred("UpdateHighlightVisual", false);
+            }
+            await ShowAutoMessage(
+                "and Queen (4 different colors).\n"
+                , guidewindow,
+                5000,
+                wait: true
+            );
+            foreach (Tile t in playersContainers[1].GetChildren())
+            {
+                if (t.Tileid == "C1" || t.Tileid == "C3" || t.Tileid == "C4")
+                    t.CallDeferred("UpdateHighlightVisual", true);
+                else
+                    t.CallDeferred("UpdateHighlightVisual", false);
+            }
+            await ShowAutoMessage(
+                "Honor set of White (Horse, Rook, Cannon)\n"
+                ,guidewindow,
+                5000,
+                wait: true
+            );
+            foreach (Tile t in playersContainers[1].GetChildren())
+            {
+                if (t.Tileid == "C6_Green" || t.Tileid == "C6_Red" || t.Tileid == "C6_Yellow" || t.Tileid == "C6")
+                    t.CallDeferred("UpdateHighlightVisual", true);
+                else
+                    t.CallDeferred("UpdateHighlightVisual", false);
+            }
+            await ShowAutoMessage(
+                "and Pawn (4 different color)\n"
+                , guidewindow,
+                5000,
+                wait: true
+            );
+            foreach (Tile t in playersContainers[1].GetChildren())
+            {
+                if (t.Tileid == "C7" )
+                    t.CallDeferred("UpdateHighlightVisual", true);
+                else
+                    t.CallDeferred("UpdateHighlightVisual", false);
+            }
+            await ShowAutoMessage(
+                "King tiles cannot be discard\n"
+                , guidewindow,
+                5000,
+                wait: true
+            );
+            foreach (Tile t in playersContainers[1].GetChildren())
+            {
+                t.CallDeferred("UpdateHighlightVisual", false);
+            }
+            await ShowAutoMessage(
+                "Best choice in this scenario is to discard Green Cannon",
+                guidewindow,
+                5000,
+                wait: true
+            );
+            allowedtile = "C4_Green";
 
         }
 
@@ -450,9 +518,9 @@ public partial class Tutorialplay : Node
         if (!throwhand)
             return;
 
-        if(allowedtile == "" || allowedtile != tilevalue)
+        if (allowedtile != tilevalue)
         {
-            await ShowAutoMessage("Wrong tile, choose again",guidewindow,3000,wait:true);
+            await ShowAutoMessage("Wrong tile, choose again", guidewindow, 0, wait:true);
             return;
         }
 
@@ -666,7 +734,7 @@ public partial class Tutorialplay : Node
                 "any of the king tile or white Horse \n" +
                 "You must castle before you can declare your win.",
                 guidewindow,
-                10000
+                8000
                 );
 
                 // /Block View and show only castle button
