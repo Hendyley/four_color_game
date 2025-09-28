@@ -7,6 +7,18 @@
       "RelativeMoniker": "D:0:0:{A008C980-B72C-4F2C-9C15-72FB3FC70112}|four_color_game.csproj|solutionrelative:scripts\\tutorialplay.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{A008C980-B72C-4F2C-9C15-72FB3FC70112}|four_color_game.csproj|e:\\project\\git\\games\\four_color_game\\four_color_game\\scripts\\gameplay.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A008C980-B72C-4F2C-9C15-72FB3FC70112}|four_color_game.csproj|solutionrelative:scripts\\gameplay.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A008C980-B72C-4F2C-9C15-72FB3FC70112}|four_color_game.csproj|e:\\project\\git\\games\\four_color_game\\four_color_game\\scripts\\tile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A008C980-B72C-4F2C-9C15-72FB3FC70112}|four_color_game.csproj|solutionrelative:scripts\\tile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A008C980-B72C-4F2C-9C15-72FB3FC70112}|four_color_game.csproj|e:\\project\\git\\games\\four_color_game\\four_color_game\\scripts\\scrollcont.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A008C980-B72C-4F2C-9C15-72FB3FC70112}|four_color_game.csproj|solutionrelative:scripts\\scrollcont.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A008C980-B72C-4F2C-9C15-72FB3FC70112}|four_color_game.csproj|e:\\project\\git\\games\\four_color_game\\four_color_game\\scripts\\mainmenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A008C980-B72C-4F2C-9C15-72FB3FC70112}|four_color_game.csproj|solutionrelative:scripts\\mainmenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -15,16 +27,8 @@
       "RelativeMoniker": "D:0:0:{A008C980-B72C-4F2C-9C15-72FB3FC70112}|four_color_game.csproj|solutionrelative:scripts\\tabletiles.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A008C980-B72C-4F2C-9C15-72FB3FC70112}|four_color_game.csproj|e:\\project\\git\\games\\four_color_game\\four_color_game\\scripts\\tile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A008C980-B72C-4F2C-9C15-72FB3FC70112}|four_color_game.csproj|solutionrelative:scripts\\tile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A008C980-B72C-4F2C-9C15-72FB3FC70112}|four_color_game.csproj|e:\\project\\git\\games\\four_color_game\\four_color_game\\scripts\\gamestore.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A008C980-B72C-4F2C-9C15-72FB3FC70112}|four_color_game.csproj|solutionrelative:scripts\\gamestore.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A008C980-B72C-4F2C-9C15-72FB3FC70112}|four_color_game.csproj|e:\\project\\git\\games\\four_color_game\\four_color_game\\scripts\\gameplay.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A008C980-B72C-4F2C-9C15-72FB3FC70112}|four_color_game.csproj|solutionrelative:scripts\\gameplay.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A008C980-B72C-4F2C-9C15-72FB3FC70112}|four_color_game.csproj|e:\\project\\git\\games\\four_color_game\\four_color_game\\scripts\\startgamepage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -38,7 +42,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 248,
-          "SelectedChildIndex": 45,
+          "SelectedChildIndex": 44,
           "Children": [
             {
               "$type": "Bookmark",
@@ -211,32 +215,19 @@
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "Tile.cs",
-              "DocumentMoniker": "E:\\Project\\Git\\Games\\four_color_game\\four_color_game\\scripts\\Tile.cs",
-              "RelativeDocumentMoniker": "scripts\\Tile.cs",
-              "ToolTip": "E:\\Project\\Git\\Games\\four_color_game\\four_color_game\\scripts\\Tile.cs",
-              "RelativeToolTip": "scripts\\Tile.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Title": "ScrollCont.cs",
+              "DocumentMoniker": "E:\\Project\\Git\\Games\\four_color_game\\four_color_game\\scripts\\ScrollCont.cs",
+              "RelativeDocumentMoniker": "scripts\\ScrollCont.cs",
+              "ToolTip": "E:\\Project\\Git\\Games\\four_color_game\\four_color_game\\scripts\\ScrollCont.cs",
+              "RelativeToolTip": "scripts\\ScrollCont.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAxwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-25T15:44:17.546Z",
+              "WhenOpened": "2025-08-26T15:58:37.269Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "TableTiles.cs",
-              "DocumentMoniker": "E:\\Project\\Git\\Games\\four_color_game\\four_color_game\\scripts\\TableTiles.cs",
-              "RelativeDocumentMoniker": "scripts\\TableTiles.cs",
-              "ToolTip": "E:\\Project\\Git\\Games\\four_color_game\\four_color_game\\scripts\\TableTiles.cs",
-              "RelativeToolTip": "scripts\\TableTiles.cs",
-              "ViewState": "AgIAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-18T15:34:42.243Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "MainMenu.cs",
               "DocumentMoniker": "E:\\Project\\Git\\Games\\four_color_game\\four_color_game\\scripts\\MainMenu.cs",
               "RelativeDocumentMoniker": "scripts\\MainMenu.cs",
@@ -244,8 +235,7 @@
               "RelativeToolTip": "scripts\\MainMenu.cs",
               "ViewState": "AgIAACsAAAAAAAAAAAAgwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-10T15:47:47.159Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-10T15:47:47.159Z"
             },
             {
               "$type": "Document",
@@ -255,14 +245,26 @@
               "RelativeDocumentMoniker": "scripts\\Tutorialplay.cs",
               "ToolTip": "E:\\Project\\Git\\Games\\four_color_game\\four_color_game\\scripts\\Tutorialplay.cs",
               "RelativeToolTip": "scripts\\Tutorialplay.cs",
-              "ViewState": "AgIAAMICAAAAAAAAAAAkwNECAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAABwDAAAAAAAAAAAAwC4DAABoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-08-10T16:12:25.731Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
+              "Title": "TableTiles.cs",
+              "DocumentMoniker": "E:\\Project\\Git\\Games\\four_color_game\\four_color_game\\scripts\\TableTiles.cs",
+              "RelativeDocumentMoniker": "scripts\\TableTiles.cs",
+              "ToolTip": "E:\\Project\\Git\\Games\\four_color_game\\four_color_game\\scripts\\TableTiles.cs",
+              "RelativeToolTip": "scripts\\TableTiles.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-18T15:34:42.243Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "GameStore.cs",
               "DocumentMoniker": "E:\\Project\\Git\\Games\\four_color_game\\four_color_game\\scripts\\GameStore.cs",
               "RelativeDocumentMoniker": "scripts\\GameStore.cs",
@@ -270,8 +272,7 @@
               "RelativeToolTip": "scripts\\GameStore.cs",
               "ViewState": "AgIAAE8AAAAAAAAAAAAQwEEAAAAKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-17T16:08:25.836Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-17T16:08:25.836Z"
             }
           ]
         },
@@ -289,20 +290,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 1,
               "Title": "Gameplay.cs",
               "DocumentMoniker": "E:\\Project\\Git\\Games\\four_color_game\\four_color_game\\scripts\\Gameplay.cs",
               "RelativeDocumentMoniker": "scripts\\Gameplay.cs",
               "ToolTip": "E:\\Project\\Git\\Games\\four_color_game\\four_color_game\\scripts\\Gameplay.cs",
               "RelativeToolTip": "scripts\\Gameplay.cs",
-              "ViewState": "AgIAAJgCAAAAAAAAAAAswAwAAAAQAAAAAAAAAA==",
+              "ViewState": "AgIAAFQDAAAAAAAAAAAUwAwAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-08-14T14:41:10.575Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 2,
+              "Title": "Tile.cs",
+              "DocumentMoniker": "E:\\Project\\Git\\Games\\four_color_game\\four_color_game\\scripts\\Tile.cs",
+              "RelativeDocumentMoniker": "scripts\\Tile.cs",
+              "ToolTip": "E:\\Project\\Git\\Games\\four_color_game\\four_color_game\\scripts\\Tile.cs",
+              "RelativeToolTip": "scripts\\Tile.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAAAgwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-25T15:44:17.546Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
               "Title": "StartGamePage.cs",
               "DocumentMoniker": "E:\\Project\\Git\\Games\\four_color_game\\four_color_game\\scripts\\StartGamePage.cs",
               "RelativeDocumentMoniker": "scripts\\StartGamePage.cs",

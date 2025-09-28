@@ -547,7 +547,7 @@ public partial class Tutorialplay : Node
 
         //SortTiles(playerid);
         await AddTurn(); ////////////////////////////////////////////////////////////////////////////// Turn Change here
-        await autoplay();
+        await tutorialoppnext();
         return;
     }
 
@@ -734,7 +734,7 @@ public partial class Tutorialplay : Node
                 "any of the king tile or white Horse \n" +
                 "You must castle before you can declare your win.",
                 guidewindow,
-                8000
+                5000
                 );
 
                 // /Block View and show only castle button
@@ -773,160 +773,54 @@ public partial class Tutorialplay : Node
 
     }
 
-    private async Task<bool> autoplay()
+    private async Task<bool> tutorialoppnext()
     {
-        /////////////////////////////////////////////////////////////////////////////////  "SinglePlayer"
-        if (NakamaSingleton.Instance.Gamemode == "SinglePlayer")
+        switch (turnpass)
         {
-            int thisturn = NakamaSingleton.Instance.CurrentTurn;
-            if (NakamaSingleton.Instance.CurrentTurn != 1)
-            {
-                var gs = new GameLogic.GameState();
-                gs.Hand = playersHands[NakamaSingleton.Instance.CurrentTurn].ToList(); //Current Hand
-
-                var gs1 = new GameLogic.GameState();
-                gs1.Hand = playersHands[NakamaSingleton.Instance.CurrentTurn].ToList(); //Current hand + take tile from table
-                gs1.Hand.Add(lastTableTile.Tileid);
-
-                if (GameLogic.EvaluateState(gs) >= GameLogic.EvaluateState(gs1))
+            case 1:
+                await ShowAutoMessage("After Castle, you are waiting for winning hand",guidewindow,5000,wait:true);
+                foreach (Tile t in playersContainers[1].GetChildren())
                 {
-                    l2.AddItem($"player {NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.CurrentTurn].player_name} draw {GameLogic.EvaluateState(gs)} vs take {GameLogic.EvaluateState(gs1)}");
-                    DrawTile(NakamaSingleton.Instance.CurrentTurn);
-
-                    if (PlayerCastleStatus[NakamaSingleton.Instance.CurrentTurn]) // Check Ai Self Win
-                    {
-                        if (GameLogic.WinCondition(playersHands[NakamaSingleton.Instance.CurrentTurn]) == "WIN")
-                        {
-                            l2.AddItem($"Player {NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.CurrentTurn].player_name} WIN");
-                            LoggerManager.Info($"Player {NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.CurrentTurn].player_name} WIN");
-                            EndGame(NakamaSingleton.Instance.CurrentTurn);
-                            return true;
-                        }
-                    }
-
-                    if (PlayerCastleStatus[NakamaSingleton.Instance.MainPlayerTurn]) //Check player Draw
-                    {
-                        var x = playersHands[NakamaSingleton.Instance.MainPlayerTurn].ToList();
-                        x.Add(lastDrawnTile.Tileid);
-
-                        if (GameLogic.WinCondition(x) == "WIN")
-                        {
-                            decisionMade = false;
-                            takeDecision = false;
-                            windec.DialogText = windec.DialogText + $" {lastDrawnTile.Tileid}";
-                            windec.PopupCentered();
-
-                            int timeoutMs = 50000;
-                            int waitedMs = 0;
-                            int pollInterval = 100;
-
-                            while (!decisionMade && waitedMs < timeoutMs)
-                            {
-                                await Task.Delay(pollInterval);
-                                waitedMs += pollInterval;
-                            }
-
-                            if (!decisionMade)
-                            {
-                                takeDecision = false;
-                                decisionMade = true;
-                                windec.Hide();
-                            }
-
-                            if (takeDecision)
-                            {
-                                l2.AddItem("Player chose to Take");
-                                TakeTile(NakamaSingleton.Instance.MainPlayerTurn, lastDrawnTile.Tileid);
-                            }
-                            else
-                            {
-                                l2.AddItem("Player chose to Pass");
-                                DrawTile(NakamaSingleton.Instance.MainPlayerTurn);
-                            }
-                        }
-                    }
-                    gs.Hand = playersHands[NakamaSingleton.Instance.CurrentTurn].ToList();
-                    if (PlayerCastleStatus[NakamaSingleton.Instance.CurrentTurn]) // Check Ai Self Win
-                    {
-                        if (GameLogic.WinCondition(playersHands[NakamaSingleton.Instance.CurrentTurn]) == "WIN")
-                        {
-                            l2.AddItem($"Player {NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.CurrentTurn].player_name} WIN");
-                            LoggerManager.Info($"Player {NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.CurrentTurn].player_name} WIN");
-                            EndGame(NakamaSingleton.Instance.CurrentTurn);
-                            return true;
-                        }
-                    }
-                    gs.Hand.Add(lastDrawnTile.Tileid);
-                    DiscardTile(NakamaSingleton.Instance.CurrentTurn, GameLogic.MAX_AI_DISCARD(gs));
+                    if (t.Tileid == "C1_Green" || t.Tileid == "C1_Red" || t.Tileid == "C1_Yellow")
+                        t.CallDeferred("UpdateHighlightVisual", true);
+                    else
+                        t.CallDeferred("UpdateHighlightVisual", false);
                 }
-                else
+                await ShowAutoMessage("It can be white horse", guidewindow, 5000, wait: true);
+                foreach (Tile t in playersContainers[1].GetChildren())
                 {
-                    OnTableTileClicked(lastTableTile);
-                    if (PlayerCastleStatus[NakamaSingleton.Instance.CurrentTurn]) // Check Ai Self Win
-                    {
-                        if (GameLogic.WinCondition(playersHands[NakamaSingleton.Instance.CurrentTurn]) == "WIN")
-                        {
-                            l2.AddItem($"Player {NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.CurrentTurn].player_name} WIN");
-                            LoggerManager.Info($"Player {NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.CurrentTurn].player_name} WIN");
-                            EndGame(NakamaSingleton.Instance.CurrentTurn);
-                            return true;
-                        }
-                    }
-                    DiscardTile(NakamaSingleton.Instance.CurrentTurn, GameLogic.MAX_AI_DISCARD(gs1));
+                    if (t.Tileid == "C7")
+                        t.CallDeferred("UpdateHighlightVisual", true);
+                    else
+                        t.CallDeferred("UpdateHighlightVisual", false);
                 }
-
-                if (PlayerCastleStatus[NakamaSingleton.Instance.MainPlayerTurn]) //Player Discard
+                await ShowAutoMessage("It can be any king tiles (white, green, red, yellow)", guidewindow, 5000, wait: true);
+                foreach (Tile t in playersContainers[1].GetChildren())
                 {
-                    var x = playersHands[NakamaSingleton.Instance.MainPlayerTurn].ToList();
-                    if (lastTableTile != null)
-                        x.Add(lastTableTile.Tileid);
-
-                    if (GameLogic.WinCondition(x) == "WIN")
+                    t.CallDeferred("UpdateHighlightVisual", false);
+                }
+                DrawTile(2, "C7");
+                foreach (Tile t in playersContainers[2].GetChildren())
+                {
+                    if (t.Tileid == "C7")
                     {
-                        decisionMade = false;
-                        takeDecision = false;
-                        windec.DialogText = windec.DialogText + $" {GameLogic.TileName(lastTableTile.Tileid)}";
-                        windec.PopupCentered();
-
-                        int timeoutMs = 50000;
-                        int waitedMs = 0;
-                        int pollInterval = 100;
-
-                        while (!decisionMade && waitedMs < timeoutMs)
-                        {
-                            await Task.Delay(pollInterval);
-                            waitedMs += pollInterval;
-                        }
-
-                        if (!decisionMade)
-                        {
-                            takeDecision = false;
-                            decisionMade = true;
-                            windec.Hide();
-                        }
-
-                        if (takeDecision)
-                        {
-                            l2.AddItem("Player chose to Take and Win");
-                            OnTableTileClicked(lastTableTile);
-                        }
-                        else
-                        {
-                            l2.AddItem("Player chose to Pass");
-                        }
+                        t.CallDeferred("UpdateHighlightVisual", true);
+                        t.SetCover(false);
+                    }   
+                    else
+                    {
+                        t.CallDeferred("UpdateHighlightVisual", false);
                     }
                 }
-
-                if (GameLogic.CheckCastle(playersHands[thisturn]) && !PlayerCastleStatus[thisturn])
-                {
-                    PlayerCastleStatus[thisturn] = true;
-                    PlaySoundEffect(mp3castle);
-                    l2.AddItem($"Player {NakamaSingleton.Instance.PlayerList[thisturn].player_name} CASTLE !!!!");
-                    ShowAutoMessage($"Player {NakamaSingleton.Instance.PlayerList[thisturn].player_name} CASTLE !!!!",autoMessageBox, 5000);
-                    LoggerManager.Info($"Player {NakamaSingleton.Instance.PlayerList[thisturn].player_name} CASTLE !!!!");
-                }
-            }
+                await ShowAutoMessage("After castle, you can win by tile discard by player before you \n" +
+                    "or when other players drawing a tile as long as the tile contribute to the winning sets", guidewindow, 5000, wait: true);
+                await ShowAutoMessage("Choose to win by taking the tile", guidewindow, 5000, wait: true);
+                break;
+            default:
+                await ShowAutoMessage($"turnpass = {turnpass}", guidewindow, 5000, wait: true);
+                break;
         }
+        
 
         return true;
     }
@@ -1045,7 +939,6 @@ public partial class Tutorialplay : Node
 
             DiscardTile(NakamaSingleton.Instance.CurrentTurn, GameLogic.MAX_AI_DISCARD(gs1));
         }
-        
     }
 
     private void SortTiles(int playerid)
@@ -1096,7 +989,6 @@ public partial class Tutorialplay : Node
         }
     }
 
-
     private void UpdateCountdown(string baseMessage, AcceptDialog ad)
     {
         elapsedMs += updateIntervalMs;
@@ -1143,7 +1035,6 @@ public partial class Tutorialplay : Node
             }
         }
     }
-
 
     private ColorRect CreateBlocker(float px, float py, float w, float h, Color color)
     {
