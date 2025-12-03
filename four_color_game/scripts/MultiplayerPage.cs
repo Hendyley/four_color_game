@@ -56,7 +56,7 @@ public partial class MultiplayerPage : Node
     {
 		GD.Print($"{NakamaSingleton.Instance.MainPlayer.player_name} Plays. Total {playernum} Game start");
         
-		Node gameplayInstance = (Node)gameplayScene.Instantiate();
+		Gameplay gameplayInstance = (Gameplay)gameplayScene.Instantiate();
 		NakamaSingleton.Instance.Gamemode = "Multiplayer";
 
         GetTree().Root.AddChild(gameplayInstance);

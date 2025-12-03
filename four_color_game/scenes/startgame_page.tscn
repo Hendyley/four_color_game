@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://1uc4okqjc05u"]
 
 [ext_resource type="Script" path="res://scripts/StartGamePage.cs" id="1_kw055"]
-[ext_resource type="Shader" path="res://scenes/PoupMenu.gdshader" id="1_ob0jq"]
+[ext_resource type="Shader" path="res://Resources/PoupMenu.gdshader" id="1_ob0jq"]
 [ext_resource type="PackedScene" uid="uid://cm1bc46c0qr4l" path="res://scenes/gameplay.tscn" id="2_k1h6l"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pr7u7"]

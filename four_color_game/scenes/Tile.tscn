@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cwa251fvo0n6p"]
 
-[ext_resource type="Script" path="res://scripts/Tile.cs" id="1_76l64"]
+[ext_resource type="Script" path="res://scripts/FourColors/Tile.cs" id="1_76l64"]
 [ext_resource type="Texture2D" uid="uid://b7u2yuinfa4dg" path="res://art/4_Color_Game/Chess/Removed_BG/C1_Red.png" id="2_i15yr"]
 
 [node name="Control" type="Control"]

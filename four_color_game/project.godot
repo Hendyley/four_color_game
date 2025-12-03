@@ -18,7 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 Nakama="res://addons/com.heroiclabs.nakama/Nakama.gd"
-NakamaSingleton="*res://scripts/NakamaSingleton.cs"
+NakamaSingleton="*res://scripts/FourColors/NakamaSingleton.cs"
 
 [display]
 

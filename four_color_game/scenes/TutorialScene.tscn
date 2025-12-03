@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" path="res://scripts/Tutorialplay.cs" id="1_xe35p"]
 [ext_resource type="Texture2D" uid="uid://bojt53ffw6lwv" path="res://art/4_Color_Game/Background/green_BG.png" id="3_wr70c"]
-[ext_resource type="Script" path="res://scripts/TableTiles.cs" id="4_685q8"]
-[ext_resource type="Script" path="res://scripts/ScrollCont.cs" id="5_xqru7"]
+[ext_resource type="Script" path="res://scripts/FourColors/TableTiles.cs" id="4_685q8"]
+[ext_resource type="Script" path="res://scripts/FourColors/ScrollCont.cs" id="5_xqru7"]
 [ext_resource type="Texture2D" uid="uid://du3akvbf2wq3n" path="res://art/4_Color_Game/Buttons/Removed_BG/Pick_Up.png" id="6_knt7s"]
 [ext_resource type="Texture2D" uid="uid://3s82nmpcrqub" path="res://art/4_Color_Game/Buttons/Removed_BG/Castle.png" id="7_x5pft"]
 [ext_resource type="Texture2D" uid="uid://bstoofnujwo3x" path="res://art/4_Color_Game/Buttons/SortButton.png" id="8_pb4hq"]
