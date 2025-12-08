@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://cuuw52k6pign4"]
+[gd_scene load_steps=29 format=3 uid="uid://cuuw52k6pign4"]
 
 [ext_resource type="Script" path="res://scripts/Tutorialplay.cs" id="1_xe35p"]
 [ext_resource type="Texture2D" uid="uid://bojt53ffw6lwv" path="res://art/4_Color_Game/Background/green_BG.png" id="3_wr70c"]
@@ -14,6 +14,9 @@ texture = ExtResource("3_wr70c")
 
 [sub_resource type="LabelSettings" id="LabelSettings_qofp6"]
 font_size = 25
+
+[sub_resource type="LabelSettings" id="LabelSettings_8mpfi"]
+font_size = 20
 
 [sub_resource type="FontFile" id="FontFile_4di04"]
 subpixel_positioning = 0
@@ -92,7 +95,10 @@ cache/0/18/0/scale = 1.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_bsdb8"]
 font = SubResource("FontFile_4di04")
-font_size = 18
+font_size = 30
+
+[sub_resource type="LabelSettings" id="LabelSettings_cwmno"]
+font_size = 20
 
 [sub_resource type="ImageTexture" id="ImageTexture_t5eo6"]
 
@@ -180,10 +186,10 @@ horizontal_alignment = 1
 
 [node name="PN" type="Label" parent="Control"]
 layout_mode = 2
-offset_left = 940.0
-offset_top = 200.0
-offset_right = 1097.0
-offset_bottom = 235.0
+offset_left = 900.0
+offset_top = 250.0
+offset_right = 1057.0
+offset_bottom = 285.0
 label_settings = SubResource("LabelSettings_qofp6")
 horizontal_alignment = 1
 
@@ -203,14 +209,15 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -20.0
-offset_top = -240.0
-offset_right = 137.0
-offset_bottom = -205.0
+offset_left = -60.0
+offset_top = -290.0
+offset_right = 97.0
+offset_bottom = -255.0
 grow_horizontal = 2
 grow_vertical = 0
 label_settings = SubResource("LabelSettings_qofp6")
 horizontal_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="TableTiles" type="Container" parent="Control"]
 layout_mode = 1
@@ -234,10 +241,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -96.0
-offset_top = -270.0
-offset_right = 29.0
-offset_bottom = -180.0
+offset_left = -160.0
+offset_top = -240.0
+offset_right = 40.0
+offset_bottom = -120.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -252,6 +259,7 @@ grow_vertical = 2
 [node name="DeckLabel" type="Label" parent="Control/Deck/VBoxContainer"]
 layout_mode = 2
 text = "Deck Cards"
+label_settings = SubResource("LabelSettings_8mpfi")
 horizontal_alignment = 1
 
 [node name="DeckCounter" type="Label" parent="Control/Deck/VBoxContainer"]
@@ -268,9 +276,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = 60.0
-offset_top = -270.0
-offset_right = 210.0
-offset_bottom = -180.0
+offset_top = -240.0
+offset_right = 260.0
+offset_bottom = -120.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -286,6 +294,7 @@ grow_vertical = 2
 layout_mode = 2
 text = "Current Turn
 "
+label_settings = SubResource("LabelSettings_cwmno")
 horizontal_alignment = 1
 
 [node name="CurrentTurn" type="Label" parent="Control/Turn/VBoxContainer"]
@@ -310,12 +319,12 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = 40.0
-offset_top = -200.0
-offset_right = 40.0
+offset_left = -460.0
+offset_top = -250.0
+offset_right = 740.0
 grow_horizontal = 2
 grow_vertical = 0
-size_flags_horizontal = 11
+size_flags_horizontal = 6
 size_flags_vertical = 2
 theme = SubResource("Theme_kv1b3")
 horizontal_scroll_mode = 0
@@ -326,17 +335,18 @@ metadata/_edit_use_anchors_ = true
 [node name="HBOX_P_S" type="HBoxContainer" parent="Scroll_P_S"]
 custom_minimum_size = Vector2(950, 0)
 layout_mode = 2
-theme_override_constants/separation = 50
+theme_override_constants/separation = 65
 alignment = 1
 
 [node name="Scroll_P_N" type="ScrollContainer" parent="."]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -525.0
-offset_right = 525.0
-offset_bottom = 200.0
+offset_left = -560.0
+offset_right = 640.0
+offset_bottom = 250.0
 grow_horizontal = 2
+size_flags_horizontal = 4
 theme = SubResource("Theme_kv1b3")
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 0
@@ -346,17 +356,17 @@ metadata/_edit_use_anchors_ = true
 [node name="HBOX_P_N" type="HBoxContainer" parent="Scroll_P_N"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 50
+theme_override_constants/separation = 65
 alignment = 1
 
 [node name="Scroll_P_W" type="ScrollContainer" parent="."]
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_left = 200.0
-offset_top = -380.0
-offset_right = 980.0
-offset_bottom = -180.0
+offset_left = 250.0
+offset_top = -340.0
+offset_right = 950.0
+offset_bottom = -90.0
 grow_vertical = 2
 rotation = 1.57079
 size_flags_horizontal = 0
@@ -369,7 +379,7 @@ script = ExtResource("5_xqru7")
 [node name="HBOX_P_W" type="HBoxContainer" parent="Scroll_P_W"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 50
+theme_override_constants/separation = 65
 alignment = 1
 
 [node name="Scroll_P_E" type="ScrollContainer" parent="."]
@@ -378,10 +388,10 @@ anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -200.0
-offset_top = 400.0
-offset_right = 580.0
-offset_bottom = 600.0
+offset_left = -250.0
+offset_top = 510.0
+offset_right = 450.0
+offset_bottom = 760.0
 grow_horizontal = 0
 grow_vertical = 2
 rotation = 4.71239
@@ -395,7 +405,7 @@ script = ExtResource("5_xqru7")
 [node name="HBOX_P_E" type="HBoxContainer" parent="Scroll_P_E"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 50
+theme_override_constants/separation = 65
 alignment = 1
 
 [node name="l2" type="ItemList" parent="."]
@@ -456,10 +466,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -473.0
-offset_top = -317.0
-offset_right = 499.0
-offset_bottom = -60.0
+offset_left = -500.0
+offset_top = -380.0
+offset_right = 472.0
+offset_bottom = -123.0
 grow_horizontal = 0
 grow_vertical = 0
 scale = Vector2(0.25, 0.25)
@@ -472,10 +482,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -475.0
-offset_top = -232.0
-offset_right = 513.0
-offset_bottom = 25.0
+offset_left = -500.0
+offset_top = -300.0
+offset_right = 488.0
+offset_bottom = -43.0
 grow_horizontal = 0
 grow_vertical = 0
 scale = Vector2(0.25, 0.25)
