@@ -6,6 +6,7 @@
 [node name="Control" type="Control"]
 layout_mode = 3
 anchors_preset = 0
+scale = Vector2(0.7, 0.7)
 script = ExtResource("1_76l64")
 
 [node name="HighlightOverlay" type="ColorRect" parent="."]
@@ -13,15 +14,15 @@ modulate = Color(1, 1, 0.333333, 0.4)
 self_modulate = Color(1, 1, 0.0470588, 1)
 clip_contents = true
 layout_mode = 1
-offset_right = 65.0
+offset_right = 75.0
 offset_bottom = 250.0
 
 [node name="TextureRect" type="TextureRect" parent="."]
 custom_minimum_size = Vector2(50, 200)
 layout_mode = 0
-offset_right = 51.0
-offset_bottom = 200.0
-scale = Vector2(0.65, 0.65)
+offset_right = 120.0
+offset_bottom = 400.0
+scale = Vector2(0.62, 0.62)
 texture = ExtResource("2_i15yr")
 
 [connection signal="gui_input" from="." to="." method="_on_gui_input"]

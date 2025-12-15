@@ -136,8 +136,8 @@ public partial class Tutorialplay : Node
         guidewindow.Exclusive = true;
 
         turnTimer = (Timer)FindChild("TurnTimer");
-        turnTimer.WaitTime = 1.0;
-        turnTimer.Timeout += OnTurnTick;
+        //turnTimer.WaitTime = 1.0;
+        //turnTimer.Timeout += OnTurnTick;
 
         l2 = (ItemList)FindChild("l2");
 
@@ -725,7 +725,7 @@ public partial class Tutorialplay : Node
         turnpass++;
         if (NakamaSingleton.Instance.CurrentTurn == NakamaSingleton.Instance.MainPlayerTurn)
         {
-            StartTurnTimer();
+            //StartTurnTimer();
             if (!PlayerCastleStatus[NakamaSingleton.Instance.MainPlayerTurn] && GameLogic.CheckCastle(playersHands[NakamaSingleton.Instance.MainPlayerTurn]))
             {
                 ShowAutoMessage(

@@ -319,11 +319,13 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -460.0
-offset_top = -250.0
-offset_right = 740.0
+offset_left = -560.0
+offset_top = -210.0
+offset_right = 790.0
+offset_bottom = 40.0
 grow_horizontal = 2
 grow_vertical = 0
+scale = Vector2(0.8, 0.8)
 size_flags_horizontal = 6
 size_flags_vertical = 2
 theme = SubResource("Theme_kv1b3")
@@ -335,7 +337,7 @@ metadata/_edit_use_anchors_ = true
 [node name="HBOX_P_S" type="HBoxContainer" parent="Scroll_P_S"]
 custom_minimum_size = Vector2(950, 0)
 layout_mode = 2
-theme_override_constants/separation = 65
+theme_override_constants/separation = 75
 alignment = 1
 
 [node name="Scroll_P_N" type="ScrollContainer" parent="."]
@@ -343,9 +345,10 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -560.0
-offset_right = 640.0
+offset_right = 790.0
 offset_bottom = 250.0
 grow_horizontal = 2
+scale = Vector2(0.8, 0.8)
 size_flags_horizontal = 4
 theme = SubResource("Theme_kv1b3")
 horizontal_scroll_mode = 0
@@ -356,7 +359,7 @@ metadata/_edit_use_anchors_ = true
 [node name="HBOX_P_N" type="HBoxContainer" parent="Scroll_P_N"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 65
+theme_override_constants/separation = 75
 alignment = 1
 
 [node name="Scroll_P_W" type="ScrollContainer" parent="."]
@@ -379,7 +382,7 @@ script = ExtResource("5_xqru7")
 [node name="HBOX_P_W" type="HBoxContainer" parent="Scroll_P_W"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 65
+theme_override_constants/separation = 75
 alignment = 1
 
 [node name="Scroll_P_E" type="ScrollContainer" parent="."]
@@ -405,7 +408,7 @@ script = ExtResource("5_xqru7")
 [node name="HBOX_P_E" type="HBoxContainer" parent="Scroll_P_E"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 65
+theme_override_constants/separation = 75
 alignment = 1
 
 [node name="l2" type="ItemList" parent="."]
