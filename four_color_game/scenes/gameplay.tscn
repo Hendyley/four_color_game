@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://cm1bc46c0qr4l"]
+[gd_scene load_steps=40 format=3 uid="uid://cm1bc46c0qr4l"]
 
 [ext_resource type="Script" path="res://scripts/Gameplay.cs" id="1_s8yka"]
 [ext_resource type="Texture2D" uid="uid://du3akvbf2wq3n" path="res://art/4_Color_Game/Buttons/Removed_BG/Pick_Up.png" id="2_0u1nr"]
@@ -9,12 +9,23 @@
 [ext_resource type="Texture2D" uid="uid://bek515n3g5nm3" path="res://art/4_Color_Game/Buttons/Removed_BG/BackButton.png" id="5_dmi23"]
 [ext_resource type="Script" path="res://scripts/FourColors/ScrollCont.cs" id="8_5oogl"]
 [ext_resource type="Texture2D" uid="uid://bstoofnujwo3x" path="res://art/4_Color_Game/Buttons/SortButton.png" id="9_ycwdk"]
+[ext_resource type="Texture2D" uid="uid://b22trtwi1kxv0" path="res://art/4_Color_Game/GamePopBoard.png" id="10_838ts"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_a8r7m"]
 texture = ExtResource("3_nsim1")
 
 [sub_resource type="LabelSettings" id="LabelSettings_qofp6"]
 font_size = 25
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ssa66"]
+content_margin_top = 10.0
+content_margin_bottom = 10.0
+texture = ExtResource("10_838ts")
+expand_margin_left = 10.0
+expand_margin_top = 5.0
+expand_margin_right = 10.0
+expand_margin_bottom = 5.0
+modulate_color = Color(1, 1, 1, 0.760784)
 
 [sub_resource type="LabelSettings" id="LabelSettings_wrmox"]
 font_size = 20
@@ -98,6 +109,14 @@ cache/0/18/0/scale = 1.0
 font = SubResource("FontFile_4di04")
 font_size = 25
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7v8ed"]
+texture = ExtResource("10_838ts")
+expand_margin_left = 10.0
+expand_margin_top = 5.0
+expand_margin_right = 10.0
+expand_margin_bottom = 5.0
+modulate_color = Color(1, 1, 1, 0.760784)
+
 [sub_resource type="LabelSettings" id="LabelSettings_o0usl"]
 font_size = 20
 
@@ -148,6 +167,58 @@ corner_radius_bottom_left = 1
 bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hya2i"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gfaga"]
+content_margin_left = 10.0
+content_margin_top = 15.0
+content_margin_right = 20.0
+content_margin_bottom = 15.0
+texture = ExtResource("10_838ts")
+expand_margin_left = 10.0
+expand_margin_top = 3.0
+expand_margin_right = 10.0
+expand_margin_bottom = 3.0
+
+[sub_resource type="SystemFont" id="SystemFont_dcc68"]
+
+[sub_resource type="Theme" id="Theme_mxv4u"]
+default_font = SubResource("SystemFont_dcc68")
+AcceptDialog/constants/buttons_separation = 10
+AcceptDialog/styles/panel = SubResource("StyleBoxTexture_gfaga")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_10u7f"]
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
+texture = ExtResource("10_838ts")
+expand_margin_left = 10.0
+expand_margin_top = 10.0
+expand_margin_right = 10.0
+expand_margin_bottom = 10.0
+
+[sub_resource type="SystemFont" id="SystemFont_t3b14"]
+
+[sub_resource type="Theme" id="Theme_re6bn"]
+default_font = SubResource("SystemFont_t3b14")
+AcceptDialog/constants/buttons_separation = 10
+AcceptDialog/styles/panel = SubResource("StyleBoxTexture_10u7f")
+
+[sub_resource type="SystemFont" id="SystemFont_2cn5u"]
+
+[sub_resource type="Theme" id="Theme_dwquw"]
+default_font = SubResource("SystemFont_2cn5u")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_iy21a"]
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
+texture = ExtResource("10_838ts")
+expand_margin_left = 5.0
+expand_margin_top = 5.0
+expand_margin_right = 5.0
+expand_margin_bottom = 5.0
 
 [node name="Gameplay" type="Node"]
 script = ExtResource("1_s8yka")
@@ -236,12 +307,14 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -110.0
+offset_left = -160.0
 offset_top = -240.0
 offset_right = 40.0
-offset_bottom = -140.0
+offset_bottom = -120.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_ssa66")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/Deck"]
 layout_mode = 1
@@ -250,6 +323,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="DeckLabel" type="Label" parent="Control/Deck/VBoxContainer"]
 layout_mode = 2
@@ -272,10 +346,12 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = 60.0
 offset_top = -240.0
-offset_right = 210.0
-offset_bottom = -140.0
+offset_right = 260.0
+offset_bottom = -120.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_7v8ed")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Control/Turn"]
 layout_mode = 1
@@ -284,6 +360,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="TurnLabel" type="Label" parent="Control/Turn/VBoxContainer"]
 layout_mode = 2
@@ -518,7 +595,9 @@ icon = ExtResource("5_dmi23")
 
 [node name="windec" type="ConfirmationDialog" parent="."]
 initial_position = 2
-size = Vector2i(253, 100)
+size = Vector2i(250, 120)
+borderless = true
+theme = SubResource("Theme_mxv4u")
 ok_button_text = "Win"
 dialog_text = "Do you want to win with"
 cancel_button_text = "Skip"
@@ -526,7 +605,9 @@ cancel_button_text = "Skip"
 [node name="win_popup" type="ConfirmationDialog" parent="."]
 auto_translate_mode = 1
 initial_position = 2
-size = Vector2i(253, 100)
+size = Vector2i(350, 250)
+borderless = true
+theme = SubResource("Theme_re6bn")
 ok_button_text = "Play Again"
 dialog_text = "
 "
@@ -534,7 +615,10 @@ cancel_button_text = "Go Back"
 
 [node name="windec_c" type="AcceptDialog" parent="."]
 initial_position = 2
-size = Vector2i(200, 100)
+size = Vector2i(210, 150)
+borderless = true
+theme = SubResource("Theme_dwquw")
+theme_override_styles/panel = SubResource("StyleBoxTexture_iy21a")
 
 [node name="Timer" type="Timer" parent="."]
 
