@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://cuuw52k6pign4"]
+[gd_scene load_steps=34 format=3 uid="uid://cuuw52k6pign4"]
 
 [ext_resource type="Script" path="res://scripts/Tutorialplay.cs" id="1_xe35p"]
 [ext_resource type="Texture2D" uid="uid://bojt53ffw6lwv" path="res://art/4_Color_Game/Background/green_BG.png" id="3_wr70c"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://du3akvbf2wq3n" path="res://art/4_Color_Game/Buttons/Removed_BG/Pick_Up.png" id="6_knt7s"]
 [ext_resource type="Texture2D" uid="uid://3s82nmpcrqub" path="res://art/4_Color_Game/Buttons/Removed_BG/Castle.png" id="7_x5pft"]
 [ext_resource type="Texture2D" uid="uid://bstoofnujwo3x" path="res://art/4_Color_Game/Buttons/SortButton.png" id="8_pb4hq"]
+[ext_resource type="Texture2D" uid="uid://b22trtwi1kxv0" path="res://art/4_Color_Game/GamePopBoard.png" id="9_avrdh"]
 [ext_resource type="Texture2D" uid="uid://bek515n3g5nm3" path="res://art/4_Color_Game/Buttons/Removed_BG/BackButton.png" id="9_h2ssg"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_a8r7m"]
@@ -154,6 +155,33 @@ subpixel_positioning = 0
 [sub_resource type="Theme" id="Theme_cnljd"]
 default_font = SubResource("SystemFont_08jp3")
 default_font_size = 25
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mima6"]
+content_margin_left = 20.0
+content_margin_top = 30.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
+texture = ExtResource("9_avrdh")
+expand_margin_left = 10.0
+expand_margin_top = 10.0
+expand_margin_right = 10.0
+expand_margin_bottom = 10.0
+
+[sub_resource type="SystemFont" id="SystemFont_8busm"]
+
+[sub_resource type="Theme" id="Theme_da3wb"]
+default_font = SubResource("SystemFont_8busm")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gfi80"]
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
+texture = ExtResource("9_avrdh")
+expand_margin_left = 5.0
+expand_margin_top = 5.0
+expand_margin_right = 5.0
+expand_margin_bottom = 5.0
 
 [node name="Gameplay" type="Node"]
 script = ExtResource("1_xe35p")
@@ -540,13 +568,18 @@ auto_translate_mode = 1
 title = "Tutorial"
 initial_position = 2
 size = Vector2i(422, 300)
+borderless = true
 theme = SubResource("Theme_cnljd")
+theme_override_styles/panel = SubResource("StyleBoxTexture_mima6")
 ok_button_text = "   OK   "
 dialog_autowrap = true
 
 [node name="windec_c" type="AcceptDialog" parent="."]
 initial_position = 2
-size = Vector2i(200, 100)
+size = Vector2i(250, 150)
+borderless = true
+theme = SubResource("Theme_da3wb")
+theme_override_styles/panel = SubResource("StyleBoxTexture_gfi80")
 dialog_autowrap = true
 
 [node name="Timer" type="Timer" parent="."]
