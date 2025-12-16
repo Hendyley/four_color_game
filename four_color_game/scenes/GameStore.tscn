@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://c5mo32ucbeop4"]
+[gd_scene load_steps=38 format=3 uid="uid://c5mo32ucbeop4"]
 
 [ext_resource type="Script" path="res://scripts/GameStore.cs" id="1_gtee6"]
 [ext_resource type="Texture2D" uid="uid://bojt53ffw6lwv" path="res://art/4_Color_Game/Background/green_BG.png" id="1_y11qr"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://dkp635bvsw8dv" path="res://art/4_Color_Game/Background/beehive1.png" id="3_8wlnx"]
 [ext_resource type="Texture2D" uid="uid://kif0uoi0cqer" path="res://art/4_Color_Game/Background/checkboard1.png" id="4_eobij"]
 [ext_resource type="Texture2D" uid="uid://kskyfb2mip7k" path="res://art/4_Color_Game/Background/maze1.png" id="4_l6c7n"]
+[ext_resource type="Texture2D" uid="uid://b22trtwi1kxv0" path="res://art/4_Color_Game/GamePopBoard.png" id="4_tci6g"]
 [ext_resource type="Texture2D" uid="uid://bc8r1vpq3udv4" path="res://art/4_Color_Game/Background/MenuBG.png" id="5_n6r4x"]
 [ext_resource type="Texture2D" uid="uid://23ybh44ta5on" path="res://art/4_Color_Game/Background/wood1.png" id="6_q1g2b"]
 [ext_resource type="Texture2D" uid="uid://bek515n3g5nm3" path="res://art/4_Color_Game/Buttons/Removed_BG/BackButton.png" id="8_6tcyq"]
@@ -19,6 +20,13 @@ subpixel_positioning = 0
 [sub_resource type="Theme" id="Theme_h7wak"]
 default_font = SubResource("SystemFont_uworr")
 default_font_size = 30
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7xm6y"]
+texture = ExtResource("4_tci6g")
+expand_margin_left = 88.0
+expand_margin_top = 130.0
+expand_margin_right = 88.0
+expand_margin_bottom = 100.0
 
 [sub_resource type="SystemFont" id="SystemFont_ad25x"]
 subpixel_positioning = 0
@@ -51,14 +59,37 @@ bg_color = Color(0.6, 0.913725, 0.6, 1)
 bg_color = Color(0.6, 0.913725, 0.6, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1dt5u"]
+bg_color = Color(0.595139, 0.639785, 0.115358, 0.388235)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tnhsw"]
+bg_color = Color(0.498039, 0.658824, 0.431373, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_205hq"]
+bg_color = Color(0.596078, 0.639216, 0.113725, 0.388235)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jjonh"]
+bg_color = Color(0.498039, 0.658824, 0.431373, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cmeiw"]
+bg_color = Color(0.596078, 0.639216, 0.113725, 0.388235)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_40krv"]
+bg_color = Color(0.498039, 0.658824, 0.431373, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nyeev"]
+bg_color = Color(0.596078, 0.639216, 0.113725, 0.388235)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d2m3s"]
+bg_color = Color(0.498039, 0.658824, 0.431373, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k0mn5"]
+bg_color = Color(0.596078, 0.639216, 0.113725, 0.388235)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p6lgn"]
+bg_color = Color(0.498039, 0.658824, 0.431373, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fm6x7"]
+bg_color = Color(0.498039, 0.658824, 0.431373, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_86rta"]
 bg_color = Color(0.113725, 0.701961, 0.690196, 1)
@@ -90,9 +121,9 @@ layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_left = 120.0
+offset_left = 100.0
 offset_top = -375.0
-offset_right = 1317.0
+offset_right = 1290.0
 offset_bottom = 425.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -101,10 +132,10 @@ theme_override_constants/outline_size = 0
 theme_override_constants/side_margin = 10
 theme_override_constants/icon_separation = 100
 theme_override_constants/icon_max_width = 200
-current_tab = 3
+theme_override_styles/panel = SubResource("StyleBoxTexture_7xm6y")
+current_tab = 0
 
 [node name="Background" type="Control" parent="TabContainer"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -507,6 +538,7 @@ text = "Nothing in here
 horizontal_alignment = 1
 
 [node name="Points" type="Control" parent="TabContainer"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 3
 
@@ -573,6 +605,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 4
 theme_override_fonts/font = SubResource("SystemFont_mvrun")
 theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_tnhsw")
 text = "Purchase"
 
 [node name="20000" type="VBoxContainer" parent="TabContainer/Points/MarginContainer/GridContainer/ItemGrid"]
@@ -618,6 +651,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 4
 theme_override_fonts/font = SubResource("SystemFont_mvrun")
 theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_jjonh")
 text = "Purchase"
 
 [node name="30000" type="VBoxContainer" parent="TabContainer/Points/MarginContainer/GridContainer/ItemGrid"]
@@ -665,6 +699,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 4
 theme_override_fonts/font = SubResource("SystemFont_mvrun")
 theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_40krv")
 text = "Purchase"
 
 [node name="50000" type="VBoxContainer" parent="TabContainer/Points/MarginContainer/GridContainer/ItemGrid"]
@@ -710,6 +745,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 4
 theme_override_fonts/font = SubResource("SystemFont_mvrun")
 theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_d2m3s")
 text = "Purchase"
 
 [node name="ItemGrid2" type="HBoxContainer" parent="TabContainer/Points/MarginContainer/GridContainer"]
@@ -761,6 +797,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 4
 theme_override_fonts/font = SubResource("SystemFont_mvrun")
 theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_p6lgn")
 text = "Purchase"
 
 [node name="Container" type="Panel" parent="."]
@@ -770,10 +807,10 @@ anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -589.0
-offset_top = -324.0
-offset_right = -89.0
-offset_bottom = 425.0
+offset_left = -620.0
+offset_top = -330.0
+offset_right = -120.0
+offset_bottom = 410.0
 grow_horizontal = 0
 grow_vertical = 2
 
@@ -816,6 +853,7 @@ autowrap_mode = 3
 [node name="Button" type="Button" parent="Container/MarginContainer/GridContainer/ItemGrid"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
+theme_override_styles/normal = SubResource("StyleBoxFlat_fm6x7")
 text = "$$"
 
 [node name="backbutton" type="Button" parent="."]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://cm1bc46c0qr4l"]
+[gd_scene load_steps=45 format=3 uid="uid://cm1bc46c0qr4l"]
 
 [ext_resource type="Script" path="res://scripts/Gameplay.cs" id="1_s8yka"]
 [ext_resource type="Texture2D" uid="uid://du3akvbf2wq3n" path="res://art/4_Color_Game/Buttons/Removed_BG/Pick_Up.png" id="2_0u1nr"]
@@ -169,33 +169,125 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hya2i"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gfaga"]
-content_margin_left = 10.0
-content_margin_top = 15.0
+content_margin_left = 20.0
+content_margin_top = 30.0
 content_margin_right = 20.0
-content_margin_bottom = 15.0
+content_margin_bottom = 30.0
 texture = ExtResource("10_838ts")
 expand_margin_left = 10.0
 expand_margin_top = 3.0
 expand_margin_right = 10.0
 expand_margin_bottom = 3.0
 
-[sub_resource type="SystemFont" id="SystemFont_dcc68"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f1ok0"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.3)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vnusf"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.75)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8nq2g"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.225, 0.225, 0.225, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_srlr4"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.498039, 0.658824, 0.431373, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_365y1"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0, 0, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="SystemFont" id="SystemFont_oerkp"]
 
 [sub_resource type="Theme" id="Theme_mxv4u"]
-default_font = SubResource("SystemFont_dcc68")
+default_font = SubResource("SystemFont_oerkp")
 AcceptDialog/constants/buttons_separation = 10
 AcceptDialog/styles/panel = SubResource("StyleBoxTexture_gfaga")
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 16
+Button/styles/disabled = SubResource("StyleBoxFlat_f1ok0")
+Button/styles/focus = SubResource("StyleBoxFlat_vnusf")
+Button/styles/hover = SubResource("StyleBoxFlat_8nq2g")
+Button/styles/normal = SubResource("StyleBoxFlat_srlr4")
+Button/styles/pressed = SubResource("StyleBoxFlat_365y1")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_10u7f"]
 content_margin_left = 20.0
 content_margin_top = 20.0
 content_margin_right = 20.0
-content_margin_bottom = 20.0
+content_margin_bottom = 30.0
 texture = ExtResource("10_838ts")
 expand_margin_left = 10.0
-expand_margin_top = 10.0
+expand_margin_top = 5.0
 expand_margin_right = 10.0
-expand_margin_bottom = 10.0
+expand_margin_bottom = 5.0
 
 [sub_resource type="SystemFont" id="SystemFont_t3b14"]
 
@@ -203,11 +295,57 @@ expand_margin_bottom = 10.0
 default_font = SubResource("SystemFont_t3b14")
 AcceptDialog/constants/buttons_separation = 10
 AcceptDialog/styles/panel = SubResource("StyleBoxTexture_10u7f")
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 16
+Button/styles/disabled = SubResource("StyleBoxFlat_f1ok0")
+Button/styles/focus = SubResource("StyleBoxFlat_vnusf")
+Button/styles/hover = SubResource("StyleBoxFlat_8nq2g")
+Button/styles/normal = SubResource("StyleBoxFlat_srlr4")
+Button/styles/pressed = SubResource("StyleBoxFlat_365y1")
 
 [sub_resource type="SystemFont" id="SystemFont_2cn5u"]
 
 [sub_resource type="Theme" id="Theme_dwquw"]
 default_font = SubResource("SystemFont_2cn5u")
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 16
+Button/styles/disabled = SubResource("StyleBoxFlat_f1ok0")
+Button/styles/focus = SubResource("StyleBoxFlat_vnusf")
+Button/styles/hover = SubResource("StyleBoxFlat_8nq2g")
+Button/styles/normal = SubResource("StyleBoxFlat_srlr4")
+Button/styles/pressed = SubResource("StyleBoxFlat_365y1")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_iy21a"]
 content_margin_left = 20.0
@@ -595,7 +733,7 @@ icon = ExtResource("5_dmi23")
 
 [node name="windec" type="ConfirmationDialog" parent="."]
 initial_position = 2
-size = Vector2i(250, 120)
+size = Vector2i(350, 150)
 borderless = true
 theme = SubResource("Theme_mxv4u")
 ok_button_text = "Win"
@@ -605,7 +743,7 @@ cancel_button_text = "Skip"
 [node name="win_popup" type="ConfirmationDialog" parent="."]
 auto_translate_mode = 1
 initial_position = 2
-size = Vector2i(350, 250)
+size = Vector2i(350, 200)
 borderless = true
 theme = SubResource("Theme_re6bn")
 ok_button_text = "Play Again"
@@ -615,7 +753,7 @@ cancel_button_text = "Go Back"
 
 [node name="windec_c" type="AcceptDialog" parent="."]
 initial_position = 2
-size = Vector2i(210, 150)
+size = Vector2i(250, 150)
 borderless = true
 theme = SubResource("Theme_dwquw")
 theme_override_styles/panel = SubResource("StyleBoxTexture_iy21a")

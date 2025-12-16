@@ -815,6 +815,55 @@ public partial class Tutorialplay : Node
                 await ShowAutoMessage("After castle, you can win by tile discard by player before you \n" +
                     "or when other players drawing a tile as long as the tile contribute to the winning sets", guidewindow, 5000, wait: true);
                 await ShowAutoMessage("Choose to win by taking the tile", guidewindow, 5000, wait: true);
+
+                while(true)
+                {
+                    await Task.Delay(1000);
+                    if (PlayerCastleStatus[NakamaSingleton.Instance.MainPlayerTurn] == true)
+                    {
+                        var x = playersHands[NakamaSingleton.Instance.MainPlayerTurn].ToList();
+                        x.Add(lastDrawnTile.Tileid);
+
+                        if (GameLogic.WinCondition(x) == "WIN")
+                        {
+                            decisionMade = false;
+                            takeDecision = false;
+                            windec.DialogText = windec.DialogText + $" {lastDrawnTile.Tileid}";
+                            windec.PopupCentered();
+
+                            int timeoutMs = 50000;
+                            int waitedMs = 0;
+                            int pollInterval = 100;
+
+                            while (!decisionMade && waitedMs < timeoutMs)
+                            {
+                                await Task.Delay(pollInterval);
+                                waitedMs += pollInterval;
+                            }
+
+                            if (!decisionMade)
+                            {
+                                takeDecision = false;
+                                decisionMade = true;
+                                windec.Hide();
+                            }
+
+                            if (takeDecision)
+                            {
+                                l2.AddItem("Player chose to Take");
+                                TakeTile(NakamaSingleton.Instance.MainPlayerTurn, lastDrawnTile.Tileid);
+                                EndGame(NakamaSingleton.Instance.MainPlayerTurn);
+                            }
+                            else
+                            {
+                                l2.AddItem("Player chose to Pass");
+                                DrawTile(NakamaSingleton.Instance.MainPlayerTurn);
+                            }
+                        }
+                    }
+                }
+            
+
                 break;
             default:
                 await ShowAutoMessage($"turnpass = {turnpass}", guidewindow, 5000, wait: true);
