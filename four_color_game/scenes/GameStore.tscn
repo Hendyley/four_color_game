@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://c5mo32ucbeop4"]
+[gd_scene load_steps=43 format=3 uid="uid://c5mo32ucbeop4"]
 
 [ext_resource type="Script" path="res://scripts/GameStore.cs" id="1_gtee6"]
 [ext_resource type="Texture2D" uid="uid://bojt53ffw6lwv" path="res://art/4_Color_Game/Background/green_BG.png" id="1_y11qr"]
@@ -90,6 +90,33 @@ bg_color = Color(0.498039, 0.658824, 0.431373, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fm6x7"]
 bg_color = Color(0.498039, 0.658824, 0.431373, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kg3sh"]
+content_margin_left = 10.0
+content_margin_top = 15.0
+content_margin_right = 10.0
+content_margin_bottom = 15.0
+texture = ExtResource("4_tci6g")
+expand_margin_left = 5.0
+expand_margin_top = 3.0
+expand_margin_right = 5.0
+expand_margin_bottom = 3.0
+
+[sub_resource type="SystemFont" id="SystemFont_t1tc2"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_i0lec"]
+texture = ExtResource("4_tci6g")
+expand_margin_left = 200.0
+expand_margin_top = 200.0
+expand_margin_right = 200.0
+expand_margin_bottom = 200.0
+
+[sub_resource type="SystemFont" id="SystemFont_aurle"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_doho0"]
+line_spacing = 5.0
+font = SubResource("SystemFont_aurle")
+font_size = 60
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_86rta"]
 bg_color = Color(0.113725, 0.701961, 0.690196, 1)
@@ -870,7 +897,29 @@ icon = ExtResource("8_6tcyq")
 [node name="windec_c" type="AcceptDialog" parent="."]
 auto_translate_mode = 1
 initial_position = 2
-size = Vector2i(200, 100)
+size = Vector2i(200, 120)
+borderless = true
+theme_override_styles/panel = SubResource("StyleBoxTexture_kg3sh")
+
+[node name="PurchaseWindow" type="Label" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -181.0
+offset_top = -85.5
+offset_right = 181.0
+offset_bottom = 85.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = SubResource("SystemFont_t1tc2")
+theme_override_styles/normal = SubResource("StyleBoxTexture_i0lec")
+text = "Loading........
+Please Wait"
+label_settings = SubResource("LabelSettings_doho0")
 
 [node name="Timer" type="Timer" parent="."]
 

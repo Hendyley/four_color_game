@@ -21,7 +21,8 @@ public partial class GameStore : Control
     private AudioStreamPlayer sfxm;
 
     private AcceptDialog autoMessageBox;
-    private Label PointLabel;
+    private Label PointLabel, PurchaseWindow;
+    public bool purchasepressed = false;
 
     public override void _Ready()
 	{
@@ -29,6 +30,7 @@ public partial class GameStore : Control
         bgm = (AudioStreamPlayer)FindChild("BGM");
         sfxm = (AudioStreamPlayer)FindChild("SFXM");
         PointLabel = (Label)FindChild("PointLabel");
+        PurchaseWindow = (Label)FindChild("PurchaseWindow");
 
         var stream = GD.Load<AudioStream>($"res://art/4_Color_Game/Music/Piki - Kitty (freetouse.com).mp3");
         if (stream != null)
@@ -321,25 +323,40 @@ public partial class GameStore : Control
 
     private void _on_purchase_point()
     {
+        if (purchasepressed)
+            return;
+        purchasepressed = true;
         // Test $0 price_1RqzZlLdza4NS4ZJNt0hqxE8
         // $1 price_1RsgknLdza4NS4ZJlvERmh0H
         GetCheckoutUrlAndOpen("P1_10000_","price_1Rs2VtQ2uLIvcn7YRtBim8JQ");
     }
     private void _on_purchase_point2()
     {
+        if (purchasepressed)
+            return;
+        purchasepressed = true;
         // $1.5 price_1RsmlCLdza4NS4ZJHbYL35uu
         GetCheckoutUrlAndOpen("P1.5_20000_", "price_1Rs2VtQ2uLIvcn7YRtBim8JQ");
     }
     private void _on_purchase_point3()
     {
+        if (purchasepressed)
+            return;
+        purchasepressed = true;
         GetCheckoutUrlAndOpen("P2_30000_","price_1RsmmOLdza4NS4ZJRiGG9u29");
     }
     private void _on_purchase_point4()
     {
+        if (purchasepressed)
+            return;
+        purchasepressed = true;
         GetCheckoutUrlAndOpen("P3_50000_","price_1RsmohLdza4NS4ZJRlwZHBCt");
     }
     private void _on_purchase_point5()
     {
+        if (purchasepressed)
+            return;
+        purchasepressed = true;
         GetCheckoutUrlAndOpen("P5_100000_","price_1Rsmp4Ldza4NS4ZJebBVTYCY");
     }
    
@@ -351,8 +368,13 @@ public partial class GameStore : Control
         NakamaSingleton.Instance.GameToken = token;
         string url = $"https://renderserver-2hxj.onrender.com/create_checkout?token={NakamaSingleton.Instance.GameToken}&product_id=ss&price_id={priceID}";
         LoggerManager.Info($"url POST {url}");
+
+        // Loading window
+        PurchaseWindow.Visible = true;
+
         try
         {
+
             HttpResponseMessage response = await client.GetAsync(url);
             response.EnsureSuccessStatusCode();
 
@@ -361,7 +383,7 @@ public partial class GameStore : Control
 
             JObject json = JObject.Parse(responseBody);
             string checkoutUrl = json["checkout_url"]?.ToString();
-
+            PurchaseWindow.Visible = false;
             if (!string.IsNullOrEmpty(checkoutUrl))
             {
                 LoggerManager.Info($"🌐 Opening Stripe Checkout:{checkoutUrl}");
@@ -370,6 +392,7 @@ public partial class GameStore : Control
             else
             {
                 LoggerManager.Info("❌ checkout_url not found in response.");
+                return;
             }
 
             LoggerManager.Info("Waiting for payment...");

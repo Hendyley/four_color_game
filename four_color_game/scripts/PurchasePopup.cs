@@ -129,6 +129,7 @@ public partial class PurchasePopup : Node
 
     private void ClosePopup()
     {
+        ParentStore.purchasepressed = false;
         GetParent().RemoveChild(this);
         QueueFree();
     }
