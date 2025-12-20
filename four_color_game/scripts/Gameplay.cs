@@ -13,6 +13,7 @@ using System.Text;
 using System.IO;
 using System.Diagnostics.Eventing.Reader;
 using four_color_game.scripts.FourColors;
+using Nakama.Console;
 
 public partial class Gameplay : Node
 {
@@ -28,7 +29,7 @@ public partial class Gameplay : Node
     private bool throwhand;
     public Godot.Container tabletilescontainer;
     private List<string> tabletiles = new();
-    private Button pickButton, castleButton, backButton;
+    private Button pickButton, castleButton, backButton, soundButton;
     private Tile lastTableTile, lastDrawnTile, showstile;
     private Label deckcounterLabel, currentturnLabel, turnlabel, timerview, debuglb, debuglb2;
     private ItemList l2;
@@ -69,11 +70,16 @@ public partial class Gameplay : Node
         pickButton = (Button)FindChild("pickupbutton");
         castleButton = (Button)FindChild("castlebutton");
         backButton = (Button)FindChild("backbutton");
-
+        soundButton = (Button)FindChild("soundbutton");
         deckcounterLabel = (Label)FindChild("DeckCounter");
         currentturnLabel = (Label)FindChild("CurrentTurn");
         turnlabel = (Label)FindChild("TurnLabel");
         timerview = (Label)FindChild("TimerView");
+
+        if (NakamaSingleton.Instance.BGMPlay)
+            soundButton.ButtonPressed = false;
+        else
+            soundButton.ButtonPressed = true;
 
         bg_panel = (Panel)FindChild("Panel");
         var stylebox = bg_panel.GetThemeStylebox("panel") as StyleBoxTexture;
@@ -93,7 +99,8 @@ public partial class Gameplay : Node
         {
             bgm.Stream = stream;
             bgm.VolumeDb = -10;
-            bgm.Play();
+            if (NakamaSingleton.Instance.BGMPlay)
+                bgm.Play();
             ((AudioStreamMP3)bgm.Stream).Loop = true;
         }
 
@@ -586,6 +593,19 @@ public partial class Gameplay : Node
         castleButton.Disabled = true;
     }
 
+    private void _on_soundbutton_toggled()
+    {
+        if (NakamaSingleton.Instance.BGMPlay)
+        {
+            bgm.Stop();
+            NakamaSingleton.Instance.BGMPlay = false;
+        }
+        else
+        {
+            bgm.Play();
+            NakamaSingleton.Instance.BGMPlay = true;
+        }
+    }
 
     private void _on_pickupbutton_pressed()
     {

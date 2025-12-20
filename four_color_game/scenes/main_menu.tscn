@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://blewkvksqkipr"]
+[gd_scene load_steps=26 format=3 uid="uid://blewkvksqkipr"]
 
 [ext_resource type="Script" path="res://scripts/MainMenu.cs" id="1_ppnmh"]
 [ext_resource type="PackedScene" uid="uid://1uc4okqjc05u" path="res://scenes/startgame_page.tscn" id="2_uyw1c"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://dhdaqam1q0plq" path="res://art/4_Color_Game/Buttons/Removed_BG/Quit Game.png" id="7_wghpr"]
 [ext_resource type="Texture2D" uid="uid://dccs0227mtuch" path="res://art/4_Color_Game/Animation/RemoveBG/A5.png" id="8_74eii"]
 [ext_resource type="Texture2D" uid="uid://b8u87i1l6e8bs" path="res://art/4_Color_Game/Buttons/Removed_BG/Tutorial Game.png" id="9_d6kkg"]
+[ext_resource type="Texture2D" uid="uid://bk51ouejtg0al" path="res://art/4_Color_Game/SoundLogo.png" id="14_hmwkg"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hpxs7"]
 texture = ExtResource("4_0pnrd")
@@ -41,6 +42,12 @@ bg_color = Color(0.113725, 0.701961, 0.690196, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_ppawf"]
 font_size = 30
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mkd4k"]
+bg_color = Color(0.6, 0.6, 0.6, 0.941176)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_apmn8"]
+bg_color = Color(0.964706, 0.87451, 0.172549, 0.760784)
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -214,8 +221,30 @@ label_settings = SubResource("LabelSettings_ppawf")
 
 [node name="BGM" type="AudioStreamPlayer" parent="."]
 
+[node name="soundbutton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -168.72
+offset_top = -110.0
+offset_right = 467.28
+offset_bottom = 490.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.13, 0.13)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/pressed = SubResource("StyleBoxFlat_mkd4k")
+theme_override_styles/normal = SubResource("StyleBoxFlat_apmn8")
+toggle_mode = true
+icon = ExtResource("14_hmwkg")
+
 [connection signal="pressed" from="MarginContainer/HBoxContainer2/VBoxContainer2/CenterContainer/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer2/VBoxContainer2/CenterContainer/VBoxContainer/MultiButton" to="." method="_on_multi_button_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer2/VBoxContainer2/CenterContainer/VBoxContainer/TutorialButton" to="." method="_on_tutorial_button_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer2/VBoxContainer2/CenterContainer/VBoxContainer/StoreButton" to="." method="_on_store_button_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer2/VBoxContainer2/CenterContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="soundbutton" to="." method="_on_soundbutton_toggled"]

@@ -37,7 +37,8 @@ public partial class GameStore : Control
         {
             bgm.Stream = stream;
             bgm.VolumeDb = -10;
-            bgm.Play();
+            if (NakamaSingleton.Instance.BGMPlay)
+                bgm.Play();
             ((AudioStreamMP3)bgm.Stream).Loop = true;
         }
 
@@ -326,38 +327,40 @@ public partial class GameStore : Control
         if (purchasepressed)
             return;
         purchasepressed = true;
-        // Test $0 price_1RqzZlLdza4NS4ZJNt0hqxE8
-        // $1 price_1RsgknLdza4NS4ZJlvERmh0H
-        GetCheckoutUrlAndOpen("P1_10000_","price_1Rs2VtQ2uLIvcn7YRtBim8JQ");
+        // $1
+        GetCheckoutUrlAndOpen("P1_10000_", "price_1SfjVjBV5XpwFIyaZv8GxMUd");
     }
     private void _on_purchase_point2()
     {
         if (purchasepressed)
             return;
         purchasepressed = true;
-        // $1.5 price_1RsmlCLdza4NS4ZJHbYL35uu
-        GetCheckoutUrlAndOpen("P1.5_20000_", "price_1Rs2VtQ2uLIvcn7YRtBim8JQ");
+        // $1.5
+        GetCheckoutUrlAndOpen("P1.5_20000_", "price_1SgQDoBV5XpwFIyaa29uu3SJ");
     }
     private void _on_purchase_point3()
     {
         if (purchasepressed)
             return;
         purchasepressed = true;
-        GetCheckoutUrlAndOpen("P2_30000_","price_1RsmmOLdza4NS4ZJRiGG9u29");
+        // $2
+        GetCheckoutUrlAndOpen("P2_30000_", "price_1SgQDoBV5XpwFIyaOTxLRLqF");
     }
     private void _on_purchase_point4()
     {
         if (purchasepressed)
             return;
         purchasepressed = true;
-        GetCheckoutUrlAndOpen("P3_50000_","price_1RsmohLdza4NS4ZJRlwZHBCt");
+        // $3
+        GetCheckoutUrlAndOpen("P3_50000_", "price_1SgQDoBV5XpwFIyadhaFXun2");
     }
     private void _on_purchase_point5()
     {
         if (purchasepressed)
             return;
         purchasepressed = true;
-        GetCheckoutUrlAndOpen("P5_100000_","price_1Rsmp4Ldza4NS4ZJebBVTYCY");
+        // $5
+        GetCheckoutUrlAndOpen("P5_100000_", "price_1SgQDoBV5XpwFIyaSnMBcCTi");
     }
    
     private static readonly System.Net.Http.HttpClient client = new System.Net.Http.HttpClient();

@@ -46,6 +46,7 @@ public partial class NakamaSingleton : Node
     public bool IsHost { get; private set; } = false;
     public int NumberOfPlayers { get; set; } = 4;
     private string[] content;
+    public bool BGMPlay { get; set; } = true;
 
     public SaveData SD;
     public int Point { get; set; }

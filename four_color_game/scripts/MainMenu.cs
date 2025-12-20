@@ -22,8 +22,14 @@ public partial class MainMenu : Control
 		Button multiButton = (Button) FindChild("MultiButton");
 		Button storeButton = (Button) FindChild("StoreButton");
 		Button quitButton = (Button) FindChild("StoreButton");
+        Button soundButton = (Button)FindChild("soundbutton");
 
-		PointLabel = (Label)FindChild("PointLabel");
+        if (NakamaSingleton.Instance.BGMPlay)
+            soundButton.ButtonPressed = false;
+        else
+            soundButton.ButtonPressed = true;
+
+        PointLabel = (Label)FindChild("PointLabel");
 
         bg_panel = (Panel)FindChild("Panel");
         var stylebox = bg_panel.GetThemeStylebox("panel") as StyleBoxTexture;
@@ -43,7 +49,8 @@ public partial class MainMenu : Control
 		{
 			bgm.Stream = stream;
 			bgm.VolumeDb = -10;
-			bgm.Play();
+			if (NakamaSingleton.Instance.BGMPlay)
+				bgm.Play();
             ((AudioStreamMP3)bgm.Stream).Loop = true;
 
         }
@@ -54,8 +61,22 @@ public partial class MainMenu : Control
 	{
 		PointLabel.Text = $"Accumulated Points : {NakamaSingleton.Instance.SD.Points} ";
 	}
-	
-	private void _on_start_button_pressed()
+
+    private void _on_soundbutton_toggled()
+    {
+        if (NakamaSingleton.Instance.BGMPlay)
+        {
+            bgm.Stop();
+            NakamaSingleton.Instance.BGMPlay = false;
+        }
+        else
+        {
+            bgm.Play();
+            NakamaSingleton.Instance.BGMPlay = true;
+        }
+    }
+
+    private void _on_start_button_pressed()
 	{
 		LoggerManager.Info("Start button pressed");
 		StartGamePage startmenu = (StartGamePage)startgamescene.Instantiate();

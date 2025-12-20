@@ -101,7 +101,8 @@ public partial class Tutorialplay : Node
         {
             bgm.Stream = stream;
             bgm.VolumeDb = -10;
-            bgm.Play();
+            if (NakamaSingleton.Instance.BGMPlay)
+                bgm.Play();
             ((AudioStreamMP3)bgm.Stream).Loop = true;
         }
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://cm1bc46c0qr4l"]
+[gd_scene load_steps=48 format=3 uid="uid://cm1bc46c0qr4l"]
 
 [ext_resource type="Script" path="res://scripts/Gameplay.cs" id="1_s8yka"]
 [ext_resource type="Texture2D" uid="uid://du3akvbf2wq3n" path="res://art/4_Color_Game/Buttons/Removed_BG/Pick_Up.png" id="2_0u1nr"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://scripts/FourColors/ScrollCont.cs" id="8_5oogl"]
 [ext_resource type="Texture2D" uid="uid://bstoofnujwo3x" path="res://art/4_Color_Game/Buttons/SortButton.png" id="9_ycwdk"]
 [ext_resource type="Texture2D" uid="uid://b22trtwi1kxv0" path="res://art/4_Color_Game/GamePopBoard.png" id="10_838ts"]
+[ext_resource type="Texture2D" uid="uid://bk51ouejtg0al" path="res://art/4_Color_Game/SoundLogo.png" id="10_e8khf"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_a8r7m"]
 texture = ExtResource("3_nsim1")
@@ -357,6 +358,12 @@ expand_margin_left = 5.0
 expand_margin_top = 5.0
 expand_margin_right = 5.0
 expand_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_urkww"]
+bg_color = Color(0.6, 0.6, 0.6, 0.941176)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_niir0"]
+bg_color = Color(0.964706, 0.87451, 0.172549, 0.760784)
 
 [node name="Gameplay" type="Node"]
 script = ExtResource("1_s8yka")
@@ -715,9 +722,9 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -242.0
-offset_top = -118.0
+offset_top = -110.0
 offset_right = -162.0
-offset_bottom = -38.0
+offset_bottom = -30.0
 grow_horizontal = 0
 grow_vertical = 0
 size_flags_horizontal = 3
@@ -766,8 +773,29 @@ theme_override_styles/panel = SubResource("StyleBoxTexture_iy21a")
 
 [node name="BGM" type="AudioStreamPlayer" parent="."]
 
+[node name="soundbutton" type="Button" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -120.0
+offset_top = -110.0
+offset_right = 516.0
+offset_bottom = 490.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.13, 0.13)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/pressed = SubResource("StyleBoxFlat_urkww")
+theme_override_styles/normal = SubResource("StyleBoxFlat_niir0")
+toggle_mode = true
+icon = ExtResource("10_e8khf")
+
 [connection signal="gui_input" from="Control" to="." method="_on_control_gui_input"]
 [connection signal="pressed" from="pickupbutton" to="." method="_on_pickupbutton_pressed"]
 [connection signal="pressed" from="castlebutton" to="." method="_on_castlebutton_pressed"]
 [connection signal="pressed" from="sortbutton" to="." method="_on_sortbutton_pressed"]
 [connection signal="pressed" from="backbutton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="soundbutton" to="." method="_on_soundbutton_toggled"]
