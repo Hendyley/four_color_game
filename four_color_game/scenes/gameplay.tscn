@@ -280,20 +280,21 @@ Button/styles/normal = SubResource("StyleBoxFlat_srlr4")
 Button/styles/pressed = SubResource("StyleBoxFlat_365y1")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_10u7f"]
-content_margin_left = 20.0
-content_margin_top = 20.0
-content_margin_right = 20.0
+content_margin_left = 30.0
+content_margin_top = 30.0
+content_margin_right = 30.0
 content_margin_bottom = 30.0
 texture = ExtResource("10_838ts")
-expand_margin_left = 10.0
-expand_margin_top = 5.0
-expand_margin_right = 10.0
-expand_margin_bottom = 5.0
+expand_margin_left = 15.0
+expand_margin_top = 10.0
+expand_margin_right = 15.0
+expand_margin_bottom = 10.0
 
 [sub_resource type="SystemFont" id="SystemFont_t3b14"]
 
 [sub_resource type="Theme" id="Theme_re6bn"]
 default_font = SubResource("SystemFont_t3b14")
+default_font_size = 24
 AcceptDialog/constants/buttons_separation = 10
 AcceptDialog/styles/panel = SubResource("StyleBoxTexture_10u7f")
 Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
@@ -363,7 +364,7 @@ expand_margin_bottom = 5.0
 bg_color = Color(0.6, 0.6, 0.6, 0.941176)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_niir0"]
-bg_color = Color(0.964706, 0.87451, 0.172549, 0.760784)
+bg_color = Color(0.964706, 0.87451, 0.172549, 0.913725)
 
 [node name="Gameplay" type="Node"]
 script = ExtResource("1_s8yka")
@@ -740,22 +741,30 @@ icon = ExtResource("5_dmi23")
 
 [node name="windec" type="ConfirmationDialog" parent="."]
 initial_position = 2
-size = Vector2i(350, 150)
+size = Vector2i(350, 200)
 borderless = true
 theme = SubResource("Theme_mxv4u")
 ok_button_text = "Win"
-dialog_text = "Do you want to win with"
 cancel_button_text = "Skip"
+
+[node name="windec_RTL" type="RichTextLabel" parent="windec"]
+offset_left = 20.0
+offset_top = 30.0
+offset_right = 330.0
+offset_bottom = 129.0
+bbcode_enabled = true
+fit_content = true
 
 [node name="win_popup" type="ConfirmationDialog" parent="."]
 auto_translate_mode = 1
 initial_position = 2
-size = Vector2i(350, 200)
+size = Vector2i(500, 300)
 borderless = true
 theme = SubResource("Theme_re6bn")
 ok_button_text = "Play Again"
 dialog_text = "
 "
+dialog_autowrap = true
 cancel_button_text = "Go Back"
 
 [node name="windec_c" type="AcceptDialog" parent="."]

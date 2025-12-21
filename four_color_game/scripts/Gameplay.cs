@@ -781,7 +781,8 @@ public partial class Gameplay : Node
                         {
                             decisionMade = false;
                             takeDecision = false;
-                            windec.DialogText = windec.DialogText + $" {lastDrawnTile.Tileid}";
+                            RichTextLabel rtl = GetNode<RichTextLabel>("windec/windec_RTL");
+                            rtl.Text = $"Do you want to win with {lastDrawnTile.TileName}?\n [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/{lastDrawnTile.Tileid}.png[/img]\n";
                             windec.PopupCentered();
 
                             int timeoutMs = 50000;
@@ -853,7 +854,8 @@ public partial class Gameplay : Node
                     {
                         decisionMade = false;
                         takeDecision = false;
-                        windec.DialogText = windec.DialogText + $" {GameLogic.TileName(lastTableTile.Tileid)}";
+                        RichTextLabel rtl = GetNode<RichTextLabel>("windec/windec_RTL");
+                        rtl.Text = $"Do you want to win with {lastDrawnTile.TileName} [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/{lastDrawnTile.Tileid}.png[/img] ?\n";
                         windec.PopupCentered();
 
                         int timeoutMs = 50000;

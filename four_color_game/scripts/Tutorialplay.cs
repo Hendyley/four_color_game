@@ -235,9 +235,9 @@ public partial class Tutorialplay : Node
             await ShowAutoMessage("Color sets refer to combination of the same rank with different color (3 or 4 tiles)", guidewindow, 5000, wait: true);
             await ShowAutoMessage(
                 "Honor sets refer to combination of:\n" +
-                "- King, Queen, Bishop with the same color\n" +
-                "- Horse, Rock, Cannon with the same color\n" +
-                "- 3 or 4 Tiles of Pawns with different color",
+                $"- King, Queen, Bishop with the same color [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C2.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C5.png[/img]\n" +
+                $"- Horse, Rock, Cannon with the same color [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C1_Red.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C3_Red.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C4_Red.png[/img]\n" +
+                $"- 3 or 4 Tiles of Pawns with different color [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6_Red.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6_Green.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6_Yellow.png[/img]",
                 guidewindow,
                 8000,
                 wait: true
@@ -255,8 +255,9 @@ public partial class Tutorialplay : Node
             }
             await ShowAutoMessage(
                 "Currently, your hand consist of\n" +
-                "Colors set of Horse (3 different colors).\n"
-                ,guidewindow,
+                "Colors set of Horse (3 different colors).\n" +
+                "[img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C1_Green.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C1_Red.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C1_Yellow.png[/img]"
+                , guidewindow,
                 5000,
                 wait: true
             );
@@ -268,7 +269,8 @@ public partial class Tutorialplay : Node
                     t.CallDeferred("UpdateHighlightVisual", false);
             }
             await ShowAutoMessage(
-                "and Queen (4 different colors).\n"
+                "and Queen (4 different colors).\n" +
+                "[img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C2_Green.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C2_Red.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C2_Yellow.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C2.png[/img]"
                 , guidewindow,
                 5000,
                 wait: true
@@ -281,8 +283,9 @@ public partial class Tutorialplay : Node
                     t.CallDeferred("UpdateHighlightVisual", false);
             }
             await ShowAutoMessage(
-                "Honor set of White (Horse, Rook, Cannon)\n"
-                ,guidewindow,
+                "Honor set of White (Horse, Rook, Cannon)\n" +
+                "[img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C1.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C3.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C4.png[/img]"
+                , guidewindow,
                 5000,
                 wait: true
             );
@@ -294,7 +297,8 @@ public partial class Tutorialplay : Node
                     t.CallDeferred("UpdateHighlightVisual", false);
             }
             await ShowAutoMessage(
-                "and Pawn (4 different color)\n"
+                "and Pawn (4 different color)\n" +
+                "[img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6_Red.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6_Green.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6_Yellow.png[/img]"
                 , guidewindow,
                 5000,
                 wait: true
@@ -307,7 +311,8 @@ public partial class Tutorialplay : Node
                     t.CallDeferred("UpdateHighlightVisual", false);
             }
             await ShowAutoMessage(
-                "King tiles cannot be discard\n"
+                "King tiles cannot be discard\n" +
+                "[img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7_Red.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7_Green.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7_Yellow.png[/img]"
                 , guidewindow,
                 5000,
                 wait: true
@@ -317,8 +322,9 @@ public partial class Tutorialplay : Node
                 t.CallDeferred("UpdateHighlightVisual", false);
             }
             await ShowAutoMessage(
-                "Best choice in this scenario is to discard Green Cannon",
-                guidewindow,
+                "Best choice in this scenario is to discard Green Cannon\n" +
+                "[img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C4_Green.png[/img]"
+                , guidewindow,
                 5000,
                 wait: true
             );
@@ -595,7 +601,7 @@ public partial class Tutorialplay : Node
         if (clickedTile.Tileid.Contains("C7"))
         {
             LoggerManager.Info("Cannot discard King tile !!!");
-            ShowAutoMessage("Cannot discard King tile !!!",autoMessageBox, 5000);
+            ShowAutoMessage("Cannot discard King tile !!!" ,autoMessageBox, 5000);
             return;
         }
         DiscardTile(clickedTile.Playerid, clickedTile.Tileid);
@@ -687,6 +693,7 @@ public partial class Tutorialplay : Node
             NakamaSingleton.Instance.Point += 10;
 
         win_popup.DialogText = $"🎉 {NakamaSingleton.Instance.PlayerList[winnerId].player_name} wins! What would you like to do?";
+        win_popup.GetOkButton().Hide();
         win_popup.PopupCentered();
         GameLogic.Savepoint(NakamaSingleton.Instance.Point);
     }
@@ -730,9 +737,11 @@ public partial class Tutorialplay : Node
             if (!PlayerCastleStatus[NakamaSingleton.Instance.MainPlayerTurn] && GameLogic.CheckCastle(playersHands[NakamaSingleton.Instance.MainPlayerTurn]))
             {
                 ShowAutoMessage(
-                "You Can Castle.when you are 1 tile away from winning\n" +
+                "You Can Castle. when you are 1 tile away from winning\n" +
                 "now, you had form at least 1 set of Honor (Green, Red, Yellow, and White pawns) and you can win with either \n" +
+                "[img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6_Red.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6_Green.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6_Yellow.png[/img]" +
                 "any of the king tile or white Horse \n" +
+                "[img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7_Red.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7_Green.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7_Yellow.png[/img] or [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C1.png[/img]" +
                 "You must castle before you can declare your win.",
                 guidewindow,
                 5000
@@ -779,7 +788,7 @@ public partial class Tutorialplay : Node
         switch (turnpass)
         {
             case 1:
-                await ShowAutoMessage("After Castle, you are waiting for winning hand",guidewindow,5000,wait:true);
+                await ShowAutoMessage("After Castle [img=247x63]res://art/4_Color_Game/Buttons/Removed_BG/Castle.png[/img]\n you are waiting for winning hand", guidewindow,5000,wait:true);
                 foreach (Tile t in playersContainers[1].GetChildren())
                 {
                     if (t.Tileid == "C1_Green" || t.Tileid == "C1_Red" || t.Tileid == "C1_Yellow")
@@ -787,7 +796,7 @@ public partial class Tutorialplay : Node
                     else
                         t.CallDeferred("UpdateHighlightVisual", false);
                 }
-                await ShowAutoMessage("It can be white horse", guidewindow, 5000, wait: true);
+                await ShowAutoMessage("It can be white horse\n [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C1.png[/img]", guidewindow, 5000, wait: true);
                 foreach (Tile t in playersContainers[1].GetChildren())
                 {
                     if (t.Tileid == "C7")
@@ -795,7 +804,9 @@ public partial class Tutorialplay : Node
                     else
                         t.CallDeferred("UpdateHighlightVisual", false);
                 }
-                await ShowAutoMessage("It can be any king tiles (white, green, red, yellow)", guidewindow, 5000, wait: true);
+                await ShowAutoMessage("It can be any king tiles (white, red, green, yellow)\n" +
+                    "[img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7_Red.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7_Green.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7_Yellow.png[/img]"
+                    , guidewindow, 5000, wait: true);
                 foreach (Tile t in playersContainers[1].GetChildren())
                 {
                     t.CallDeferred("UpdateHighlightVisual", false);
@@ -813,7 +824,7 @@ public partial class Tutorialplay : Node
                         t.CallDeferred("UpdateHighlightVisual", false);
                     }
                 }
-                await ShowAutoMessage("After castle, you can win by tile discard by player before you \n" +
+                await ShowAutoMessage("Click on castle  [img=247x63]res://art/4_Color_Game/Buttons/Removed_BG/Castle.png[/img]\n After Castle,\n you can win by tile discard by player before you \n" +
                     "or when other players drawing a tile as long as the tile contribute to the winning sets", guidewindow, 5000, wait: true);
                 await ShowAutoMessage("Choose to win by taking the tile", guidewindow, 5000, wait: true);
 
@@ -829,7 +840,10 @@ public partial class Tutorialplay : Node
                         {
                             decisionMade = false;
                             takeDecision = false;
-                            windec.DialogText = windec.DialogText + $" {lastDrawnTile.Tileid}";
+                            
+                            RichTextLabel rtl = GetNode<RichTextLabel>("windec/windec_RTL");
+                            rtl.Text = $"Do you want to win with {lastDrawnTile.TileName}?\n [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/{lastDrawnTile.Tileid}.png[/img]\n";
+                            
                             windec.PopupCentered();
 
                             int timeoutMs = 50000;
@@ -857,8 +871,7 @@ public partial class Tutorialplay : Node
                             }
                             else
                             {
-                                l2.AddItem("Player chose to Pass");
-                                DrawTile(NakamaSingleton.Instance.MainPlayerTurn);
+                                ShowAutoMessage("Wrong Choice\n", guidewindow, 2000, wait: true);
                             }
                         }
                     }
@@ -1044,23 +1057,23 @@ public partial class Tutorialplay : Node
         elapsedMs += updateIntervalMs;
         int timeLeft = Mathf.Max(0, (int)(remainingMs - elapsedMs));
 
+        RichTextLabel rtl = GetNode<RichTextLabel>("GuideWindow/GuideWindow_RTL");
+        
         string display = $"{baseMessage}\n";
 
-        if (ad.HasNode("MessageLabel"))
+        if (ad.HasNode("RichTextLabel"))
         {
-            var label = ad.GetNode<Label>("MessageLabel");
-            label.Text = display;
-            label.AutowrapMode = TextServer.AutowrapMode.Word;
-            label.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
-            label.SizeFlagsVertical = Control.SizeFlags.ExpandFill;
-            label.HorizontalAlignment = HorizontalAlignment.Center;
-            label.VerticalAlignment = VerticalAlignment.Center;
-
+            rtl.Text = display;
+            rtl.AutowrapMode = TextServer.AutowrapMode.Word;
+            rtl.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
+            rtl.SizeFlagsVertical = Control.SizeFlags.ExpandFill;
         }
         else
         {
             ad.DialogText = display;
         }
+
+        
 
         if (timeLeft <= 0)
         {

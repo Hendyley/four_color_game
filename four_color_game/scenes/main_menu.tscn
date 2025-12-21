@@ -11,8 +11,8 @@
 [ext_resource type="Texture2D" uid="uid://dk6sl1q3olfja" path="res://art/4_Color_Game/Buttons/Removed_BG/Store.png" id="6_dnbwb"]
 [ext_resource type="Texture2D" uid="uid://bwvo103v3e310" path="res://art/4_Color_Game/GameRules.png" id="7_eu6x0"]
 [ext_resource type="Texture2D" uid="uid://dhdaqam1q0plq" path="res://art/4_Color_Game/Buttons/Removed_BG/Quit Game.png" id="7_wghpr"]
-[ext_resource type="Texture2D" uid="uid://dccs0227mtuch" path="res://art/4_Color_Game/Animation/RemoveBG/A5.png" id="8_74eii"]
 [ext_resource type="Texture2D" uid="uid://b8u87i1l6e8bs" path="res://art/4_Color_Game/Buttons/Removed_BG/Tutorial Game.png" id="9_d6kkg"]
+[ext_resource type="Texture2D" uid="uid://ccj1djofui75m" path="res://art/4_Color_Game/Animation/A4.png" id="13_54j4l"]
 [ext_resource type="Texture2D" uid="uid://bk51ouejtg0al" path="res://art/4_Color_Game/SoundLogo.png" id="14_hmwkg"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hpxs7"]
@@ -47,7 +47,7 @@ font_size = 30
 bg_color = Color(0.6, 0.6, 0.6, 0.941176)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_apmn8"]
-bg_color = Color(0.964706, 0.87451, 0.172549, 0.760784)
+bg_color = Color(0.964706, 0.87451, 0.172549, 0.913725)
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -195,11 +195,12 @@ layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -366.0
-offset_right = 454.0
-offset_bottom = -16.0
+offset_top = -382.32
+offset_right = 974.0
+offset_bottom = 223.68
 grow_vertical = 0
-texture = ExtResource("8_74eii")
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("13_54j4l")
 
 [node name="PointLabel" type="Label" parent="."]
 layout_mode = 0

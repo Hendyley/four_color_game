@@ -10,7 +10,7 @@ namespace FourColors
     {
     }
 
-    enum Tile
+    enum Tile_code
     {
         C1 = 0,             // Horse
         C1_Red = 1,
@@ -36,43 +36,43 @@ namespace FourColors
         C6_Red = 21,
         C6_Green = 22,
         C6_Yellow = 23,
-        C7 = 21,            // King
-        C7_Red = 22,
-        C7_Green = 23,
-        C7_Yellow = 24,
+        C7 = 24,            // King
+        C7_Red = 25,
+        C7_Green = 26,
+        C7_Yellow = 27,
         
     }
 
     enum Tile_name
     {
-        Horse = 0,             // Horse
+        Horse_White = 0,             // Horse
         Horse_Red = 1,
         Horse_Green = 2,
         Horse_Yellow = 3,
-        Queen = 4,             // Queen
+        Queen_White = 4,             // Queen
         Queen_Red = 5,
         Queen_Green = 6,
         Queen_Yellow = 7,
-        Rook = 8,             // Rook
+        Rook_White = 8,             // Rook
         Rook_Red = 9,
         Rook_Green = 10,
         Rook_Yellow = 11,
-        Cannon = 12,            // Cannon
+        Cannon_White = 12,            // Cannon
         Cannon_Red = 13,
         Cannon_Green = 14,
         Cannon_Yellow = 15,
-        Bishop = 16,            // Bishop
+        Bishop_White = 16,            // Bishop
         Bishop_Red = 17,
         Bishop_Green = 18,
         Bishop_Yellow = 19,
-        Pawn = 20,            // Pawn
+        Pawn_White = 20,            // Pawn
         Pawn_Red = 21,
         Pawn_Green = 22,
         Pawn_Yellow = 23,
-        King = 21,            // King
-        King_Red = 22,
-        King_Green = 23,
-        King_Yellow = 24,
+        King_White = 24,            // King
+        King_Red = 25,
+        King_Green = 26,
+        King_Yellow = 27,
 
     }
 }

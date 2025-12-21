@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using FourColors;
+using System.IO;
 
 public partial class Tile : Control
 {
@@ -30,9 +32,17 @@ public partial class Tile : Control
 	public String Tiletype { get; set;}
     public bool Mainuser { get; set; } = false;
 
+
+    public String TileName = "";
+
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
+        Tile_code tileCode;
+        if (Enum.TryParse(this.Tileid, out tileCode))
+        {
+            TileName = Enum.GetName(typeof(Tile_name), tileCode);
+        }
         TileImage = GetNode<TextureRect>("TextureRect");
         highlightOverlay = GetNode<ColorRect>("HighlightOverlay");
         highlightOverlay.Visible = false;
@@ -75,7 +85,13 @@ public partial class Tile : Control
 		Tileid = value;
 		Playerid = playerid;
 		Tiletype = "player";
-	}
+
+        Tile_code tileCode;
+        if (Enum.TryParse(this.Tileid, out tileCode))
+        {
+            TileName = Enum.GetName(typeof(Tile_name), tileCode);
+        }
+    }
 
 	public void SetTableTile(string value)
 	{
@@ -86,8 +102,14 @@ public partial class Tile : Control
 		TileImage.Size = new Vector2(50, 200);
 		Tileid = value;
 		Tiletype = "table";
-		// GD.Print("Set = " + Tileid);
-	}
+        // GD.Print("Set = " + Tileid);
+
+        Tile_code tileCode;
+        if (Enum.TryParse(this.Tileid, out tileCode))
+        {
+            TileName = Enum.GetName(typeof(Tile_name), tileCode);
+        }
+    }
 
 	public void TileSelect(string value)
 	{
