@@ -1020,60 +1020,50 @@ public partial class Tutorialplay : Node
         container.QueueSort(); // Ensure UI update
     }
 
+    private string currentBaseMessage = "";
     public async Task ShowAutoMessage(string message, AcceptDialog ad, int durationMs = 2000, bool wait = false)
     {
         remainingMs = durationMs;
         elapsedMs = 0;
+        currentBaseMessage = message; // Store the message with the [img] tags
+
+        // Find the RTL once
+        RichTextLabel rtl = GetNode<RichTextLabel>("GuideWindow/GuideWindow_RTL");
+
+        // INITIAL SETUP: Clear and set images once so they have time to load
+        rtl.Clear();
+        rtl.Text = "";
+        rtl.AppendText(message);
 
         if (autoCloseTimer == null)
         {
             autoCloseTimer = new Timer();
             autoCloseTimer.OneShot = false;
             autoCloseTimer.WaitTime = updateIntervalMs / 1000f;
-            autoCloseTimer.Timeout += () => UpdateCountdown(message, ad);
+            autoCloseTimer.Timeout += () => UpdateCountdown(ad);
             AddChild(autoCloseTimer);
         }
 
-        if (ad is AcceptDialog dialog && ad == autoMessageBox)
-        {
-            dialog.GetOkButton()?.Hide();
-        }
-
-        UpdateCountdown(message, ad);
         ad.PopupCentered();
         autoCloseTimer.Start();
 
-        if (wait)
-        {
-            // Wait for timer duration before returning
-            //var timer = GetTree().CreateTimer(durationMs / 1000.0f);
-            //await ToSignal(timer, "timeout");
-            await ToSignal(ad, "confirmed");
-        }
+        if (wait) { await ToSignal(ad, "confirmed"); }
     }
 
-    private void UpdateCountdown(string baseMessage, AcceptDialog ad)
+    private void UpdateCountdown(AcceptDialog ad)
     {
         elapsedMs += updateIntervalMs;
         int timeLeft = Mathf.Max(0, (int)(remainingMs - elapsedMs));
 
         RichTextLabel rtl = GetNode<RichTextLabel>("GuideWindow/GuideWindow_RTL");
-        
-        string display = $"{baseMessage}\n";
 
-        if (ad.HasNode("RichTextLabel"))
-        {
-            rtl.Text = display;
-            rtl.AutowrapMode = TextServer.AutowrapMode.Word;
-            rtl.SizeFlagsHorizontal = Control.SizeFlags.ExpandFill;
-            rtl.SizeFlagsVertical = Control.SizeFlags.ExpandFill;
-        }
-        else
-        {
-            ad.DialogText = display;
-        }
+        // DO NOT CLEAR! Instead, use push/pop or just manage a separate line.
+        // If you clear every tick, the images RE-LOAD from disk every tick.
 
-        
+        // To update only the timer:
+        rtl.Clear();
+        rtl.AppendText(currentBaseMessage); // Re-add the base message (images)
+        rtl.AppendText($"\n[color=yellow]Closing in: {timeLeft / 1000}s[/color]");
 
         if (timeLeft <= 0)
         {

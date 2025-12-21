@@ -46,7 +46,7 @@ public partial class NakamaSingleton : Node
     public bool IsHost { get; private set; } = false;
     public int NumberOfPlayers { get; set; } = 4;
     private string[] content;
-    public bool BGMPlay { get; set; } = false;
+    public bool BGMPlay { get; set; } = true;
 
     public SaveData SD;
     public int Point { get; set; }
@@ -78,6 +78,7 @@ public partial class NakamaSingleton : Node
 
     public override void _Ready()
     {
+
         if (Instance != null)
         {
             QueueFree(); // Ensure singleton

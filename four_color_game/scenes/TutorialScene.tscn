@@ -6,7 +6,7 @@
 [ext_resource type="Script" path="res://scripts/FourColors/ScrollCont.cs" id="5_xqru7"]
 [ext_resource type="Texture2D" uid="uid://du3akvbf2wq3n" path="res://art/4_Color_Game/Buttons/Removed_BG/Pick_Up.png" id="6_knt7s"]
 [ext_resource type="Texture2D" uid="uid://3s82nmpcrqub" path="res://art/4_Color_Game/Buttons/Removed_BG/Castle.png" id="7_x5pft"]
-[ext_resource type="Texture2D" uid="uid://bstoofnujwo3x" path="res://art/4_Color_Game/Buttons/SortButton.png" id="8_pb4hq"]
+[ext_resource type="Texture2D" uid="uid://bstoofnujwo3x" path="res://art/4_Color_Game/Buttons/Removed_BG/SortButton.png" id="8_pb4hq"]
 [ext_resource type="Texture2D" uid="uid://b22trtwi1kxv0" path="res://art/4_Color_Game/GamePopBoard.png" id="9_avrdh"]
 [ext_resource type="Texture2D" uid="uid://bek515n3g5nm3" path="res://art/4_Color_Game/Buttons/Removed_BG/BackButton.png" id="9_h2ssg"]
 

@@ -17,6 +17,7 @@ public partial class MainMenu : Control
 
     public override void _Ready()
 	{
+
 		Button startButton = (Button) FindChild("StartButton");
 		// startButton.Pressed += _on_start_button_pressed;
 		Button multiButton = (Button) FindChild("MultiButton");

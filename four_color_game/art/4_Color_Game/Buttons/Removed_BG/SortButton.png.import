@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bkgdhimbb8stm"
-path="res://.godot/imported/Tutorial Game.png-33ff866b64356bedaa124cabd27fef40.ctex"
+uid="uid://bstoofnujwo3x"
+path="res://.godot/imported/SortButton.png-faadd5daded84d83fcd44144d4520cf5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/4_Color_Game/Buttons/Tutorial Game.png"
-dest_files=["res://.godot/imported/Tutorial Game.png-33ff866b64356bedaa124cabd27fef40.ctex"]
+source_file="res://art/4_Color_Game/Buttons/Removed_BG/SortButton.png"
+dest_files=["res://.godot/imported/SortButton.png-faadd5daded84d83fcd44144d4520cf5.ctex"]
 
 [params]
 

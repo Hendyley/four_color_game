@@ -8,7 +8,7 @@
 [ext_resource type="Script" path="res://scripts/FourColors/TableTiles.cs" id="4_gw1eg"]
 [ext_resource type="Texture2D" uid="uid://bek515n3g5nm3" path="res://art/4_Color_Game/Buttons/Removed_BG/BackButton.png" id="5_dmi23"]
 [ext_resource type="Script" path="res://scripts/FourColors/ScrollCont.cs" id="8_5oogl"]
-[ext_resource type="Texture2D" uid="uid://bstoofnujwo3x" path="res://art/4_Color_Game/Buttons/SortButton.png" id="9_ycwdk"]
+[ext_resource type="Texture2D" uid="uid://bstoofnujwo3x" path="res://art/4_Color_Game/Buttons/Removed_BG/SortButton.png" id="9_ycwdk"]
 [ext_resource type="Texture2D" uid="uid://b22trtwi1kxv0" path="res://art/4_Color_Game/GamePopBoard.png" id="10_838ts"]
 [ext_resource type="Texture2D" uid="uid://bk51ouejtg0al" path="res://art/4_Color_Game/SoundLogo.png" id="10_e8khf"]
 
