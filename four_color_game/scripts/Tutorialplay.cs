@@ -292,7 +292,7 @@ public partial class Tutorialplay : Node
                 "目前，您的手牌包含\n" +
                 $"马牌的颜色组合（3种不同颜色）。\n" +
                 "[img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C1_Green.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C1_Red.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C1_Yellow.png[/img]"
-                guidewindow,
+                , guidewindow,
                 8000,
                 wait: true
                 );

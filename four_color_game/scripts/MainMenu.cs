@@ -24,6 +24,22 @@ public partial class MainMenu : Control
 		Button storeButton = (Button) FindChild("StoreButton");
 		Button quitButton = (Button) FindChild("StoreButton");
         Button soundButton = (Button)FindChild("soundbutton");
+        MenuButton languageSetting = (MenuButton)FindChild("languagesetting");
+        languageSetting.GetPopup().IdPressed += id =>
+        {
+            switch (id)
+            {
+                case 0:
+                    NakamaSingleton.Instance.GameLanguage = "English";
+                    break;
+                case 1:
+                    NakamaSingleton.Instance.GameLanguage = "Chinese";
+                    break;
+                default:
+                    NakamaSingleton.Instance.GameLanguage = "English";
+                    break;
+            }
+        };
 
         if (NakamaSingleton.Instance.BGMPlay)
             soundButton.ButtonPressed = false;

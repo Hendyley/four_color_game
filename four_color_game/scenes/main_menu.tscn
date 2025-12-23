@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://blewkvksqkipr"]
+[gd_scene load_steps=30 format=3 uid="uid://blewkvksqkipr"]
 
 [ext_resource type="Script" path="res://scripts/MainMenu.cs" id="1_ppnmh"]
 [ext_resource type="PackedScene" uid="uid://1uc4okqjc05u" path="res://scenes/startgame_page.tscn" id="2_uyw1c"]
@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://b8u87i1l6e8bs" path="res://art/4_Color_Game/Buttons/Removed_BG/Tutorial Game.png" id="9_d6kkg"]
 [ext_resource type="Texture2D" uid="uid://ccj1djofui75m" path="res://art/4_Color_Game/Animation/A4.png" id="13_54j4l"]
 [ext_resource type="Texture2D" uid="uid://bk51ouejtg0al" path="res://art/4_Color_Game/SoundLogo.png" id="14_hmwkg"]
+[ext_resource type="Texture2D" uid="uid://di3ss25g2gt8c" path="res://art/4_Color_Game/LanguageLogo2.png" id="15_jrs04"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hpxs7"]
 texture = ExtResource("4_0pnrd")
@@ -48,6 +49,13 @@ bg_color = Color(0.6, 0.6, 0.6, 0.941176)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_apmn8"]
 bg_color = Color(0.964706, 0.87451, 0.172549, 0.913725)
+
+[sub_resource type="SystemFont" id="SystemFont_qupeh"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_t3pgc"]
+texture = ExtResource("15_jrs04")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_85eik"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -242,6 +250,30 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_mkd4k")
 theme_override_styles/normal = SubResource("StyleBoxFlat_apmn8")
 toggle_mode = true
 icon = ExtResource("14_hmwkg")
+
+[node name="languagesetting" type="MenuButton" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -277.72
+offset_top = -112.32
+offset_right = 322.28
+offset_bottom = 487.68
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.13, 0.13)
+theme_override_fonts/font = SubResource("SystemFont_qupeh")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxTexture_t3pgc")
+icon = ExtResource("15_jrs04")
+item_count = 2
+popup/item_0/text = "English"
+popup/item_0/icon = SubResource("ViewportTexture_85eik")
+popup/item_1/text = "Chinese"
+popup/item_1/id = 1
 
 [connection signal="pressed" from="MarginContainer/HBoxContainer2/VBoxContainer2/CenterContainer/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer2/VBoxContainer2/CenterContainer/VBoxContainer/MultiButton" to="." method="_on_multi_button_pressed"]
