@@ -228,24 +228,56 @@ public partial class Tutorialplay : Node
 
             DrawTile(1, "C7");
 
+            if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+                await ShowAutoMessage("欢迎来到游戏教程。", guidewindow, 5000, wait: true);
+            else
+                await ShowAutoMessage("Welcome to tutorial.", guidewindow, 5000, wait: true);
 
-            await ShowAutoMessage("Welcome to tutorial.", guidewindow, 5000, wait: true);
-            await ShowAutoMessage("Each player start with 15 tiles", guidewindow, 5000, wait: true);
-            await ShowAutoMessage("The Goal of game is to form color sets and honor sets", guidewindow, 5000, wait: true);
-            await ShowAutoMessage("Color sets refer to combination of the same rank with different color (3 or 4 tiles)", guidewindow, 5000, wait: true);
-            await ShowAutoMessage(
+            if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+                await ShowAutoMessage("每位玩家初始拥有15个板块。。", guidewindow, 5000, wait: true);
+            else
+                await ShowAutoMessage("Each player starts with 15 tiles", guidewindow, 5000, wait: true);
+
+            if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+                await ShowAutoMessage("游戏的目标是组成颜色组合和荣誉组合。", guidewindow, 5000, wait: true);
+            else
+                await ShowAutoMessage("The Goal of game is to form color sets and honor sets", guidewindow, 5000, wait: true);
+            
+            if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+                await ShowAutoMessage("颜色组是指相同等级但颜色不同的牌（3 或 4 块牌）的组合。", guidewindow, 5000, wait: true);
+            else
+                await ShowAutoMessage("Color sets refer to combination of the same rank with different color (3 or 4 tiles)", guidewindow, 5000, wait: true);
+
+            if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+            {
+                await ShowAutoMessage(
+                "荣誉组合是指以下组合：\n" +
+                $"- 国王牌、王后牌、主教牌 颜色相同 [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C2.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C5.png[/img]\n" +
+                $"- 马牌、石头牌、炮牌 颜色相同 [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C1_Red.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C3_Red.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C4_Red.png[/img]\n" +
+                $"- 3 或 4 个不同颜色的兵牌。 [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6_Red.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6_Green.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6_Yellow.png[/img]",
+                guidewindow,
+                8000,
+                wait: true);
+            }
+            else
+            {
+                await ShowAutoMessage(
                 "Honor sets refer to combination of:\n" +
                 $"- King, Queen, Bishop with the same color [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C2.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C5.png[/img]\n" +
                 $"- Horse, Rock, Cannon with the same color [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C1_Red.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C3_Red.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C4_Red.png[/img]\n" +
                 $"- 3 or 4 Tiles of Pawns with different color [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6_Red.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6_Green.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6_Yellow.png[/img]",
                 guidewindow,
                 8000,
-                wait: true
-            );
-
+                wait: true);
+            }
+                
             DrawTile(1, "C4_Green");
 
-            await ShowAutoMessage("The First player will draw an extra tile", guidewindow, 5000, wait: true);
+            if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+                await ShowAutoMessage("先手玩家将额外抽取一块板块。", guidewindow, 5000, wait: true);
+            else
+                await ShowAutoMessage("The First player will draw an extra tile", guidewindow, 5000, wait: true);
+            
             foreach (Tile t in playersContainers[1].GetChildren())
             {
                 if (t.Tileid == "C1_Green" || t.Tileid == "C1_Red" || t.Tileid == "C1_Yellow")
@@ -253,14 +285,30 @@ public partial class Tutorialplay : Node
                 else
                     t.CallDeferred("UpdateHighlightVisual", false);
             }
-            await ShowAutoMessage(
+
+            if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+            {
+                await ShowAutoMessage(
+                "目前，您的手牌包含\n" +
+                $"马牌的颜色组合（3种不同颜色）。\n" +
+                "[img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C1_Green.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C1_Red.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C1_Yellow.png[/img]"
+                guidewindow,
+                8000,
+                wait: true
+                );
+            }
+            else
+            {
+                await ShowAutoMessage(
                 "Currently, your hand consist of\n" +
                 "Colors set of Horse (3 different colors).\n" +
                 "[img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C1_Green.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C1_Red.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C1_Yellow.png[/img]"
                 , guidewindow,
                 5000,
-                wait: true
-            );
+                wait: true);
+            }
+                
+
             foreach (Tile t in playersContainers[1].GetChildren())
             {
                 if (t.Tileid == "C2_Green" || t.Tileid == "C2_Red" || t.Tileid == "C2_Yellow" || t.Tileid == "C2")
@@ -268,13 +316,26 @@ public partial class Tutorialplay : Node
                 else
                     t.CallDeferred("UpdateHighlightVisual", false);
             }
-            await ShowAutoMessage(
+
+            if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+            {
+                await ShowAutoMessage(
+                "和皇后牌（4 种不同颜色）\n" +
+                "[img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C2_Green.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C2_Red.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C2_Yellow.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C2.png[/img]"
+                , guidewindow,
+                5000,
+                wait: true);
+            }
+            else
+            {
+                await ShowAutoMessage(
                 "and Queen (4 different colors).\n" +
                 "[img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C2_Green.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C2_Red.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C2_Yellow.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C2.png[/img]"
                 , guidewindow,
                 5000,
-                wait: true
-            );
+                wait: true);
+            }
+
             foreach (Tile t in playersContainers[1].GetChildren())
             {
                 if (t.Tileid == "C1" || t.Tileid == "C3" || t.Tileid == "C4")
@@ -282,13 +343,26 @@ public partial class Tutorialplay : Node
                 else
                     t.CallDeferred("UpdateHighlightVisual", false);
             }
-            await ShowAutoMessage(
-                "Honor set of White (Horse, Rook, Cannon)\n" +
+
+            if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+            {
+                await ShowAutoMessage(
+                "白色荣誉套装（马牌、车牌、炮牌）\n" +
                 "[img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C1.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C3.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C4.png[/img]"
                 , guidewindow,
                 5000,
-                wait: true
-            );
+                wait: true);
+            }
+            else
+            {
+                await ShowAutoMessage(
+                "Honor set of white color (Horse, Rook, Cannon)\n" +
+                "[img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C1.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C3.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C4.png[/img]"
+                , guidewindow,
+                5000,
+                wait: true);
+            }
+            
             foreach (Tile t in playersContainers[1].GetChildren())
             {
                 if (t.Tileid == "C6_Green" || t.Tileid == "C6_Red" || t.Tileid == "C6_Yellow" || t.Tileid == "C6")
@@ -296,13 +370,29 @@ public partial class Tutorialplay : Node
                 else
                     t.CallDeferred("UpdateHighlightVisual", false);
             }
-            await ShowAutoMessage(
+
+            if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+            {
+                await ShowAutoMessage(
+                "和兵牌（4 种不同颜色）\n" +
+                "[img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6_Red.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6_Green.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6_Yellow.png[/img]"
+                , guidewindow,
+                5000,
+                wait: true);
+
+            }
+            else
+            {
+                await ShowAutoMessage(
                 "and Pawn (4 different color)\n" +
                 "[img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6_Red.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6_Green.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6_Yellow.png[/img]"
                 , guidewindow,
                 5000,
-                wait: true
-            );
+                wait: true);
+
+            }
+
+
             foreach (Tile t in playersContainers[1].GetChildren())
             {
                 if (t.Tileid == "C7" )
@@ -310,24 +400,54 @@ public partial class Tutorialplay : Node
                 else
                     t.CallDeferred("UpdateHighlightVisual", false);
             }
-            await ShowAutoMessage(
+
+            if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+            {
+                await ShowAutoMessage(
+                "国王牌不能弃置\n" +
+                "[img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7_Red.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7_Green.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7_Yellow.png[/img]"
+                , guidewindow,
+                5000,
+                wait: true);
+
+            }
+            else
+            {
+                await ShowAutoMessage(
                 "King tiles cannot be discard\n" +
                 "[img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7_Red.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7_Green.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7_Yellow.png[/img]"
                 , guidewindow,
                 5000,
-                wait: true
-            );
+                wait: true);
+
+            }
+
             foreach (Tile t in playersContainers[1].GetChildren())
             {
                 t.CallDeferred("UpdateHighlightVisual", false);
             }
-            await ShowAutoMessage(
+
+            if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+            {
+                await ShowAutoMessage(
+                "在这种情况下，最佳选择是放弃绿炮牌。\n" +
+                "[img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C4_Green.png[/img]"
+                , guidewindow,
+                5000,
+                wait: true);
+
+            }
+            else
+            {
+                await ShowAutoMessage(
                 "Best choice in this scenario is to discard Green Cannon\n" +
                 "[img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C4_Green.png[/img]"
                 , guidewindow,
                 5000,
-                wait: true
-            );
+                wait: true);
+
+            }
+
             allowedtile = "C4_Green";
 
         }
@@ -601,7 +721,10 @@ public partial class Tutorialplay : Node
         if (clickedTile.Tileid.Contains("C7"))
         {
             LoggerManager.Info("Cannot discard King tile !!!");
-            ShowAutoMessage("Cannot discard King tile !!!" ,autoMessageBox, 5000);
+            if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+                ShowAutoMessage("不能丢弃国王牌 !!!", autoMessageBox, 5000);
+            else
+                ShowAutoMessage("Cannot discard King tile !!!" ,autoMessageBox, 5000);
             return;
         }
         DiscardTile(clickedTile.Playerid, clickedTile.Tileid);
@@ -653,7 +776,10 @@ public partial class Tutorialplay : Node
         LoggerManager.Info("castle button pressed");
         if (!GameLogic.CheckCastle(playersHands[NakamaSingleton.Instance.MainPlayerTurn]))
         {
-            ShowAutoMessage("You Cannot Castle now.",autoMessageBox, 5000);
+            if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+                ShowAutoMessage("你现在无法建城堡。", autoMessageBox, 5000);
+            else
+                ShowAutoMessage("You Cannot Castle now.",autoMessageBox, 5000);
             castleButton.ReleaseFocus();
             return;
         }
@@ -692,7 +818,10 @@ public partial class Tutorialplay : Node
         else
             NakamaSingleton.Instance.Point += 10;
 
-        win_popup.DialogText = $"🎉 {NakamaSingleton.Instance.PlayerList[winnerId].player_name} wins! What would you like to do?";
+        if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+            win_popup.DialogText = $"🎉 {NakamaSingleton.Instance.PlayerList[winnerId].player_name}  玩家 获胜！接下来你想做什么？";
+        else
+            win_popup.DialogText = $"🎉 {NakamaSingleton.Instance.PlayerList[winnerId].player_name} wins! What would you like to do next?"; 
         win_popup.GetOkButton().Hide();
         win_popup.PopupCentered();
         GameLogic.Savepoint(NakamaSingleton.Instance.Point);
@@ -736,16 +865,34 @@ public partial class Tutorialplay : Node
             //StartTurnTimer();
             if (!PlayerCastleStatus[NakamaSingleton.Instance.MainPlayerTurn] && GameLogic.CheckCastle(playersHands[NakamaSingleton.Instance.MainPlayerTurn]))
             {
-                ShowAutoMessage(
-                "You Can Castle. when you are 1 tile away from winning\n" +
-                "now, you had form at least 1 set of Honor (Green, Red, Yellow, and White pawns) and you can win with either \n" +
-                "[img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6_Red.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6_Green.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6_Yellow.png[/img]" +
-                "any of the king tile or white Horse \n" +
-                "[img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7_Red.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7_Green.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7_Yellow.png[/img] or [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C1.png[/img]" +
-                "You must castle before you can declare your win.",
-                guidewindow,
-                5000
-                );
+
+                if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+                {
+                    ShowAutoMessage(
+                    "你可以选择城堡策略。当你距离胜利只差一格时。\n" +
+                    "现在，你至少已经组成了一套荣誉棋子（绿、红、黄、白），你可以用其中任何一种赢得比赛。\n" +
+                    "[img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6_Red.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6_Green.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6_Yellow.png[/img]" +
+                    "任何一张 (国王牌) 或 (白马牌)\n" +
+                    "[img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7_Red.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7_Green.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7_Yellow.png[/img] or [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C1.png[/img]" +
+                    "你必须先城堡才能宣布胜利。",
+                    guidewindow,
+                    5000);
+
+                }
+                else
+                {
+                    ShowAutoMessage(
+                    "You Can Castle. when you are 1 tile away from winning.\n" +
+                    "now, you had form at least 1 set of Honor (Green, Red, Yellow, and White pawns) and you can win with either \n" +
+                    "[img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6_Red.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6_Green.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C6_Yellow.png[/img]" +
+                    "any of the king tile or white horse tile\n" +
+                    "[img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7_Red.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7_Green.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7_Yellow.png[/img] or [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C1.png[/img]" +
+                    "You must castle before you can declare your win.",
+                    guidewindow,
+                    5000);
+
+                }
+
 
                 // /Block View and show only castle button
             }
@@ -788,7 +935,12 @@ public partial class Tutorialplay : Node
         switch (turnpass)
         {
             case 1:
-                await ShowAutoMessage("After Castle [img=247x63]res://art/4_Color_Game/Buttons/Removed_BG/Castle.png[/img]\n you are waiting for winning hand", guidewindow,5000,wait:true);
+
+                if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+                    await ShowAutoMessage("城堡 之后 [img=247x63]res://art/4_Color_Game/Buttons/Removed_BG/Castle.png[/img]\n you are waiting for winning hand", guidewindow, 5000, wait: true);
+                else
+                    await ShowAutoMessage("After Castle [img=247x63]res://art/4_Color_Game/Buttons/Removed_BG/Castle.png[/img]\n you are waiting for winning hand", guidewindow,5000,wait:true);
+                
                 foreach (Tile t in playersContainers[1].GetChildren())
                 {
                     if (t.Tileid == "C1_Green" || t.Tileid == "C1_Red" || t.Tileid == "C1_Yellow")
@@ -796,7 +948,12 @@ public partial class Tutorialplay : Node
                     else
                         t.CallDeferred("UpdateHighlightVisual", false);
                 }
-                await ShowAutoMessage("It can be white horse\n [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C1.png[/img]", guidewindow, 5000, wait: true);
+
+                if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+                    await ShowAutoMessage("可能是(白马牌)\n [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C1.png[/img]", guidewindow, 5000, wait: true);
+                else
+                    await ShowAutoMessage("It can be (white horse tile)\n [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C1.png[/img]", guidewindow, 5000, wait: true);
+                
                 foreach (Tile t in playersContainers[1].GetChildren())
                 {
                     if (t.Tileid == "C7")
@@ -804,9 +961,23 @@ public partial class Tutorialplay : Node
                     else
                         t.CallDeferred("UpdateHighlightVisual", false);
                 }
-                await ShowAutoMessage("It can be any king tiles (white, red, green, yellow)\n" +
+
+                if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+                {
+                    await ShowAutoMessage("可以是任何颜色的 (国王牌)（白色、红色、绿色、黄色）\n" +
                     "[img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7_Red.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7_Green.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7_Yellow.png[/img]"
                     , guidewindow, 5000, wait: true);
+
+                }
+                else
+                {
+                    await ShowAutoMessage("It can be any king tiles (white, red, green, yellow)\n" +
+                    "[img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7_Red.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7_Green.png[/img] [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/C7_Yellow.png[/img]"
+                    , guidewindow, 5000, wait: true);
+
+                }
+                
+                
                 foreach (Tile t in playersContainers[1].GetChildren())
                 {
                     t.CallDeferred("UpdateHighlightVisual", false);
@@ -824,11 +995,26 @@ public partial class Tutorialplay : Node
                         t.CallDeferred("UpdateHighlightVisual", false);
                     }
                 }
-                await ShowAutoMessage("Click on castle  [img=247x63]res://art/4_Color_Game/Buttons/Removed_BG/Castle.png[/img]\n After Castle,\n you can win by tile discard by player before you \n" +
-                    "or when other players drawing a tile as long as the tile contribute to the winning sets", guidewindow, 5000, wait: true);
-                await ShowAutoMessage("Choose to win by taking the tile", guidewindow, 5000, wait: true);
 
-                while(true)
+                if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+                {
+                    await ShowAutoMessage("点击城堡  [img=247x63]res://art/4_Color_Game/Buttons/Removed_BG/Castle.png[/img]\n 在城堡之后，你可以通过玩家在你之前弃掉的板块来赢得比赛。 \n" +
+                    "或者当其他玩家抽牌时，只要该牌有助于组成获胜牌组即可。", guidewindow, 5000, wait: true);
+                    await ShowAutoMessage("选择拿走牌来赢得比赛。", guidewindow, 5000, wait: true);
+
+
+                }
+                else
+                {
+                    await ShowAutoMessage("Click on castle  [img=247x63]res://art/4_Color_Game/Buttons/Removed_BG/Castle.png[/img]\n After Castle,\n you can win by tile discard by player before you \n" +
+                    "or when other players drawing a tile as long as the tile contribute to the winning sets.", guidewindow, 5000, wait: true);
+                    await ShowAutoMessage("Choose to win by taking the tile.", guidewindow, 5000, wait: true);
+
+
+                }
+
+
+                while (true)
                 {
                     await Task.Delay(1000);
                     if (PlayerCastleStatus[NakamaSingleton.Instance.MainPlayerTurn] == true)
@@ -842,7 +1028,10 @@ public partial class Tutorialplay : Node
                             takeDecision = false;
                             
                             RichTextLabel rtl = GetNode<RichTextLabel>("windec/windec_RTL");
-                            rtl.Text = $"Do you want to win with {lastDrawnTile.TileName}?\n [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/{lastDrawnTile.Tileid}.png[/img]\n";
+                            if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+                                rtl.AppendText($"你想用 {lastDrawnTile.TileName} 来赢吗？?\n [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/{lastDrawnTile.Tileid}.png[/img]\n");
+                            else
+                                rtl.Text = $"Do you want to win with {lastDrawnTile.TileName}?\n [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/{lastDrawnTile.Tileid}.png[/img]\n";
                             
                             windec.PopupCentered();
 
@@ -871,7 +1060,10 @@ public partial class Tutorialplay : Node
                             }
                             else
                             {
-                                ShowAutoMessage("Wrong Choice\n", guidewindow, 2000, wait: true);
+                                if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+                                    ShowAutoMessage("错误的选择\n", guidewindow, 2000, wait: true);
+                                else
+                                    ShowAutoMessage("Wrong Choice\n", guidewindow, 2000, wait: true);
                             }
                         }
                     }
@@ -880,7 +1072,10 @@ public partial class Tutorialplay : Node
 
                 break;
             default:
-                await ShowAutoMessage($"turnpass = {turnpass}", guidewindow, 5000, wait: true);
+                if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+                    await ShowAutoMessage($"转弯 = {turnpass}", guidewindow, 5000, wait: true);
+                else
+                    await ShowAutoMessage($"turnpass = {turnpass}", guidewindow, 5000, wait: true);
                 break;
         }
         
@@ -1063,7 +1258,10 @@ public partial class Tutorialplay : Node
         // To update only the timer:
         rtl.Clear();
         rtl.AppendText(currentBaseMessage); // Re-add the base message (images)
-        rtl.AppendText($"\n[color=yellow]Closing in: {timeLeft / 1000}s[/color]");
+        if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+            rtl.AppendText($"\n[color=yellow]收盘于: {timeLeft / 1000}s[/color]");
+        else
+            rtl.AppendText($"\n[color=yellow]Closing in: {timeLeft / 1000}s[/color]");
 
         if (timeLeft <= 0)
         {

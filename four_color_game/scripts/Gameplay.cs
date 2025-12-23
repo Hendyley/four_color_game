@@ -555,7 +555,10 @@ public partial class Gameplay : Node
         if (clickedTile.Tileid.Contains("C7"))
         {
             LoggerManager.Info("Cannot discard King tile !!!");
-            ShowAutoMessage("Cannot discard King tile !!!", 5000);
+            if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+                ShowAutoMessage("不能丢弃国王牌 !!!", 5000);
+            else
+                ShowAutoMessage("Cannot discard King tile !!!", 5000);
             return;
         }
         DiscardTile(clickedTile.Playerid, clickedTile.Tileid);
@@ -620,14 +623,20 @@ public partial class Gameplay : Node
         LoggerManager.Info("castle button pressed");
         if (!GameLogic.CheckCastle(playersHands[NakamaSingleton.Instance.MainPlayerTurn]))
         {
-            ShowAutoMessage("You Cannot Castle now.", 5000);
+            if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+                ShowAutoMessage("你现在无法建城堡。", 5000);
+            else
+                ShowAutoMessage("You Cannot Castle now.", 5000);
             castleButton.ReleaseFocus();
             return;
         }
         castleButton.ReleaseFocus();
         PlayerCastleStatus[NakamaSingleton.Instance.MainPlayerTurn] = true;
-        ShowAutoMessage($"Player {NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.MainPlayerTurn].player_name} Castle", 5000);
-        LoggerManager.Info($"Player {NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.MainPlayerTurn].player_name} Castle");
+        if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+            ShowAutoMessage($"{NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.MainPlayerTurn].player_name} 玩家 城堡。", 5000);
+        else
+            ShowAutoMessage($"Player {NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.MainPlayerTurn].player_name} Castle.", 5000);
+        LoggerManager.Info($"Player {NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.MainPlayerTurn].player_name} Castle.");
     }
 
     private void _on_back_button_pressed()
@@ -658,8 +667,10 @@ public partial class Gameplay : Node
             NakamaSingleton.Instance.Point += GameLogic.CheckScore(playersHands[NakamaSingleton.Instance.MainPlayerTurn]);
         else
             NakamaSingleton.Instance.Point += 10;
-
-        win_popup.DialogText = $"🎉 {NakamaSingleton.Instance.PlayerList[winnerId].player_name} wins! What would you like to do?";
+        if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+            win_popup.DialogText = $"🎉 {NakamaSingleton.Instance.PlayerList[winnerId].player_name}  玩家 获胜！接下来你想做什么？"; 
+        else
+            win_popup.DialogText = $"🎉 {NakamaSingleton.Instance.PlayerList[winnerId].player_name} wins! What would you like to do next?";
         win_popup.PopupCentered();
         GameLogic.Savepoint(NakamaSingleton.Instance.Point);
     }
@@ -705,7 +716,10 @@ public partial class Gameplay : Node
             StartTurnTimer();
             if (!PlayerCastleStatus[NakamaSingleton.Instance.MainPlayerTurn] && GameLogic.CheckCastle(playersHands[NakamaSingleton.Instance.MainPlayerTurn]))
             {
-                ShowAutoMessage("You Can Castle.", 5000);
+                if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+                    ShowAutoMessage($"现在你可以堡了。", 5000);
+                else
+                    ShowAutoMessage("You can castle now.", 5000);
             }
         }
 
@@ -782,7 +796,10 @@ public partial class Gameplay : Node
                             decisionMade = false;
                             takeDecision = false;
                             RichTextLabel rtl = GetNode<RichTextLabel>("windec/windec_RTL");
-                            rtl.AppendText($"Do you want to win with {lastDrawnTile.TileName}?\n [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/{lastDrawnTile.Tileid}.png[/img]\n");
+                            if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+                                rtl.AppendText($"你想用 {lastDrawnTile.TileName} 来赢吗？?\n [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/{lastDrawnTile.Tileid}.png[/img]\n");
+                            else
+                                rtl.AppendText($"Do you want to win with {lastDrawnTile.TileName}?\n [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/{lastDrawnTile.Tileid}.png[/img]\n");
                             windec.PopupCentered();
 
                             int timeoutMs = 50000;
@@ -855,7 +872,10 @@ public partial class Gameplay : Node
                         decisionMade = false;
                         takeDecision = false;
                         RichTextLabel rtl = GetNode<RichTextLabel>("windec/windec_RTL");
-                        rtl.AppendText($"Do you want to win with {lastDrawnTile.TileName} [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/{lastDrawnTile.Tileid}.png[/img] ?\n");
+                        if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+                            rtl.AppendText($"你想用 {lastDrawnTile.TileName} 来赢吗？?\n [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/{lastDrawnTile.Tileid}.png[/img]\n");
+                        else
+                            rtl.AppendText($"Do you want to win with {lastDrawnTile.TileName} [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/{lastDrawnTile.Tileid}.png[/img] ?\n");
                         windec.PopupCentered();
 
                         int timeoutMs = 50000;
@@ -892,7 +912,10 @@ public partial class Gameplay : Node
                     PlayerCastleStatus[thisturn] = true;
                     PlaySoundEffect(mp3castle);
                     l2.AddItem($"Player {NakamaSingleton.Instance.PlayerList[thisturn].player_name} CASTLE !!!!");
-                    ShowAutoMessage($"Player {NakamaSingleton.Instance.PlayerList[thisturn].player_name} CASTLE !!!!", 5000);
+                    if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+                        ShowAutoMessage($"{NakamaSingleton.Instance.PlayerList[thisturn].player_name} 玩家 (城堡) !!!!", 5000);
+                    else
+                        ShowAutoMessage($"Player {NakamaSingleton.Instance.PlayerList[thisturn].player_name} CASTLE !!!!", 5000);
                     LoggerManager.Info($"Player {NakamaSingleton.Instance.PlayerList[thisturn].player_name} CASTLE !!!!");
                 }
 
