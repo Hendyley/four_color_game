@@ -51,6 +51,10 @@ public partial class Gameplay : Node
 
     StyleBoxFlat highlightStyle = new StyleBoxFlat();
 
+
+    private int remainingTurnTimeMs = NakamaSingleton.Instance.TimingPerTurn * 1000;//30_000;
+    private int elapsedTurnTimeMs = 0;
+
     public async override void _Ready()
     {
         string logPath = "logs/app.log";
@@ -75,7 +79,8 @@ public partial class Gameplay : Node
         currentturnLabel = (Label)FindChild("CurrentTurn");
         turnlabel = (Label)FindChild("TurnLabel");
         timerview = (Label)FindChild("TimerView");
-
+        timerview.Text = $"{NakamaSingleton.Instance.TimingPerTurn} s";
+        
         if (NakamaSingleton.Instance.BGMPlay)
             soundButton.ButtonPressed = false;
         else
@@ -130,8 +135,6 @@ public partial class Gameplay : Node
 
         win_popup = (ConfirmationDialog)FindChild("win_popup");
         win_popup.Exclusive = false;
-        win_popup.Confirmed += OnWinPopupConfirmed;
-        win_popup.Canceled += OnWinPopupCanceled;
 
         autoMessageBox = (AcceptDialog)FindChild("windec_c");
         autoMessageBox.Exclusive = false;
@@ -668,22 +671,27 @@ public partial class Gameplay : Node
         else
             NakamaSingleton.Instance.Point += 10;
         if (NakamaSingleton.Instance.GameLanguage == "Chinese")
-            win_popup.DialogText = $"🎉 {NakamaSingleton.Instance.PlayerList[winnerId].player_name}  玩家 获胜！接下来你想做什么？"; 
+        {
+            win_popup.DialogText = $"🎉 {NakamaSingleton.Instance.PlayerList[winnerId].player_name}  玩家 获胜！接下来你想做什么？";
+            win_popup.CancelButtonText = "回去";
+            win_popup.OkButtonText = "再玩一次";
+        }
         else
+        {
             win_popup.DialogText = $"🎉 {NakamaSingleton.Instance.PlayerList[winnerId].player_name} wins! What would you like to do next?";
+        }
+        
         win_popup.PopupCentered();
         GameLogic.Savepoint(NakamaSingleton.Instance.Point);
     }
 
-
-
-    private void OnWinPopupConfirmed()
+    private void _on_win_popup_confirmed()
     {
         LoggerManager.Info("OK (Play Again) selected");
         RestartGame();
     }
 
-    private void OnWinPopupCanceled()
+    private void _on_win_popup_canceled()
     {
         LoggerManager.Info("Cancel (Go Back) selected");
         bgm.Stop();
@@ -797,9 +805,17 @@ public partial class Gameplay : Node
                             takeDecision = false;
                             RichTextLabel rtl = GetNode<RichTextLabel>("windec/windec_RTL");
                             if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+                            {
+                                rtl.Clear();
                                 rtl.AppendText($"你想用 {lastDrawnTile.TileName} 来赢吗？?\n [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/{lastDrawnTile.Tileid}.png[/img]\n");
+                                windec.OkButtonText = "赢";
+                                windec.CancelButtonText = "跳过";
+                            }                                
                             else
+                            {
+                                rtl.Clear();
                                 rtl.AppendText($"Do you want to win with {lastDrawnTile.TileName}?\n [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/{lastDrawnTile.Tileid}.png[/img]\n");
+                            }
                             windec.PopupCentered();
 
                             int timeoutMs = 50000;
@@ -873,9 +889,17 @@ public partial class Gameplay : Node
                         takeDecision = false;
                         RichTextLabel rtl = GetNode<RichTextLabel>("windec/windec_RTL");
                         if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+                        {
+                            rtl.Clear();
                             rtl.AppendText($"你想用 {lastDrawnTile.TileName} 来赢吗？?\n [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/{lastDrawnTile.Tileid}.png[/img]\n");
+                            windec.OkButtonText = "赢";
+                            windec.CancelButtonText = "跳过";
+                        }
                         else
-                            rtl.AppendText($"Do you want to win with {lastDrawnTile.TileName} [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/{lastDrawnTile.Tileid}.png[/img] ?\n");
+                        {
+                            rtl.Clear();
+                            rtl.AppendText($"Do you want to win with {lastDrawnTile.TileName}?\n [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/{lastDrawnTile.Tileid}.png[/img]\n");
+                        }
                         windec.PopupCentered();
 
                         int timeoutMs = 50000;
@@ -934,12 +958,10 @@ public partial class Gameplay : Node
     public void StartTurnTimer()
     {
         elapsedMs = 0;
-        remainingTurnTimeMs = 30_000;
+        remainingTurnTimeMs = NakamaSingleton.Instance.TimingPerTurn * 1000;
         turnTimer.Start();
     }
 
-    private int remainingTurnTimeMs = 30_000;
-    private int elapsedTurnTimeMs = 0;
 
     private void OnTurnTick()
     {

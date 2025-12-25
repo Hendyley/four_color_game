@@ -19,13 +19,13 @@ public partial class MainMenu : Control
 	{
 
 		Button startButton = (Button) FindChild("StartButton");
-		// startButton.Pressed += _on_start_button_pressed;
 		Button multiButton = (Button) FindChild("MultiButton");
 		Button storeButton = (Button) FindChild("StoreButton");
 		Button quitButton = (Button) FindChild("StoreButton");
         Button soundButton = (Button)FindChild("soundbutton");
         MenuButton languageSetting = (MenuButton)FindChild("languagesetting");
-        languageSetting.GetPopup().IdPressed += id =>
+        PopupMenu popup = languageSetting.GetPopup();
+        popup.IdPressed += id =>
         {
             switch (id)
             {
@@ -40,6 +40,21 @@ public partial class MainMenu : Control
                     break;
             }
         };
+
+        languageSetting.AboutToPopup += () =>
+        {
+            Callable.From(() =>
+            {
+                Vector2I buttonPos = (Vector2I)languageSetting.GetScreenPosition();
+                Vector2I popupSize = (Vector2I)popup.Size;
+
+                int newX = buttonPos.X;
+                int newY = buttonPos.Y - popupSize.Y - 50;
+
+                popup.Position = new Vector2I(newX, newY);
+            }).CallDeferred();
+        };
+
 
         if (NakamaSingleton.Instance.BGMPlay)
             soundButton.ButtonPressed = false;
@@ -69,8 +84,8 @@ public partial class MainMenu : Control
 			if (NakamaSingleton.Instance.BGMPlay)
 				bgm.Play();
             ((AudioStreamMP3)bgm.Stream).Loop = true;
-
         }
+        NakamaSingleton.Instance.UpdateSaveData();
     }
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

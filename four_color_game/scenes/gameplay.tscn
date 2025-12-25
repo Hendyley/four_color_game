@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=3 uid="uid://cm1bc46c0qr4l"]
+[gd_scene load_steps=62 format=3 uid="uid://cm1bc46c0qr4l"]
 
 [ext_resource type="Script" path="res://scripts/Gameplay.cs" id="1_s8yka"]
 [ext_resource type="Texture2D" uid="uid://du3akvbf2wq3n" path="res://art/4_Color_Game/Buttons/Removed_BG/Pick_Up.png" id="2_0u1nr"]
@@ -29,9 +29,30 @@ expand_margin_bottom = 5.0
 modulate_color = Color(1, 1, 1, 0.760784)
 
 [sub_resource type="LabelSettings" id="LabelSettings_wrmox"]
-font_size = 20
+font_size = 30
 
-[sub_resource type="FontFile" id="FontFile_4di04"]
+[sub_resource type="SystemFont" id="SystemFont_gvxd4"]
+subpixel_positioning = 0
+
+[sub_resource type="LabelSettings" id="LabelSettings_kp1p1"]
+font = SubResource("SystemFont_gvxd4")
+font_size = 40
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7v8ed"]
+texture = ExtResource("10_838ts")
+expand_margin_left = 10.0
+expand_margin_top = 5.0
+expand_margin_right = 10.0
+expand_margin_bottom = 5.0
+modulate_color = Color(1, 1, 1, 0.760784)
+
+[sub_resource type="LabelSettings" id="LabelSettings_o0usl"]
+font_size = 30
+
+[sub_resource type="LabelSettings" id="LabelSettings_dg1kn"]
+font_size = 30
+
+[sub_resource type="FontFile" id="FontFile_jkd0g"]
 subpixel_positioning = 0
 msdf_pixel_range = 14
 msdf_size = 128
@@ -105,46 +126,45 @@ cache/0/18/0/descent = 0.0
 cache/0/18/0/underline_position = 0.0
 cache/0/18/0/underline_thickness = 0.0
 cache/0/18/0/scale = 1.0
+cache/0/40/0/ascent = 0.0
+cache/0/40/0/descent = 0.0
+cache/0/40/0/underline_position = 0.0
+cache/0/40/0/underline_thickness = 0.0
+cache/0/40/0/scale = 1.0
+cache/0/35/0/ascent = 0.0
+cache/0/35/0/descent = 0.0
+cache/0/35/0/underline_position = 0.0
+cache/0/35/0/underline_thickness = 0.0
+cache/0/35/0/scale = 1.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_bsdb8"]
-font = SubResource("FontFile_4di04")
-font_size = 25
+font = SubResource("FontFile_jkd0g")
+font_size = 35
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7v8ed"]
-texture = ExtResource("10_838ts")
-expand_margin_left = 10.0
-expand_margin_top = 5.0
-expand_margin_right = 10.0
-expand_margin_bottom = 5.0
-modulate_color = Color(1, 1, 1, 0.760784)
+[sub_resource type="ImageTexture" id="ImageTexture_e8vvc"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_o0usl"]
-font_size = 20
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xvdtf"]
 
-[sub_resource type="ImageTexture" id="ImageTexture_t5eo6"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2t13m"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dusa1"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_k3k3g"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d3ak4"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tnp1m"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_tddjc"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_plaov"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4fllh"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mboo8"]
 
 [sub_resource type="Theme" id="Theme_kv1b3"]
-HScrollBar/icons/decrement = SubResource("ImageTexture_t5eo6")
-HScrollBar/icons/decrement_highlight = SubResource("ImageTexture_t5eo6")
-HScrollBar/icons/decrement_pressed = SubResource("ImageTexture_t5eo6")
-HScrollBar/icons/increment = SubResource("ImageTexture_t5eo6")
-HScrollBar/icons/increment_highlight = SubResource("ImageTexture_t5eo6")
-HScrollBar/icons/increment_pressed = SubResource("ImageTexture_t5eo6")
-HScrollBar/styles/grabber = SubResource("StyleBoxEmpty_dusa1")
-HScrollBar/styles/grabber_highlight = SubResource("StyleBoxEmpty_d3ak4")
-HScrollBar/styles/grabber_pressed = SubResource("StyleBoxEmpty_tddjc")
-HScrollBar/styles/scroll = SubResource("StyleBoxEmpty_plaov")
-HScrollBar/styles/scroll_focus = SubResource("StyleBoxEmpty_4fllh")
+HScrollBar/icons/decrement = SubResource("ImageTexture_e8vvc")
+HScrollBar/icons/decrement_highlight = SubResource("ImageTexture_e8vvc")
+HScrollBar/icons/decrement_pressed = SubResource("ImageTexture_e8vvc")
+HScrollBar/icons/increment = SubResource("ImageTexture_e8vvc")
+HScrollBar/icons/increment_highlight = SubResource("ImageTexture_e8vvc")
+HScrollBar/icons/increment_pressed = SubResource("ImageTexture_e8vvc")
+HScrollBar/styles/grabber = SubResource("StyleBoxEmpty_xvdtf")
+HScrollBar/styles/grabber_highlight = SubResource("StyleBoxEmpty_2t13m")
+HScrollBar/styles/grabber_pressed = SubResource("StyleBoxEmpty_k3k3g")
+HScrollBar/styles/scroll = SubResource("StyleBoxEmpty_tnp1m")
+HScrollBar/styles/scroll_focus = SubResource("StyleBoxEmpty_mboo8")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fl5nc"]
 
@@ -169,16 +189,230 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hya2i"]
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gfaga"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ruulk"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1l7hn"]
 content_margin_left = 20.0
 content_margin_top = 30.0
 content_margin_right = 20.0
 content_margin_bottom = 30.0
 texture = ExtResource("10_838ts")
-expand_margin_left = 10.0
+expand_margin_left = 15.0
 expand_margin_top = 3.0
-expand_margin_right = 10.0
-expand_margin_bottom = 3.0
+expand_margin_right = 15.0
+expand_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1q3wu"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.3)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hhygn"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.75)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s5uit"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.225, 0.225, 0.225, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8j352"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.498039, 0.658824, 0.431373, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gmmcv"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0, 0, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="SystemFont" id="SystemFont_1q63f"]
+subpixel_positioning = 0
+
+[sub_resource type="Theme" id="Theme_mxv4u"]
+default_font = SubResource("SystemFont_1q63f")
+AcceptDialog/constants/buttons_separation = 10
+AcceptDialog/styles/panel = SubResource("StyleBoxTexture_1l7hn")
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 25
+Button/styles/disabled = SubResource("StyleBoxFlat_1q3wu")
+Button/styles/focus = SubResource("StyleBoxFlat_hhygn")
+Button/styles/hover = SubResource("StyleBoxFlat_s5uit")
+Button/styles/normal = SubResource("StyleBoxFlat_8j352")
+Button/styles/pressed = SubResource("StyleBoxFlat_gmmcv")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6pnq2"]
+content_margin_left = 30.0
+content_margin_top = 30.0
+content_margin_right = 30.0
+content_margin_bottom = 30.0
+texture = ExtResource("10_838ts")
+expand_margin_left = 15.0
+expand_margin_top = 10.0
+expand_margin_right = 15.0
+expand_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qcnyt"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.3)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_htnse"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.75)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4imlj"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.225, 0.225, 0.225, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r82ss"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.498039, 0.658824, 0.431373, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vam4h"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0, 0, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="SystemFont" id="SystemFont_s2o0q"]
+subpixel_positioning = 0
+
+[sub_resource type="Theme" id="Theme_re6bn"]
+default_font = SubResource("SystemFont_s2o0q")
+default_font_size = 24
+AcceptDialog/constants/buttons_separation = 10
+AcceptDialog/styles/panel = SubResource("StyleBoxTexture_6pnq2")
+Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_outline_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
+Button/colors/icon_focus_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_color = Color(1, 1, 1, 1)
+Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/icon_normal_color = Color(1, 1, 1, 1)
+Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
+Button/constants/align_to_largest_stylebox = 0
+Button/constants/h_separation = 4
+Button/constants/icon_max_width = 0
+Button/constants/outline_size = 0
+Button/font_sizes/font_size = 25
+Button/styles/disabled = SubResource("StyleBoxFlat_qcnyt")
+Button/styles/focus = SubResource("StyleBoxFlat_htnse")
+Button/styles/hover = SubResource("StyleBoxFlat_4imlj")
+Button/styles/normal = SubResource("StyleBoxFlat_r82ss")
+Button/styles/pressed = SubResource("StyleBoxFlat_vam4h")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f1ok0"]
 content_margin_left = 4.0
@@ -249,82 +483,12 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 corner_detail = 5
 
-[sub_resource type="SystemFont" id="SystemFont_oerkp"]
-
-[sub_resource type="Theme" id="Theme_mxv4u"]
-default_font = SubResource("SystemFont_oerkp")
-AcceptDialog/constants/buttons_separation = 10
-AcceptDialog/styles/panel = SubResource("StyleBoxTexture_gfaga")
-Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
-Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
-Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
-Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
-Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
-Button/colors/font_outline_color = Color(0, 0, 0, 1)
-Button/colors/font_pressed_color = Color(1, 1, 1, 1)
-Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
-Button/colors/icon_focus_color = Color(1, 1, 1, 1)
-Button/colors/icon_hover_color = Color(1, 1, 1, 1)
-Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
-Button/colors/icon_normal_color = Color(1, 1, 1, 1)
-Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
-Button/constants/align_to_largest_stylebox = 0
-Button/constants/h_separation = 4
-Button/constants/icon_max_width = 0
-Button/constants/outline_size = 0
-Button/font_sizes/font_size = 16
-Button/styles/disabled = SubResource("StyleBoxFlat_f1ok0")
-Button/styles/focus = SubResource("StyleBoxFlat_vnusf")
-Button/styles/hover = SubResource("StyleBoxFlat_8nq2g")
-Button/styles/normal = SubResource("StyleBoxFlat_srlr4")
-Button/styles/pressed = SubResource("StyleBoxFlat_365y1")
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_10u7f"]
-content_margin_left = 30.0
-content_margin_top = 30.0
-content_margin_right = 30.0
-content_margin_bottom = 30.0
-texture = ExtResource("10_838ts")
-expand_margin_left = 15.0
-expand_margin_top = 10.0
-expand_margin_right = 15.0
-expand_margin_bottom = 10.0
-
-[sub_resource type="SystemFont" id="SystemFont_t3b14"]
-
-[sub_resource type="Theme" id="Theme_re6bn"]
-default_font = SubResource("SystemFont_t3b14")
-default_font_size = 24
-AcceptDialog/constants/buttons_separation = 10
-AcceptDialog/styles/panel = SubResource("StyleBoxTexture_10u7f")
-Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
-Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
-Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
-Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
-Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
-Button/colors/font_outline_color = Color(0, 0, 0, 1)
-Button/colors/font_pressed_color = Color(1, 1, 1, 1)
-Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
-Button/colors/icon_focus_color = Color(1, 1, 1, 1)
-Button/colors/icon_hover_color = Color(1, 1, 1, 1)
-Button/colors/icon_hover_pressed_color = Color(1, 1, 1, 1)
-Button/colors/icon_normal_color = Color(1, 1, 1, 1)
-Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
-Button/constants/align_to_largest_stylebox = 0
-Button/constants/h_separation = 4
-Button/constants/icon_max_width = 0
-Button/constants/outline_size = 0
-Button/font_sizes/font_size = 16
-Button/styles/disabled = SubResource("StyleBoxFlat_f1ok0")
-Button/styles/focus = SubResource("StyleBoxFlat_vnusf")
-Button/styles/hover = SubResource("StyleBoxFlat_8nq2g")
-Button/styles/normal = SubResource("StyleBoxFlat_srlr4")
-Button/styles/pressed = SubResource("StyleBoxFlat_365y1")
-
 [sub_resource type="SystemFont" id="SystemFont_2cn5u"]
+subpixel_positioning = 0
 
-[sub_resource type="Theme" id="Theme_dwquw"]
+[sub_resource type="Theme" id="Theme_a5sk2"]
 default_font = SubResource("SystemFont_2cn5u")
+default_font_size = 30
 Button/colors/font_color = Color(0.875, 0.875, 0.875, 1)
 Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
 Button/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
@@ -342,23 +506,23 @@ Button/constants/align_to_largest_stylebox = 0
 Button/constants/h_separation = 4
 Button/constants/icon_max_width = 0
 Button/constants/outline_size = 0
-Button/font_sizes/font_size = 16
+Button/font_sizes/font_size = 25
 Button/styles/disabled = SubResource("StyleBoxFlat_f1ok0")
 Button/styles/focus = SubResource("StyleBoxFlat_vnusf")
 Button/styles/hover = SubResource("StyleBoxFlat_8nq2g")
 Button/styles/normal = SubResource("StyleBoxFlat_srlr4")
 Button/styles/pressed = SubResource("StyleBoxFlat_365y1")
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_iy21a"]
-content_margin_left = 20.0
-content_margin_top = 20.0
-content_margin_right = 20.0
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_e25cn"]
+content_margin_left = 50.0
+content_margin_top = 50.0
+content_margin_right = 50.0
 content_margin_bottom = 20.0
 texture = ExtResource("10_838ts")
-expand_margin_left = 5.0
+expand_margin_left = 15.0
 expand_margin_top = 5.0
-expand_margin_right = 5.0
-expand_margin_bottom = 5.0
+expand_margin_right = 15.0
+expand_margin_bottom = 10.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_urkww"]
 bg_color = Color(0.6, 0.6, 0.6, 0.941176)
@@ -406,11 +570,15 @@ label_settings = SubResource("LabelSettings_qofp6")
 horizontal_alignment = 1
 
 [node name="PE" type="Label" parent="Control"]
-layout_mode = 2
-offset_left = 1650.0
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -216.0
 offset_top = 120.0
-offset_right = 1807.0
+offset_right = -59.0
 offset_bottom = 155.0
+grow_horizontal = 0
 label_settings = SubResource("LabelSettings_qofp6")
 horizontal_alignment = 1
 
@@ -456,7 +624,7 @@ anchor_bottom = 0.5
 offset_left = -160.0
 offset_top = -240.0
 offset_right = 40.0
-offset_bottom = -120.0
+offset_bottom = -90.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -480,7 +648,7 @@ horizontal_alignment = 1
 [node name="DeckCounter" type="Label" parent="Control/Deck/VBoxContainer"]
 layout_mode = 2
 text = "00"
-label_settings = SubResource("LabelSettings_bsdb8")
+label_settings = SubResource("LabelSettings_kp1p1")
 horizontal_alignment = 1
 
 [node name="Turn" type="Panel" parent="Control"]
@@ -493,7 +661,7 @@ anchor_bottom = 0.5
 offset_left = 60.0
 offset_top = -240.0
 offset_right = 260.0
-offset_bottom = -120.0
+offset_bottom = -90.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -519,7 +687,7 @@ horizontal_alignment = 1
 custom_minimum_size = Vector2(100, 25)
 layout_mode = 2
 text = "x"
-label_settings = SubResource("LabelSettings_bsdb8")
+label_settings = SubResource("LabelSettings_dg1kn")
 horizontal_alignment = 1
 autowrap_mode = 3
 
@@ -537,20 +705,17 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -560.0
-offset_top = -210.0
-offset_right = 790.0
-offset_bottom = 40.0
+offset_left = -800.0
+offset_top = -250.0
+offset_right = 800.0
 grow_horizontal = 2
 grow_vertical = 0
-scale = Vector2(0.8, 0.8)
 size_flags_horizontal = 11
 size_flags_vertical = 2
 theme = SubResource("Theme_kv1b3")
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 0
 script = ExtResource("8_5oogl")
-metadata/_edit_use_anchors_ = true
 
 [node name="HBOX_P_S" type="HBoxContainer" parent="Scroll_P_S"]
 custom_minimum_size = Vector2(1300, 0)
@@ -562,9 +727,9 @@ alignment = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -560.0
-offset_right = 790.0
-offset_bottom = 250.0
+offset_left = -645.0
+offset_right = 955.0
+offset_bottom = 300.0
 grow_horizontal = 2
 scale = Vector2(0.8, 0.8)
 theme = SubResource("Theme_kv1b3")
@@ -610,9 +775,9 @@ anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = 60.0
+offset_left = 87.0
 offset_top = 470.0
-offset_right = 860.0
+offset_right = 887.0
 offset_bottom = 720.0
 grow_horizontal = 0
 grow_vertical = 2
@@ -734,24 +899,26 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_hya2i")
 icon = ExtResource("9_ycwdk")
 
 [node name="backbutton" type="Button" parent="."]
-offset_right = 508.0
-offset_bottom = 508.0
-scale = Vector2(0.2, 0.2)
+offset_left = 20.0
+offset_right = 520.0
+offset_bottom = 500.0
+scale = Vector2(0.25, 0.25)
+theme_override_styles/normal = SubResource("StyleBoxTexture_ruulk")
 icon = ExtResource("5_dmi23")
 
 [node name="windec" type="ConfirmationDialog" parent="."]
 initial_position = 2
-size = Vector2i(350, 200)
+size = Vector2i(500, 300)
 borderless = true
 theme = SubResource("Theme_mxv4u")
-ok_button_text = "Win"
-cancel_button_text = "Skip"
+ok_button_text = " Win "
+cancel_button_text = " Skip "
 
 [node name="windec_RTL" type="RichTextLabel" parent="windec"]
 offset_left = 20.0
 offset_top = 30.0
-offset_right = 330.0
-offset_bottom = 129.0
+offset_right = 480.0
+offset_bottom = 217.0
 bbcode_enabled = true
 fit_content = true
 
@@ -761,18 +928,21 @@ initial_position = 2
 size = Vector2i(500, 300)
 borderless = true
 theme = SubResource("Theme_re6bn")
-ok_button_text = "Play Again"
+ok_button_text = " Play Again "
 dialog_text = "
 "
 dialog_autowrap = true
-cancel_button_text = "Go Back"
+cancel_button_text = " Go Back "
 
 [node name="windec_c" type="AcceptDialog" parent="."]
+auto_translate_mode = 1
 initial_position = 2
-size = Vector2i(250, 150)
+size = Vector2i(500, 300)
 borderless = true
-theme = SubResource("Theme_dwquw")
-theme_override_styles/panel = SubResource("StyleBoxTexture_iy21a")
+theme = SubResource("Theme_a5sk2")
+theme_override_styles/panel = SubResource("StyleBoxTexture_e25cn")
+ok_button_text = "   OK   "
+dialog_autowrap = true
 
 [node name="Timer" type="Timer" parent="."]
 
@@ -807,4 +977,6 @@ icon = ExtResource("10_e8khf")
 [connection signal="pressed" from="castlebutton" to="." method="_on_castlebutton_pressed"]
 [connection signal="pressed" from="sortbutton" to="." method="_on_sortbutton_pressed"]
 [connection signal="pressed" from="backbutton" to="." method="_on_back_button_pressed"]
+[connection signal="canceled" from="win_popup" to="." method="_on_win_popup_canceled"]
+[connection signal="confirmed" from="win_popup" to="." method="_on_win_popup_confirmed"]
 [connection signal="pressed" from="soundbutton" to="." method="_on_soundbutton_toggled"]

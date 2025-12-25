@@ -6,19 +6,20 @@ public partial class StartGamePage : Control
 {
 	[Export] public PackedScene gameplayScene;
 	private HBoxContainer B1,B2,B3;
-	private LineEdit Username, TimeSet, ModeSet;
-	private OptionButton PlayerNum;
+	private LineEdit Username, ModeSet;
+	private OptionButton PlayerNum, TimeSet;
 
     public override void _Ready()
 	{
 		Username = (LineEdit)FindChild("Username");
         PlayerNum = (OptionButton) FindChild("PlayerNum");
-		TimeSet = (LineEdit)FindChild("TimeSet");
+		TimeSet = (OptionButton)FindChild("TimeSet");
 		ModeSet = (LineEdit)FindChild("ModeSet");
         //gameplayScene = (PackedScene)ResourceLoader.Load("res://scenes/gameplay.tscn");
         // Hide();
 
 		PlayerNum.Selected = 1;
+		TimeSet.Selected = 1;
     }
 
 	public override void _Process(double delta)
@@ -77,6 +78,7 @@ public partial class StartGamePage : Control
 		NakamaSingleton.Instance.NumberOfPlayers = int.Parse(PlayerNum.Text);
 		NakamaSingleton.Instance.MainPlayerTurn = 1;
 		NakamaSingleton.Instance.Gamemode = "SinglePlayer";
+        NakamaSingleton.Instance.TimingPerTurn = System.Int32.Parse(TimeSet.Text);
 
 
         GetTree().Root.AddChild(gameplayInstance);

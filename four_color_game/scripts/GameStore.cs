@@ -54,6 +54,8 @@ public partial class GameStore : Control
             autoMessageBox.Hide();
         };
 
+        NakamaSingleton.Instance.UpdateSaveData();
+
     }
 
     private void TabContainer1_TabChanged(long tab)
@@ -324,48 +326,77 @@ public partial class GameStore : Control
 
     private void _on_purchase_point()
     {
+        _ = PurchasePointAsync();
+    }
+    private async Task PurchasePointAsync()
+    {
         if (purchasepressed)
             return;
         purchasepressed = true;
         // $1
-        GetCheckoutUrlAndOpen("P1_10000_", "price_1SfjVjBV5XpwFIyaZv8GxMUd");
+        //await GetCheckoutUrlAndOpen("P1_10000_", "price_1SfjVjBV5XpwFIyaZv8GxMUd");
+        await GetCheckoutUrlAndOpen("P1_10000_", "price_1SfiAfB1iRqqupXsxMOB37qC");
     }
     private void _on_purchase_point2()
+    {
+        _ = PurchasePoint2Async();
+    }
+    private async Task PurchasePoint2Async()
     {
         if (purchasepressed)
             return;
         purchasepressed = true;
         // $1.5
-        GetCheckoutUrlAndOpen("P1.5_20000_", "price_1SgQDoBV5XpwFIyaa29uu3SJ");
+        //await GetCheckoutUrlAndOpen("P1.5_20000_", "price_1SgQDoBV5XpwFIyaa29uu3SJ");
+        await GetCheckoutUrlAndOpen("P1.5_20000_", "price_1SfiTcB1iRqqupXstbUf8amf");
     }
+
     private void _on_purchase_point3()
+    {
+        _ = PurchasePoint3Async();
+    }
+    private async Task PurchasePoint3Async()
     {
         if (purchasepressed)
             return;
         purchasepressed = true;
         // $2
-        GetCheckoutUrlAndOpen("P2_30000_", "price_1SgQDoBV5XpwFIyaOTxLRLqF");
+        //await GetCheckoutUrlAndOpen("P2_30000_", "price_1SgQDoBV5XpwFIyaOTxLRLqF");
+        await GetCheckoutUrlAndOpen("P2_30000_", "price_1SfiTmB1iRqqupXstWZ0w3Ch");
     }
+
     private void _on_purchase_point4()
+    {
+        _ = PurchasePoint4Async();
+    }
+    private async Task PurchasePoint4Async()
     {
         if (purchasepressed)
             return;
         purchasepressed = true;
         // $3
-        GetCheckoutUrlAndOpen("P3_50000_", "price_1SgQDoBV5XpwFIyadhaFXun2");
+        //await GetCheckoutUrlAndOpen("P3_50000_", "price_1SgQDoBV5XpwFIyadhaFXun2");
+        await GetCheckoutUrlAndOpen("P3_50000_", "price_1SfiU6B1iRqqupXsn7WamAHS");
     }
+
     private void _on_purchase_point5()
+    {
+        _ = PurchasePoint5Async();
+    }
+    private async Task PurchasePoint5Async()
     {
         if (purchasepressed)
             return;
         purchasepressed = true;
         // $5
-        GetCheckoutUrlAndOpen("P5_100000_", "price_1SgQDoBV5XpwFIyaSnMBcCTi");
+        //await GetCheckoutUrlAndOpen("P5_100000_", "price_1SgQDoBV5XpwFIyaSnMBcCTi");
+        await GetCheckoutUrlAndOpen("P5_100000_", "price_1SfiVlB1iRqqupXsbKkDJUAy");
     }
-   
+
+
     private static readonly System.Net.Http.HttpClient client = new System.Net.Http.HttpClient();
 
-    private async void GetCheckoutUrlAndOpen(string token="",string priceID= "price_1Rs2VtQ2uLIvcn7YRtBim8JQ")
+    private async Task GetCheckoutUrlAndOpen(string token="",string priceID= "price_1Rs2VtQ2uLIvcn7YRtBim8JQ")
     {
         token = token + GameLogic.GenerateToken();
         NakamaSingleton.Instance.GameToken = token;
@@ -390,7 +421,7 @@ public partial class GameStore : Control
             if (!string.IsNullOrEmpty(checkoutUrl))
             {
                 LoggerManager.Info($"🌐 Opening Stripe Checkout:{checkoutUrl}");
-                OS.ShellOpen(checkoutUrl); // Opens in default browser
+                OS.ShellOpen(checkoutUrl); 
             }
             else
             {
