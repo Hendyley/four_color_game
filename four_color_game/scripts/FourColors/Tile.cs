@@ -63,7 +63,11 @@ public partial class Tile : Control
         this.cover = cover;
         if (!cover)
         {
-            string imagePath = $"res://art/4_Color_Game/Chess/Removed_BG/{this.Tileid}.png";
+            string imagePath;
+            if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+                imagePath = $"res://art/4_Color_Game/Chess/Removed_BG/Chinese/{this.Tileid}.png";
+            else
+                imagePath = $"res://art/4_Color_Game/Chess/Removed_BG/Common/{this.Tileid}.png";
             Texture2D loadedTexture = (Texture2D)GD.Load(imagePath);
             TileImage.Texture = loadedTexture;
         }
@@ -78,8 +82,12 @@ public partial class Tile : Control
 
     public void SetTile(int playerid, string value)
 	{
-		string imagePath = $"res://art/4_Color_Game/Chess/Removed_BG/{value}.png";
-		Texture2D loadedTexture = (Texture2D) GD.Load(imagePath);
+        string imagePath;
+        if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+            imagePath = $"res://art/4_Color_Game/Chess/Removed_BG/Chinese/{value}.png";
+        else
+            imagePath = $"res://art/4_Color_Game/Chess/Removed_BG/Common/{value}.png";
+        Texture2D loadedTexture = (Texture2D) GD.Load(imagePath);
 		TileImage.Texture = loadedTexture;
 		TileImage.Size = new Vector2(50, 200);
 		Tileid = value;
@@ -95,8 +103,12 @@ public partial class Tile : Control
 
 	public void SetTableTile(string value)
 	{
-		string imagePath = $"res://art/4_Color_Game/Chess/Removed_BG/{value}.png";
-		Texture2D loadedTexture = (Texture2D) GD.Load(imagePath);
+        string imagePath;
+        if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+            imagePath = $"res://art/4_Color_Game/Chess/Removed_BG/Chinese/{value}.png";
+        else
+            imagePath = $"res://art/4_Color_Game/Chess/Removed_BG/Common/{value}.png";
+        Texture2D loadedTexture = (Texture2D) GD.Load(imagePath);
 		TileImage.Texture = loadedTexture;
 		//TileImage.Position = new Vector2(831,767);
 		TileImage.Size = new Vector2(50, 200);
@@ -199,7 +211,7 @@ public partial class Tile : Control
                     }
 
                     TopLevel = false;
-                    SetPosition(Vector2.Zero); // Reset local position; layout will override it
+                    SetPosition(_originalLocalPos); // Reset local position; layout will override it
                     QueueRedraw(); // Optional: forces a redraw just in case
                 }
 
@@ -269,7 +281,7 @@ public partial class Tile : Control
                     }
 
                     TopLevel = false;
-                    SetPosition(Vector2.Zero); // Reset local position; layout will override it
+                    SetPosition(_originalLocalPos); // Reset local position; layout will override it
                     QueueRedraw(); // Optional: forces a redraw just in case
                 }
 
@@ -302,7 +314,7 @@ public partial class Tile : Control
                     _isDragging = false;
                     _isPressed = false;
                     TopLevel = false;
-                    SetPosition(Vector2.Zero); // Reset to layout
+                    SetPosition(_originalLocalPos); // Reset to layout
                     return;
                 }
 

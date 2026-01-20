@@ -47,7 +47,7 @@ public partial class NakamaSingleton : Node
     public int NumberOfPlayers { get; set; } = 4;
     public int TimingPerTurn { get; set; } = 30;
     private string[] content;
-    public bool BGMPlay { get; set; } = true;
+    public bool BGMPlay { get; set; } = false;
     public string GameLanguage { get; set; } = "English";
 
     public SaveData SD;

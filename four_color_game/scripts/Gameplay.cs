@@ -51,9 +51,9 @@ public partial class Gameplay : Node
 
     StyleBoxFlat highlightStyle = new StyleBoxFlat();
 
-
     private int remainingTurnTimeMs = NakamaSingleton.Instance.TimingPerTurn * 1000;//30_000;
     private int elapsedTurnTimeMs = 0;
+
 
     public async override void _Ready()
     {
@@ -807,14 +807,14 @@ public partial class Gameplay : Node
                             if (NakamaSingleton.Instance.GameLanguage == "Chinese")
                             {
                                 rtl.Clear();
-                                rtl.AppendText($"你想用 {lastDrawnTile.TileName} 来赢吗？?\n [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/{lastDrawnTile.Tileid}.png[/img]\n");
+                                rtl.AppendText($"你想用 {lastDrawnTile.TileName} 来赢吗？?\n [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/Chinese/{lastDrawnTile.Tileid}.png[/img]\n");
                                 windec.OkButtonText = "赢";
                                 windec.CancelButtonText = "跳过";
                             }                                
                             else
                             {
                                 rtl.Clear();
-                                rtl.AppendText($"Do you want to win with {lastDrawnTile.TileName}?\n [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/{lastDrawnTile.Tileid}.png[/img]\n");
+                                rtl.AppendText($"Do you want to win with {lastDrawnTile.TileName}?\n [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/Common/{lastDrawnTile.Tileid}.png[/img]\n");
                             }
                             windec.PopupCentered();
 
@@ -891,14 +891,14 @@ public partial class Gameplay : Node
                         if (NakamaSingleton.Instance.GameLanguage == "Chinese")
                         {
                             rtl.Clear();
-                            rtl.AppendText($"你想用 {lastDrawnTile.TileName} 来赢吗？?\n [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/{lastDrawnTile.Tileid}.png[/img]\n");
+                            rtl.AppendText($"你想用 {lastDrawnTile.TileName} 来赢吗？?\n [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/Chinese/{lastDrawnTile.Tileid}.png[/img]\n");
                             windec.OkButtonText = "赢";
                             windec.CancelButtonText = "跳过";
                         }
                         else
                         {
                             rtl.Clear();
-                            rtl.AppendText($"Do you want to win with {lastDrawnTile.TileName}?\n [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/{lastDrawnTile.Tileid}.png[/img]\n");
+                            rtl.AppendText($"Do you want to win with {lastDrawnTile.TileName}?\n [img=50x200]res://art/4_Color_Game/Chess/Removed_BG/Common/{lastDrawnTile.Tileid}.png[/img]\n");
                         }
                         windec.PopupCentered();
 
