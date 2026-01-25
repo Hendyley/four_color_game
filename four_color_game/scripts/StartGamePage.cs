@@ -1,4 +1,4 @@
-using Godot;
+﻿using Godot;
 using System;
 using FourColors;
 
@@ -18,8 +18,6 @@ public partial class StartGamePage : Control
         //gameplayScene = (PackedScene)ResourceLoader.Load("res://scenes/gameplay.tscn");
         // Hide();
 
-		PlayerNum.Selected = 1;
-		TimeSet.Selected = 1;
     }
 
 	public override void _Process(double delta)
@@ -78,7 +76,10 @@ public partial class StartGamePage : Control
 		NakamaSingleton.Instance.NumberOfPlayers = int.Parse(PlayerNum.Text);
 		NakamaSingleton.Instance.MainPlayerTurn = 1;
 		NakamaSingleton.Instance.Gamemode = "SinglePlayer";
-        NakamaSingleton.Instance.TimingPerTurn = System.Int32.Parse(TimeSet.Text);
+		if (TimeSet.Text == "∞")
+            NakamaSingleton.Instance.TimingPerTurn = 10000;
+        else
+            NakamaSingleton.Instance.TimingPerTurn = System.Int32.Parse(TimeSet.Text);
 
 
         GetTree().Root.AddChild(gameplayInstance);

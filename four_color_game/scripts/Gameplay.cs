@@ -41,7 +41,7 @@ public partial class Gameplay : Node
     private bool decisionMade = false;
     private bool takeDecision = false;
     private AcceptDialog autoMessageBox;
-    private Panel bg_panel;
+    private Panel bg_panel, TurnPanel;
     private AudioStreamPlayer bgm;
     private AudioStreamPlayer sfxm;
     private string mp3tilediscard = "Tile_Discard";
@@ -50,6 +50,7 @@ public partial class Gameplay : Node
     private string mp3castle = "Castle";
 
     StyleBoxFlat highlightStyle = new StyleBoxFlat();
+    StyleBoxTexture D_dec, POD_dec;
 
     private int remainingTurnTimeMs = NakamaSingleton.Instance.TimingPerTurn * 1000;//30_000;
     private int elapsedTurnTimeMs = 0;
@@ -79,8 +80,20 @@ public partial class Gameplay : Node
         currentturnLabel = (Label)FindChild("CurrentTurn");
         turnlabel = (Label)FindChild("TurnLabel");
         timerview = (Label)FindChild("TimerView");
-        timerview.Text = $"{NakamaSingleton.Instance.TimingPerTurn} s";
-        
+
+        TurnPanel = (Panel)FindChild("TurnPanel");
+        var decstyle = TurnPanel.GetThemeStylebox("panel") as StyleBoxTexture;
+        D_dec = (StyleBoxTexture)decstyle.Duplicate();
+        D_dec.Texture = GD.Load<Texture2D>($"res://art/4_Color_Game/Animation/D_dec.png");
+        POD_dec = (StyleBoxTexture)decstyle.Duplicate();
+        POD_dec.Texture = GD.Load<Texture2D>($"res://art/4_Color_Game/Animation/POD_dec.png");
+
+
+        if (NakamaSingleton.Instance.TimingPerTurn < 10000)
+            timerview.Text = $"{NakamaSingleton.Instance.TimingPerTurn} s";
+        else
+            timerview.Text = $" ∞ ";
+
         if (NakamaSingleton.Instance.BGMPlay)
             soundButton.ButtonPressed = false;
         else
@@ -211,6 +224,7 @@ public partial class Gameplay : Node
             }
 
             DrawTile(NakamaSingleton.Instance.CurrentTurn);
+            TurnPanel.AddThemeStyleboxOverride("panel", D_dec);
             StartTurnTimer();
         }
 
@@ -449,6 +463,9 @@ public partial class Gameplay : Node
             LoggerManager.Info("Deck is empty! No card drawn.");
             l2.AddItem("Deck is empty! No card drawn.");
         }
+
+        if( NakamaSingleton.Instance.CurrentTurn == 1)
+            TurnPanel.AddThemeStyleboxOverride("panel", D_dec);
     }
 
     private void TakeTile(int playerid = 1, string tilevalue = "C1")
@@ -721,6 +738,7 @@ public partial class Gameplay : Node
         turnpass++;
         if (NakamaSingleton.Instance.CurrentTurn == NakamaSingleton.Instance.MainPlayerTurn)
         {
+            TurnPanel.AddThemeStyleboxOverride("panel", POD_dec);
             StartTurnTimer();
             if (!PlayerCastleStatus[NakamaSingleton.Instance.MainPlayerTurn] && GameLogic.CheckCastle(playersHands[NakamaSingleton.Instance.MainPlayerTurn]))
             {
@@ -771,6 +789,7 @@ public partial class Gameplay : Node
             int thisturn = NakamaSingleton.Instance.CurrentTurn;
             if (NakamaSingleton.Instance.CurrentTurn != 1)
             {
+                TurnPanel.AddThemeStyleboxOverride("panel", null);
                 var gs = new GameLogic.GameState();
                 gs.Hand = playersHands[NakamaSingleton.Instance.CurrentTurn].ToList(); //Current Hand
 
@@ -944,6 +963,10 @@ public partial class Gameplay : Node
                 }
 
             }
+            else
+            {
+                TurnPanel.AddThemeStyleboxOverride("panel", POD_dec);
+            }
         }
 
         /////////////////////////////////////////////////////////////////////////////////  "Multiplayer"
@@ -957,6 +980,10 @@ public partial class Gameplay : Node
 
     public void StartTurnTimer()
     {
+
+        if (NakamaSingleton.Instance.TimingPerTurn >= 10000)
+            return;
+
         elapsedMs = 0;
         remainingTurnTimeMs = NakamaSingleton.Instance.TimingPerTurn * 1000;
         turnTimer.Start();

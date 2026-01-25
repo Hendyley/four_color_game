@@ -1,4 +1,4 @@
-[gd_scene load_steps=62 format=3 uid="uid://cm1bc46c0qr4l"]
+[gd_scene load_steps=63 format=3 uid="uid://cm1bc46c0qr4l"]
 
 [ext_resource type="Script" path="res://scripts/Gameplay.cs" id="1_s8yka"]
 [ext_resource type="Texture2D" uid="uid://du3akvbf2wq3n" path="res://art/4_Color_Game/Buttons/Removed_BG/Pick_Up.png" id="2_0u1nr"]
@@ -530,6 +530,8 @@ bg_color = Color(0.6, 0.6, 0.6, 0.941176)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_niir0"]
 bg_color = Color(0.964706, 0.87451, 0.172549, 0.913725)
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_emyx2"]
+
 [node name="Gameplay" type="Node"]
 script = ExtResource("1_s8yka")
 tileScene = ExtResource("2_gevuu")
@@ -590,9 +592,9 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -110.0
-offset_top = -290.0
+offset_top = -310.0
 offset_right = 90.0
-offset_bottom = -255.0
+offset_bottom = -275.0
 grow_horizontal = 2
 grow_vertical = 0
 label_settings = SubResource("LabelSettings_qofp6")
@@ -606,12 +608,13 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -210.0
-offset_top = -140.0
-offset_right = 240.0
-offset_bottom = 160.0
+offset_left = -460.0
+offset_top = -340.0
+offset_right = 940.0
+offset_bottom = 660.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(0.6, 0.6)
 script = ExtResource("4_gw1eg")
 
 [node name="Deck" type="Panel" parent="Control"]
@@ -705,9 +708,10 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -800.0
-offset_top = -250.0
-offset_right = 800.0
+offset_left = -810.0
+offset_top = -260.0
+offset_right = 810.0
+offset_bottom = 10.0
 grow_horizontal = 2
 grow_vertical = 0
 size_flags_horizontal = 11
@@ -720,15 +724,15 @@ script = ExtResource("8_5oogl")
 [node name="HBOX_P_S" type="HBoxContainer" parent="Scroll_P_S"]
 custom_minimum_size = Vector2(1300, 0)
 layout_mode = 2
-theme_override_constants/separation = 75
+theme_override_constants/separation = 80
 alignment = 1
 
 [node name="Scroll_P_N" type="ScrollContainer" parent="."]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -645.0
-offset_right = 955.0
+offset_left = -660.0
+offset_right = 960.0
 offset_bottom = 300.0
 grow_horizontal = 2
 scale = Vector2(0.8, 0.8)
@@ -971,6 +975,16 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_urkww")
 theme_override_styles/normal = SubResource("StyleBoxFlat_niir0")
 toggle_mode = true
 icon = ExtResource("10_e8khf")
+
+[node name="TurnPanel" type="Panel" parent="."]
+modulate = Color(1, 1, 1, 0.819608)
+light_mask = 15
+offset_left = 1427.0
+offset_top = 450.0
+offset_right = 1677.0
+offset_bottom = 650.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_emyx2")
 
 [connection signal="gui_input" from="Control" to="." method="_on_control_gui_input"]
 [connection signal="pressed" from="pickupbutton" to="." method="_on_pickupbutton_pressed"]

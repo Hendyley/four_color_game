@@ -137,6 +137,7 @@ public partial class MainMenu : Control
         Node tutorial = (Node)tutorialgamescene.Instantiate();
         NakamaSingleton.Instance.NumberOfPlayers = 2;
         NakamaSingleton.Instance.MainPlayerTurn = 1;
+        NakamaSingleton.Instance.TimingPerTurn = 10000;
         NakamaSingleton.Instance.Gamemode = "SinglePlayer";
 
 
