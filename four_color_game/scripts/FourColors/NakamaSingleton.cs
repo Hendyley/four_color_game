@@ -47,15 +47,16 @@ public partial class NakamaSingleton : Node
     public int NumberOfPlayers { get; set; } = 4;
     public int TimingPerTurn { get; set; } = 30;
     private string[] content;
-    public bool BGMPlay { get; set; } = false;
-    public string GameLanguage { get; set; } = "English";
+    public bool BGMPlay { get; set; }
+    public string GameLanguage { get; set; }
 
     public SaveData SD;
     public int Point { get; set; }
-
     public string BGThemeEquiped { get; set; }
     public string SoundEquiped { get; set; }
     public string TileThemeEquiped { get; set; }
+
+    public Dictionary<string, string> SaveCommonSettings { get; set; }
 
     public string GameToken { get; set; }
 
@@ -98,6 +99,9 @@ public partial class NakamaSingleton : Node
 
         UpdateSaveData();
 
+        BGMPlay = SaveCommonSettings["Music"]  == "true" ? true : false;
+        GameLanguage = SaveCommonSettings["Language"];
+
     }
 
     public void UpdateSaveData()
@@ -107,6 +111,8 @@ public partial class NakamaSingleton : Node
         BGThemeEquiped = GameLogic.GetEquippedBG();
         TileThemeEquiped = GameLogic.GetEquippedTile();
         SoundEquiped = GameLogic.GetEquippedMusic();
+        SaveCommonSettings = GameLogic.GetCommonSettings();
+
     }
 
     public override void _Notification(int what)

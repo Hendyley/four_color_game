@@ -31,14 +31,16 @@ public partial class MainMenu : Control
             {
                 case 0:
                     NakamaSingleton.Instance.GameLanguage = "English";
+                    NakamaSingleton.Instance.SD.CommonSettings["Language"] = "English";
                     break;
                 case 1:
                     NakamaSingleton.Instance.GameLanguage = "Chinese";
+                    NakamaSingleton.Instance.SD.CommonSettings["Language"] = "Chinese";
                     break;
                 default:
-                    NakamaSingleton.Instance.GameLanguage = "English";
                     break;
             }
+            GameLogic.SetGameSaved(NakamaSingleton.Instance.SD);
         };
 
         languageSetting.AboutToPopup += () =>
@@ -100,12 +102,16 @@ public partial class MainMenu : Control
         {
             bgm.Stop();
             NakamaSingleton.Instance.BGMPlay = false;
+            NakamaSingleton.Instance.SD.CommonSettings["Music"] = "false";
         }
         else
         {
             bgm.Play();
             NakamaSingleton.Instance.BGMPlay = true;
+            NakamaSingleton.Instance.SD.CommonSettings["Music"] = "true";
         }
+
+        GameLogic.SetGameSaved(NakamaSingleton.Instance.SD);
     }
 
     private void _on_start_button_pressed()

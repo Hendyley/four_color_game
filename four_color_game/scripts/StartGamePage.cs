@@ -18,6 +18,10 @@ public partial class StartGamePage : Control
         //gameplayScene = (PackedScene)ResourceLoader.Load("res://scenes/gameplay.tscn");
         // Hide();
 
+		Username.Text = NakamaSingleton.Instance.SaveCommonSettings["Defaultname"];
+		PlayerNum.Selected = int.Parse(NakamaSingleton.Instance.SaveCommonSettings["DefaultNOP"]);
+		TimeSet.Selected = int.Parse(NakamaSingleton.Instance.SaveCommonSettings["Timeset"]);
+
     }
 
 	public override void _Process(double delta)
@@ -63,7 +67,12 @@ public partial class StartGamePage : Control
 
 	private void _on_confirm_button_pressed()
 	{
-		if(Username.Text == "")
+        NakamaSingleton.Instance.SD.CommonSettings["Defaultname"] = Username.Text;
+        NakamaSingleton.Instance.SD.CommonSettings["DefaultNOP"] = PlayerNum.Selected.ToString();
+        NakamaSingleton.Instance.SD.CommonSettings["Timeset"] = TimeSet.Selected.ToString();
+		GameLogic.SetGameSaved( NakamaSingleton.Instance.SD);
+
+        if (Username.Text == "")
         {
             Username.Text = NakamaSingleton.Instance.GenerateRandomName();
         }

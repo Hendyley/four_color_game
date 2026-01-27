@@ -83,11 +83,25 @@ public partial class Gameplay : Node
 
         TurnPanel = (Panel)FindChild("TurnPanel");
         var decstyle = TurnPanel.GetThemeStylebox("panel") as StyleBoxTexture;
-        D_dec = (StyleBoxTexture)decstyle.Duplicate();
-        D_dec.Texture = GD.Load<Texture2D>($"res://art/4_Color_Game/Animation/D_dec.png");
-        POD_dec = (StyleBoxTexture)decstyle.Duplicate();
-        POD_dec.Texture = GD.Load<Texture2D>($"res://art/4_Color_Game/Animation/POD_dec.png");
 
+        if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+        {
+            D_dec = (StyleBoxTexture)decstyle.Duplicate();
+            D_dec.Texture = GD.Load<Texture2D>($"res://art/4_Color_Game/Animation/Chinese/D_dec.png");
+            POD_dec = (StyleBoxTexture)decstyle.Duplicate();
+            POD_dec.Texture = GD.Load<Texture2D>($"res://art/4_Color_Game/Animation/Chinese/POD_dec.png");
+
+            pickButton.Icon = GD.Load<Texture2D>($"res://art/4_Color_Game/Buttons/Removed_BG/Chinese/Pick_Up.png");
+            castleButton.Icon = GD.Load<Texture2D>($"res://art/4_Color_Game/Buttons/Removed_BG/Chinese/Castle.png");
+
+        }
+        else
+        {
+            D_dec = (StyleBoxTexture)decstyle.Duplicate();
+            D_dec.Texture = GD.Load<Texture2D>($"res://art/4_Color_Game/Animation/Common/D_dec.png");
+            POD_dec = (StyleBoxTexture)decstyle.Duplicate();
+            POD_dec.Texture = GD.Load<Texture2D>($"res://art/4_Color_Game/Animation/Common/POD_dec.png");
+        }
 
         if (NakamaSingleton.Instance.TimingPerTurn < 10000)
             timerview.Text = $"{NakamaSingleton.Instance.TimingPerTurn} s";
@@ -497,6 +511,9 @@ public partial class Gameplay : Node
         tabletiles.Remove(tilevalue);
         pickButton.Disabled = true;
         throwhand = true;
+
+        if (NakamaSingleton.Instance.CurrentTurn == 1)
+            TurnPanel.AddThemeStyleboxOverride("panel", D_dec);
 
     }
 

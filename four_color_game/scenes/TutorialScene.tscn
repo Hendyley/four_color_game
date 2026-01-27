@@ -1,4 +1,4 @@
-[gd_scene load_steps=75 format=3 uid="uid://cuuw52k6pign4"]
+[gd_scene load_steps=76 format=3 uid="uid://cuuw52k6pign4"]
 
 [ext_resource type="Script" path="res://scripts/Tutorialplay.cs" id="1_xe35p"]
 [ext_resource type="Texture2D" uid="uid://bojt53ffw6lwv" path="res://art/4_Color_Game/Background/green_BG.png" id="3_wr70c"]
@@ -24,7 +24,7 @@ expand_margin_left = 10.0
 expand_margin_top = 5.0
 expand_margin_right = 10.0
 expand_margin_bottom = 5.0
-modulate_color = Color(1, 1, 1, 0.760784)
+modulate_color = Color(1, 1, 1, 0.588235)
 
 [sub_resource type="LabelSettings" id="LabelSettings_0w5tn"]
 font_size = 30
@@ -42,7 +42,7 @@ expand_margin_left = 10.0
 expand_margin_top = 5.0
 expand_margin_right = 10.0
 expand_margin_bottom = 5.0
-modulate_color = Color(1, 1, 1, 0.760784)
+modulate_color = Color(1, 1, 1, 0.588235)
 
 [sub_resource type="LabelSettings" id="LabelSettings_pf7d5"]
 font_size = 30
@@ -737,6 +737,9 @@ expand_margin_top = 5.0
 expand_margin_right = 15.0
 expand_margin_bottom = 10.0
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fe4ue"]
+modulate_color = Color(1, 1, 1, 0.588235)
+
 [node name="Gameplay" type="Node"]
 script = ExtResource("1_xe35p")
 
@@ -808,13 +811,13 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -460.0
-offset_top = -340.0
-offset_right = 940.0
-offset_bottom = 660.0
+offset_left = -410.0
+offset_top = -260.0
+offset_right = 790.0
+offset_bottom = 390.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.6, 0.6)
+scale = Vector2(0.7, 0.7)
 script = ExtResource("4_685q8")
 
 [node name="Deck" type="Panel" parent="Control"]
@@ -1057,9 +1060,9 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -500.0
-offset_top = -380.0
-offset_right = 472.0
-offset_bottom = -123.0
+offset_top = -430.0
+offset_right = 488.0
+offset_bottom = -145.0
 grow_horizontal = 0
 grow_vertical = 0
 scale = Vector2(0.25, 0.25)
@@ -1073,9 +1076,9 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -500.0
-offset_top = -300.0
+offset_top = -360.0
 offset_right = 488.0
-offset_bottom = -43.0
+offset_bottom = -75.0
 grow_horizontal = 0
 grow_vertical = 0
 scale = Vector2(0.25, 0.25)
@@ -1172,6 +1175,16 @@ dialog_autowrap = true
 [node name="SFXM" type="AudioStreamPlayer" parent="."]
 
 [node name="BGM" type="AudioStreamPlayer" parent="."]
+
+[node name="TurnPanel" type="Panel" parent="."]
+modulate = Color(1, 1, 1, 0.819608)
+light_mask = 15
+offset_left = 1427.0
+offset_top = 450.0
+offset_right = 1677.0
+offset_bottom = 650.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_fe4ue")
 
 [connection signal="gui_input" from="Control" to="." method="_on_control_gui_input"]
 [connection signal="pressed" from="pickupbutton" to="." method="_on_pickupbutton_pressed"]

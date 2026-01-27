@@ -18,8 +18,19 @@ namespace FourColors
         public Dictionary<string, StoreItem> BG { get; set; } = new();
         public Dictionary<string, StoreItem> Tile { get; set; } = new();
         public Dictionary<string, StoreItem> Music { get; set; } = new();
+        public Dictionary<string, string> CommonSettings { get; set; } = new();
+
+        public SaveData()
+        {
+            Points = 0;
+            BG = new();
+            Tile = new();
+            Music = new();
+            CommonSettings = new();
+        }
 
     }
+
 
 
 }

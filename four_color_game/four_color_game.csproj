@@ -9,6 +9,9 @@
     <PackageReference Include="NakamaClient" Version="3.16.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="scenes\" />
+  </ItemGroup>
 
 
 </Project>

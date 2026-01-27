@@ -16,13 +16,14 @@ visibility_layer = 3
 clip_contents = true
 layout_mode = 1
 offset_right = 80.0
-offset_bottom = 265.0
+offset_bottom = 270.0
 
 [node name="TextureRect" type="TextureRect" parent="."]
 custom_minimum_size = Vector2(50, 200)
 layout_mode = 0
+offset_top = 2.0
 offset_right = 120.0
-offset_bottom = 400.0
+offset_bottom = 402.0
 scale = Vector2(0.66, 0.66)
 texture = ExtResource("2_i15yr")
 

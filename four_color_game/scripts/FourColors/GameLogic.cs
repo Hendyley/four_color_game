@@ -524,6 +524,14 @@ namespace FourColors
                 Music = new Dictionary<string, StoreItem>
                 {
                     { "Default", new StoreItem { Equip = true, Purchase = true } }
+                },
+                CommonSettings = new Dictionary<string, string>
+                {
+                    { "Defaultname", "" },
+                    { "DefaultNOP", "2" },
+                    { "Timeset", "0" },
+                    { "Music", "true" },
+                    { "Language", "English" }
                 }
             };
 
@@ -539,25 +547,31 @@ namespace FourColors
                 return;
             }
 
-            string json = File.ReadAllText(saveFilePath);
-            if (json.Contains("\"Points\"")) // ✅ New Format
+            try
             {
-                CurrentSave = JsonConvert.DeserializeObject<SaveData>(json) ?? new SaveData();
+                var defaults = CreateDefaultSaveData();
+
+                MergeDefaults(CurrentSave.BG, defaults.BG);
+                MergeDefaults(CurrentSave.Tile, defaults.Tile);
+                MergeDefaults(CurrentSave.Music, defaults.Music);
+                MergeDefaults(CurrentSave.CommonSettings, defaults.CommonSettings);
+
+                JsonConvert.PopulateObject(
+                    File.ReadAllText(saveFilePath),
+                    defaults,
+                    new JsonSerializerSettings
+                    {
+                        MissingMemberHandling = MissingMemberHandling.Ignore
+                    });
+
+                CurrentSave = defaults;
+
+                SaveToFile(); 
             }
-            else if (json.Contains("\"points\"")) // ✅ Old Format (lowercase)
+            catch (Exception e)
             {
-                var dict = JsonConvert.DeserializeObject<Dictionary<string, int>>(json);
-                if (dict != null && dict.TryGetValue("points", out int pts))
-                {
-                    CurrentSave = CreateDefaultSaveData();
-                    CurrentSave = new SaveData { Points = pts };
-                    SaveToFile(); // Upgrade file
-                }
-            }
-            else
-            {
-                LoggerManager.Error("Invalid save format, creating fresh.");
-                CurrentSave = new SaveData();
+                LoggerManager.Error($"Save load failed: {e.Message}");
+                CurrentSave = CreateDefaultSaveData();
                 SaveToFile();
             }
         }
@@ -566,6 +580,13 @@ namespace FourColors
         {
             var json = JsonConvert.SerializeObject(CurrentSave, Formatting.Indented);
             File.WriteAllText(saveFilePath, json);
+        }
+
+        static void MergeDefaults<TKey, TValue>(Dictionary<TKey, TValue> target, Dictionary<TKey, TValue> defaults)
+        {
+            foreach (var kv in defaults)
+                if (!target.ContainsKey(kv.Key))
+                    target[kv.Key] = kv.Value;
         }
 
 
@@ -615,6 +636,12 @@ namespace FourColors
             LoadFromFile();
             var equipped = CurrentSave.Music.FirstOrDefault(kvp => kvp.Value.Equip).Key;
             return string.IsNullOrEmpty(equipped) ? "green_BG.png" : equipped + ".png";
+        }
+
+        public static Dictionary<string, string> GetCommonSettings()
+        {
+            LoadFromFile();
+            return CurrentSave.CommonSettings;
         }
 
         public static string GenerateToken(int length = 12)

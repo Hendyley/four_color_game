@@ -45,7 +45,7 @@ public partial class Tutorialplay : Node
     private float elapsedMs;
     private float updateIntervalMs = 50f; // update every 50ms
 
-    private Panel bg_panel;
+    private Panel bg_panel, TurnPanel;
     private AudioStreamPlayer bgm;
     private AudioStreamPlayer sfxm;
     private string mp3tilediscard = "Tile_Discard";
@@ -56,7 +56,10 @@ public partial class Tutorialplay : Node
     private string allowedtile = "";
     private string allowedmove = "";
 
+    private bool _clicked = true;
+
     StyleBoxFlat highlightStyle = new StyleBoxFlat();
+    StyleBoxTexture D_dec, POD_dec;
 
     public async override void _Ready()
     {
@@ -82,6 +85,33 @@ public partial class Tutorialplay : Node
         currentturnLabel = (Label)FindChild("CurrentTurn");
         turnlabel = (Label)FindChild("TurnLabel");
         timerview = (Label)FindChild("TimerView");
+
+
+        TurnPanel = (Panel)FindChild("TurnPanel");
+        var decstyle = TurnPanel.GetThemeStylebox("panel") as StyleBoxTexture;
+
+        if (NakamaSingleton.Instance.GameLanguage == "Chinese")
+        {
+            D_dec = (StyleBoxTexture)decstyle.Duplicate();
+            D_dec.Texture = GD.Load<Texture2D>($"res://art/4_Color_Game/Animation/Chinese/D_dec.png");
+            POD_dec = (StyleBoxTexture)decstyle.Duplicate();
+            POD_dec.Texture = GD.Load<Texture2D>($"res://art/4_Color_Game/Animation/Chinese/POD_dec.png");
+
+            pickButton.Icon = GD.Load<Texture2D>($"res://art/4_Color_Game/Buttons/Removed_BG/Chinese/Pick_Up.png");
+            castleButton.Icon = GD.Load<Texture2D>($"res://art/4_Color_Game/Buttons/Removed_BG/Chinese/Castle.png");
+        }
+        else
+        {
+            D_dec = (StyleBoxTexture)decstyle.Duplicate();
+            D_dec.Texture = GD.Load<Texture2D>($"res://art/4_Color_Game/Animation/Common/D_dec.png");
+            POD_dec = (StyleBoxTexture)decstyle.Duplicate();
+            POD_dec.Texture = GD.Load<Texture2D>($"res://art/4_Color_Game/Animation/Common/POD_dec.png");
+        }
+
+        if (NakamaSingleton.Instance.TimingPerTurn < 10000)
+            timerview.Text = $"{NakamaSingleton.Instance.TimingPerTurn} s";
+        else
+            timerview.Text = $" ∞ ";
 
         bg_panel = (Panel)FindChild("Panel");
         var stylebox = bg_panel.GetThemeStylebox("panel") as StyleBoxTexture;
@@ -134,6 +164,7 @@ public partial class Tutorialplay : Node
 
         guidewindow = (AcceptDialog)FindChild("GuideWindow");
         guidewindow.Exclusive = true;
+        guidewindow.GetOkButton().Hide();
 
         turnTimer = (Timer)FindChild("TurnTimer");
         //turnTimer.WaitTime = 1.0;
@@ -506,6 +537,20 @@ public partial class Tutorialplay : Node
 
                 }
             }
+        }
+
+        if (!guidewindow.Visible)
+            return;
+
+        if (Input.IsMouseButtonPressed(MouseButton.Left) || (Input.IsActionPressed("ui_accept")))
+        {
+            if(_clicked)
+                TriggerOkLogic();
+            _clicked = false;
+        }
+        else
+        {
+            _clicked = true;
         }
     }
 
@@ -1335,6 +1380,14 @@ public partial class Tutorialplay : Node
             overlay.QueueFree();
     }
 
+    private void TriggerOkLogic()
+    {
+        var okButton = guidewindow.GetOkButton();
+        if (okButton != null)
+        {
+            okButton.CallDeferred("emit_signal", Button.SignalName.Pressed);
+        }
+    }
 
 
 }
