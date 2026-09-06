@@ -50,7 +50,9 @@ public partial class Gameplay : Node
     private string mp3castle = "Castle";
 
     StyleBoxFlat highlightStyle = new StyleBoxFlat();
-    StyleBoxTexture D_dec, POD_dec;
+    StyleBoxTexture D_dec, POD_dec, gmrules;
+
+    Panel pnl;
 
     private int remainingTurnTimeMs = NakamaSingleton.Instance.TimingPerTurn * 1000;//30_000;
     private int elapsedTurnTimeMs = 0;
@@ -82,7 +84,11 @@ public partial class Gameplay : Node
         timerview = (Label)FindChild("TimerView");
 
         TurnPanel = (Panel)FindChild("TurnPanel");
+
         var decstyle = TurnPanel.GetThemeStylebox("panel") as StyleBoxTexture;
+
+        gmrules = new StyleBoxTexture();
+        pnl = new Panel();
 
         if (NakamaSingleton.Instance.GameLanguage == "Chinese")
         {
@@ -94,6 +100,8 @@ public partial class Gameplay : Node
             pickButton.Icon = GD.Load<Texture2D>($"res://art/4_Color_Game/Buttons/Removed_BG/Chinese/Pick_Up.png");
             castleButton.Icon = GD.Load<Texture2D>($"res://art/4_Color_Game/Buttons/Removed_BG/Chinese/Castle.png");
 
+            gmrules.Texture = GD.Load<Texture2D>($"res://art/4_Color_Game/GameRules_Chinese.png");
+
         }
         else
         {
@@ -101,6 +109,8 @@ public partial class Gameplay : Node
             D_dec.Texture = GD.Load<Texture2D>($"res://art/4_Color_Game/Animation/Common/D_dec.png");
             POD_dec = (StyleBoxTexture)decstyle.Duplicate();
             POD_dec.Texture = GD.Load<Texture2D>($"res://art/4_Color_Game/Animation/Common/POD_dec.png");
+
+            gmrules.Texture = GD.Load<Texture2D>($"res://art/4_Color_Game/GameRules.png");
         }
 
         if (NakamaSingleton.Instance.TimingPerTurn < 10000)
@@ -674,6 +684,20 @@ public partial class Gameplay : Node
         else
             ShowAutoMessage($"Player {NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.MainPlayerTurn].player_name} Castle.", 5000);
         LoggerManager.Info($"Player {NakamaSingleton.Instance.PlayerList[NakamaSingleton.Instance.MainPlayerTurn].player_name} Castle.");
+    }
+
+
+    private void _on_helpbutton_button_down()
+    {
+        pnl.Name = "GameRulesPanel";
+        pnl.SetAnchorsPreset(Control.LayoutPreset.FullRect);
+        pnl.AddThemeStyleboxOverride("panel", gmrules);
+        this.AddChild(pnl);
+    }
+
+    private void _on_helpbutton_button_up()
+    {
+        this.RemoveChild(pnl);
     }
 
     private void _on_back_button_pressed()

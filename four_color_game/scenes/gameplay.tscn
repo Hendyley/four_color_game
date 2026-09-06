@@ -1,4 +1,4 @@
-[gd_scene load_steps=63 format=3 uid="uid://cm1bc46c0qr4l"]
+[gd_scene load_steps=65 format=3 uid="uid://cm1bc46c0qr4l"]
 
 [ext_resource type="Script" path="res://scripts/Gameplay.cs" id="1_s8yka"]
 [ext_resource type="Texture2D" uid="uid://du3akvbf2wq3n" path="res://art/4_Color_Game/Buttons/Removed_BG/Pick_Up.png" id="2_0u1nr"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://bstoofnujwo3x" path="res://art/4_Color_Game/Buttons/Removed_BG/SortButton.png" id="9_ycwdk"]
 [ext_resource type="Texture2D" uid="uid://b22trtwi1kxv0" path="res://art/4_Color_Game/GamePopBoard.png" id="10_838ts"]
 [ext_resource type="Texture2D" uid="uid://bk51ouejtg0al" path="res://art/4_Color_Game/SoundLogo.png" id="10_e8khf"]
+[ext_resource type="Texture2D" uid="uid://danepc8a6l677" path="res://art/4_Color_Game/Buttons/Removed_BG/Help.jpg" id="11_k457n"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_a8r7m"]
 texture = ExtResource("3_nsim1")
@@ -26,7 +27,7 @@ expand_margin_left = 10.0
 expand_margin_top = 5.0
 expand_margin_right = 10.0
 expand_margin_bottom = 5.0
-modulate_color = Color(1, 1, 1, 0.588235)
+modulate_color = Color(1, 1, 1, 0.27451)
 
 [sub_resource type="LabelSettings" id="LabelSettings_wrmox"]
 font_size = 30
@@ -44,7 +45,7 @@ expand_margin_left = 10.0
 expand_margin_top = 5.0
 expand_margin_right = 10.0
 expand_margin_bottom = 5.0
-modulate_color = Color(1, 1, 1, 0.588235)
+modulate_color = Color(1, 1, 1, 0.27451)
 
 [sub_resource type="LabelSettings" id="LabelSettings_o0usl"]
 font_size = 30
@@ -190,6 +191,8 @@ bg_color = Color(0.6, 0.6, 0.6, 0)
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hya2i"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ruulk"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_w00qf"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1l7hn"]
 content_margin_left = 20.0
@@ -645,7 +648,7 @@ mouse_filter = 2
 
 [node name="DeckLabel" type="Label" parent="Control/Deck/VBoxContainer"]
 layout_mode = 2
-text = "Deck Cards"
+text = "Deck Tiles"
 label_settings = SubResource("LabelSettings_wrmox")
 horizontal_alignment = 1
 
@@ -911,6 +914,19 @@ scale = Vector2(0.25, 0.25)
 theme_override_styles/normal = SubResource("StyleBoxTexture_ruulk")
 icon = ExtResource("5_dmi23")
 
+[node name="helpbutton" type="Button" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -129.0
+offset_top = 8.0
+offset_right = 371.0
+offset_bottom = 516.0
+grow_horizontal = 0
+scale = Vector2(0.25, 0.25)
+theme_override_styles/normal = SubResource("StyleBoxTexture_w00qf")
+icon = ExtResource("11_k457n")
+
 [node name="windec" type="ConfirmationDialog" parent="."]
 initial_position = 2
 size = Vector2i(500, 300)
@@ -992,6 +1008,8 @@ theme_override_styles/panel = SubResource("StyleBoxTexture_emyx2")
 [connection signal="pressed" from="castlebutton" to="." method="_on_castlebutton_pressed"]
 [connection signal="pressed" from="sortbutton" to="." method="_on_sortbutton_pressed"]
 [connection signal="pressed" from="backbutton" to="." method="_on_back_button_pressed"]
+[connection signal="button_down" from="helpbutton" to="." method="_on_helpbutton_button_down"]
+[connection signal="button_up" from="helpbutton" to="." method="_on_helpbutton_button_up"]
 [connection signal="canceled" from="win_popup" to="." method="_on_win_popup_canceled"]
 [connection signal="confirmed" from="win_popup" to="." method="_on_win_popup_confirmed"]
 [connection signal="pressed" from="soundbutton" to="." method="_on_soundbutton_toggled"]

@@ -56,6 +56,7 @@ public partial class NakamaSingleton : Node
     public string SoundEquiped { get; set; }
     public string TileThemeEquiped { get; set; }
 
+    public bool FirstTimer = false;
     public Dictionary<string, string> SaveCommonSettings { get; set; }
 
     public string GameToken { get; set; }

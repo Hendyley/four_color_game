@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://chdnfq1w061ed"
-path="res://.godot/imported/pr ic back.jpg-ccbd3d5c2d5dd71c8a599f9f9b5dc697.ctex"
+uid="uid://cbbebo26lastq"
+path="res://.godot/imported/GameTutorial_Pic2_PoD.png-bd29e51339f71daa39ea693e6763f015.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://art/4_Color_Game/pr ic back.jpg"
-dest_files=["res://.godot/imported/pr ic back.jpg-ccbd3d5c2d5dd71c8a599f9f9b5dc697.ctex"]
+source_file="res://art/4_Color_Game/Tutorial/GameTutorial_Pic2_PoD.png"
+dest_files=["res://.godot/imported/GameTutorial_Pic2_PoD.png-bd29e51339f71daa39ea693e6763f015.ctex"]
 
 [params]
 

@@ -542,9 +542,14 @@ namespace FourColors
         {
             if (!File.Exists(saveFilePath))
             {
+                NakamaSingleton.Instance.FirstTimer = true;
                 CurrentSave = CreateDefaultSaveData();
                 SaveToFile();
                 return;
+            }
+            else
+            {
+                NakamaSingleton.Instance.FirstTimer = false;
             }
 
             try
